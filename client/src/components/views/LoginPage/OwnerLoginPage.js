@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { loginUser } from "../../../_actions/user_actions";
+import { loginOwner } from "../../../_actions/owner_actions";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 const { Title } = Typography;
 
-function LoginPage(props) {
+function OwnerLoginPage(props) {
   const dispatch = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
@@ -42,16 +42,16 @@ function LoginPage(props) {
             password: values.password
           };
 
-          dispatch(loginUser(dataToSubmit))
+          dispatch(loginOwner(dataToSubmit))
             .then(response => {
               if (response.payload.loginSuccess) {
-                window.localStorage.setItem('userId', response.payload.userId);
+                window.localStorage.setItem('ownerId', response.payload.ownerId);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
                 } else {
                   localStorage.removeItem('rememberMe');
                 }
-                props.history.push("/");
+                props.history.push("/store");
               } else {
                 setFormErrorMessage('Check out your Account or Password again')
               }
@@ -81,7 +81,7 @@ function LoginPage(props) {
         return (
           <div className="app">
 
-            <Title level={2}>Log In</Title>
+            <Title level={2}>Owner Log In</Title>
             <form onSubmit={handleSubmit} style={{ width: '350px' }}>
 
               <Form.Item required>
@@ -126,7 +126,7 @@ function LoginPage(props) {
 
               <Form.Item>
                 <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} >Remember me</Checkbox>
-                <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>
+                <a className="login-form-forgot" href="/reset_owner" style={{ float: 'right' }}>
                   forgot password
                   </a>
                 <div>
@@ -134,8 +134,8 @@ function LoginPage(props) {
                     Log in
                 </Button>
                 </div>
-                Or <a href="/register">register now!</a>
-                <a href="/login/owner" style={{ float: 'right' }}>login owner</a>
+                Or <a href="/register/owner">register now!</a>
+                <a href="/login" style={{ float: 'right' }}>login user</a>
               </Form.Item>
             </form>
           </div>
@@ -145,6 +145,5 @@ function LoginPage(props) {
   );
 };
 
-export default withRouter(LoginPage);
-
+export default withRouter(OwnerLoginPage);
 

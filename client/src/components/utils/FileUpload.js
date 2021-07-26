@@ -12,11 +12,11 @@ function FileUpload(props) {
 
         let formData = new FormData();
         const config = {
-            header: { 'content-type': 'multipart/fomr-data' }
+            header: { 'content-type': 'multipart/form-data' }
         }
         formData.append("file", files[0])
 
-        axios.post('/api/product/image', formData, config)
+        axios.post('/api/store/image', formData, config)
             .then(response => {
                 if (response.data.success) {
                     setImages([...Images, response.data.filePath])

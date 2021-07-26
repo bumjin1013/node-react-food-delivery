@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 const paymentSchema = mongoose.Schema({
-    useR: {
+    user: {
         type: Array,
         default: []
     },

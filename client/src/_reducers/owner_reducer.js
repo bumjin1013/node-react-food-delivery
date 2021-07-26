@@ -1,20 +1,20 @@
 import {
-    LOGIN_USER,
-    REGISTER_USER,
-    AUTH_USER,
-    LOGOUT_USER,
+    LOGIN_OWNER,
+    REGISTER_OWNER,
+    AUTH_OWNER,
+    LOGOUT_OWNER,
 } from '../_actions/types';
  
 
 export default function(state={},action){
     switch(action.type){
-        case REGISTER_USER:
+        case REGISTER_OWNER:
             return {...state, register: action.payload }
-        case LOGIN_USER:
+        case LOGIN_OWNER:
             return { ...state, loginSucces: action.payload }
-        case AUTH_USER:
-            return {...state, userData: action.payload }
-        case LOGOUT_USER:
+        case AUTH_OWNER:
+            return {...state, ownerData: action.payload }
+        case LOGOUT_OWNER:
             return {...state }
         default:
             return state;
