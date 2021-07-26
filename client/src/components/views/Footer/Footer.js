@@ -8,10 +8,7 @@ function Footer() {
             flexDirection: 'column', alignItems: 'center',
             justifyContent: 'center', fontSize:'1rem'
         }}>
-           <p> 
-               <Icon type="github" />
-               <a href="https://github.com/bumjin1013"> https://github.com/bumjin1013 </a> 
-           </p>
+           <p> Happy Coding  <Icon type="smile" /></p>
         </div>
     )
 }

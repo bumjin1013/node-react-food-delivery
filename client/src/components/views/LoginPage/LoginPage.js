@@ -135,7 +135,6 @@ function LoginPage(props) {
                 </Button>
                 </div>
                 Or <a href="/register">register now!</a>
-                <a href="/login/owner" style={{ float: 'right' }}>login owner</a>
               </Form.Item>
             </form>
           </div>

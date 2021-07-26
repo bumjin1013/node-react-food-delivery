@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.12.2",
     "antd": "^3.24.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
@@ -12,7 +11,10 @@
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^11.3.4",
     "react-icons": "^3.7.0",
+    "react-image-gallery": "^1.2.5",
+    "react-paypal-express-checkout": "^1.0.5",
     "react-redux": "^7.1.0-rc.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.4.1",
@@ -43,7 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@ant-design/icons": "^2.1.1",
     "http-proxy-middleware": "^1.0.3"
   }
 }
