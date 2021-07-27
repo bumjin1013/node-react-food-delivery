@@ -12,7 +12,10 @@ import Footer from "./views/Footer/Footer";
 import OwnerRegisterPage from "./views/RegisterPage/OwnerRegisterPage.js";
 import StorePage from './views/StorePage/StorePage';
 import AddStorePage from './views/StorePage/AddStorePage/AddStorePage';
-
+import OwnerOrderProceedingPage from './views/OwnerDetailStorePage/OwnerOrderProceedingPage';
+import OwnerOrderCompletedPage from './views/OwnerDetailStorePage/OwnerOrderCompletedPage';
+import OwnerMenuPage from './views/OwnerDetailStorePage/OwnerMenuPage';
+import OwnerReviewPage from './views/OwnerDetailStorePage/OwnerReviewPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -30,7 +33,12 @@ function App() {
           <Route exact path="/login/owner" component={AuthOwner(OwnerLoginPage, null)} />
           <Route exact path="/store" component={AuthOwner(StorePage, true)} />  
           <Route exact path="/store/addstore" component={AuthOwner(AddStorePage, true)} />
-n
+          <Route exact path="/store/:storeId/order/proceeding" component={AuthOwner(OwnerOrderProceedingPage, true)} />
+          <Route exact path="/store/:storeId/order/completed" component={AuthOwner(OwnerOrderCompletedPage, true)} />
+          <Route exact path="/store/:storeId/menu" component={AuthOwner(OwnerMenuPage, true)} />
+          <Route exact path="/store/:storeId/review" component={AuthOwner(OwnerReviewPage, true)} />
+         
+          OwnerOrderProceedingPage
 
         </Switch>
       </div>
