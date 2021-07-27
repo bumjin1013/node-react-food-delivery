@@ -16,6 +16,7 @@ import OwnerOrderProceedingPage from './views/OwnerDetailStorePage/OwnerOrderPro
 import OwnerOrderCompletedPage from './views/OwnerDetailStorePage/OwnerOrderCompletedPage';
 import OwnerMenuPage from './views/OwnerDetailStorePage/OwnerMenuPage';
 import OwnerReviewPage from './views/OwnerDetailStorePage/OwnerReviewPage';
+import AddMenuPage from './views/OwnerDetailStorePage/Section/AddMenuPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/store/:storeId/order/completed" component={AuthOwner(OwnerOrderCompletedPage, true)} />
           <Route exact path="/store/:storeId/menu" component={AuthOwner(OwnerMenuPage, true)} />
           <Route exact path="/store/:storeId/review" component={AuthOwner(OwnerReviewPage, true)} />
+          <Route exact path="/store/:storeId/menu/add" component={AuthOwner(AddMenuPage, true)} />
          
           OwnerOrderProceedingPage
 

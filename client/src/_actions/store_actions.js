@@ -5,7 +5,7 @@ import {
 import { STORE_SERVER } from '../components/Config.js';
 
 export function addMenu(dataToSubmit){
-    const request = axios.post(`${STORE_SERVER}/stores_by_id/menu/add`, dataToSubmit)
+    const request = axios.post(`${STORE_SERVER}/stores_by_id/menu`, dataToSubmit)
         .then(response => response.data);
     
     return {

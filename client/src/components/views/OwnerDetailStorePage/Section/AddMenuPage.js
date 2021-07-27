@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Form, Input } from 'antd';
 import axios from 'axios';
+import FileUpload from '../../../utils/FileUpload';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-
 
 function OwnerMenuPage(props) {
 
@@ -20,6 +21,51 @@ function OwnerMenuPage(props) {
 
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
+  const [Name, setName] = useState('');
+  const [Price, setPrice] = useState('');
+  const [Image, setImage] = useState([]);
+  
+  const nameChangeHandler = (event) => {
+    setName(event.currentTarget.value)
+}
+
+const priceChangeHandler = (event) => {
+    setPrice(event.currentTarget.value)
+}
+
+const updateImage = (newImage) => {
+    setImage(newImage)
+}
+
+const submitHandler = (event) => {
+    event.preventDefault();
+
+    if (!Name || !Price ) {
+        return alert(" 메뉴 이름과 가격을 입력해 주세요.")
+    }
+
+
+    //서버에 채운 값들을 request로 보낸다.
+
+    const body = {
+        // 상점 id
+        id: Store._id,
+        name: Name,
+        price: Price,
+        image: Image
+    }
+
+
+    axios.post('/api/store/addMenu', body)
+        .then(response => {
+            if (response.data.success) {
+                alert('메뉴 업로드에 성공 했습니다.')
+                props.history.push(`/store/${Store._id}/menu`)
+            } else {
+                alert('메뉴 업로드에 실패 했습니다.')
+            }
+        })
+}
     return (
       <div>
         <Layout>
@@ -79,7 +125,26 @@ function OwnerMenuPage(props) {
             minHeight: 280,
           }}
         >
-          <a href={`/store/${Store._id}/menu/add`} >메뉴 추가</a>
+            {/* Contents */}
+            <Form onSubmit={submitHandler}>
+                <label>메뉴 사진</label>
+                {/* DropZone */}
+                <FileUpload refreshFunction={updateImage} />
+
+                <br />
+                <br />
+                <label>메뉴 이름</label>
+                <Input onChange={nameChangeHandler} value={Name} />
+                <br />
+                <br />
+                <label>가격</label>
+                <Input onChange={priceChangeHandler} value={Price} />
+                <br />
+                <br />
+                <button type="submit">
+                    확인
+                </button>
+            </Form>
         </Content>
       </Layout>
     </Layout>

@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
     id: req.body.id,
     title: req.body.title,
     description: req.body.description,
-    "image:": req.body.image,
+    image: req.body.image,
     category: req.body.category,
     location: { address: req.body.address },
     image: req.body.image,
@@ -104,6 +104,24 @@ router.get("/stores_by_id/order", (req, res) => {
       if (err) return res.status(400).send(err);
       return res.status(200).send(store);
     });
+});
+
+router.post("/addMenu", (req, res) => {
+  
+  let ObjectId = 'ObjectId(' + req.body.id + ')';
+  console.log(req.body.id)
+  Store.findOneAndUpdate({ _id : req.body.id},{
+    '$push': {
+      "menu": {
+        "name": req.body.name, 
+        "price": req.body.price,
+        "Image": []
+      }}},{ new: true },
+      (err, menuInfo) => {
+          if (err) return res.status(400).json({ success: false, err })
+          res.status(200).send({ success: true, menuInfo })
+      }
+    )
 });
 
 
