@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
 import { Typography, Button, Form, Input } from 'antd';
-import FileUpload from '../../../utils/FileUpload';
+import FileUpload from '../../utils/FileUpload';
 import Axios from 'axios';
 const { TextArea } = Input;
 
-const Categorys = [
-    { key: 1, value: "한식" },
-    { key: 2, value: "분식" },
-    { key: 3, value: "중식" },
-    { key: 4, value: "일식" },
-    { key: 5, value: "치킨" },
-    { key: 6, value: "피자" },
-    { key: 7, value: "프랜차이즈" }
+const Continents = [
+    { key: 1, value: "Africa" },
+    { key: 2, value: "Europe" },
+    { key: 3, value: "Asia" },
+    { key: 4, value: "North America" },
+    { key: 5, value: "South America" },
+    { key: 6, value: "Australia" },
+    { key: 7, value: "Antarctica" }
 ]
 
-function AddStorePage(props) {
+function UploadProductPage(props) {
 
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
-    const [Address, setAddress] = useState("")
-    const [Category, setCategory] = useState(1)
-    const [Image, setImage] = useState([])
+    const [Price, setPrice] = useState(0)
+    const [Continent, setContinent] = useState(1)
+    const [Images, setImages] = useState([])
 
     const titleChangeHandler = (event) => {
         setTitle(event.currentTarget.value)
@@ -30,22 +30,22 @@ function AddStorePage(props) {
         setDescription(event.currentTarget.value)
     }
 
-    const addressChangeHandler = (event) => {
-        setAddress(event.currentTarget.value)
+    const priceChangeHandler = (event) => {
+        setPrice(event.currentTarget.value)
     }
 
-    const categoryChangeHandler = (event) => {
-        setCategory(event.currentTarget.value)
+    const continentChangeHandler = (event) => {
+        setContinent(event.currentTarget.value)
     }
 
-    const updateImage = (newImage) => {
-        setImage(newImage)
+    const updateImages = (newImages) => {
+        setImages(newImages)
     }
 
     const submitHandler = (event) => {
         event.preventDefault();
 
-        if (!Title || !Description || !Address || !Category || Image.length === 0) {
+        if (!Title || !Description || !Price || !Continent || Images.length === 0) {
             return alert(" 모든 값을 넣어주셔야 합니다.")
         }
 
@@ -54,19 +54,19 @@ function AddStorePage(props) {
 
         const body = {
             //로그인 된 사람의 ID 
-            id: props.owner.ownerData._id,
+            writer: props.user.userData._id,
             title: Title,
             description: Description,
-            image: Image,
-            category: Category,
-            address: Address
+            price: Price,
+            images: Images,
+            continents: Continent
         }
 
-        Axios.post('/api/store', body)
+        Axios.post('/api/product', body)
             .then(response => {
                 if (response.data.success) {
                     alert('상품 업로드에 성공 했습니다.')
-                    props.history.push('/store')
+                    props.history.push('/')
                 } else {
                     alert('상품 업로드에 실패 했습니다.')
                 }
@@ -77,17 +77,16 @@ function AddStorePage(props) {
     return (
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <h2> 가게 추가</h2>
+                <h2> 여행 상품 업로드</h2>
             </div>
 
             <Form onSubmit={submitHandler}>
-                <label>상점 이미지</label>
                 {/* DropZone */}
-                <FileUpload refreshFunction={updateImage} />
+                <FileUpload refreshFunction={updateImages} />
 
                 <br />
                 <br />
-                <label>상점 이름</label>
+                <label>이름</label>
                 <Input onChange={titleChangeHandler} value={Title} />
                 <br />
                 <br />
@@ -95,14 +94,12 @@ function AddStorePage(props) {
                 <TextArea onChange={descriptionChangeHandler} value={Description} />
                 <br />
                 <br />
-                <label>주소</label>
-                <TextArea onChange={addressChangeHandler} value={Address} />
+                <label>가격($)</label>
+                <Input type="number" onChange={priceChangeHandler} value={Price} />
                 <br />
                 <br />
-                <label>카테고리</label>
-                <br />
-                <select onChange={categoryChangeHandler} value={Category}>
-                    {Categorys.map(item => (
+                <select onChange={continentChangeHandler} value={Continent}>
+                    {Continents.map(item => (
                         <option key={item.key} value={item.key}> {item.value}</option>
                     ))}
                 </select>
@@ -118,4 +115,4 @@ function AddStorePage(props) {
     )
 }
 
-export default AddStorePage
+export default UploadProductPage

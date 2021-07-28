@@ -29,7 +29,7 @@ const storeSchema = mongoose.Schema({
     menu: [{
         name : { type : String },
         price : { type : Number, required: true },
-        images : { type : String },
+        image : { type : [] },
         sold: { type: Number, default: 0 }
     }],
     review: [{

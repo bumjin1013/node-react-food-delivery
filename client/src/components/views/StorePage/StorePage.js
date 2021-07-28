@@ -19,6 +19,7 @@ function StorePage() {
   const [Stores, setStores] = useState([]);
 
   const renderCards = Stores.map((store, index) => {
+    
     console.log(store);
 
     return (

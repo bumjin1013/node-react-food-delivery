@@ -96,6 +96,8 @@ router.get("/stores_by_id/order", (req, res) => {
     });
   }
 
+  
+
   //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
 
   Store.find({ _id: { $in: storeIds } })
@@ -106,16 +108,43 @@ router.get("/stores_by_id/order", (req, res) => {
     });
 });
 
+router.get("/stores_by_id/menu", (req, res) => {
+  let type = req.query.type;
+  let storeIds = req.query.id;
+
+  if (type === "array") {
+    //id=123123123,324234234,324234234 이거를
+    //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
+    let ids = req.query.id.split(",");
+    let menus = req.query.menu.split(",");
+    storeIds = ids.map((item) => {
+      return item;
+    });
+    menuList = menus.map((menu) => {
+      return menu;
+      console.log(menu);
+    })
+  }
+
+  //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
+
+  Store.find({ _id: { $in: storeIds } })
+    .populate("id")
+    .exec((err, store) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(store);
+    });
+});
+
+
 router.post("/addMenu", (req, res) => {
-  
-  let ObjectId = 'ObjectId(' + req.body.id + ')';
-  console.log(req.body.id)
+
   Store.findOneAndUpdate({ _id : req.body.id},{
     '$push': {
       "menu": {
         "name": req.body.name, 
         "price": req.body.price,
-        "Image": []
+        "image": req.body.image
       }}},{ new: true },
       (err, menuInfo) => {
           if (err) return res.status(400).json({ success: false, err })

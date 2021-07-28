@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Table, Tag, Divider, Button } from 'antd';
 import axios from 'axios';
+import { updateLocale } from 'moment';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 
 function OwnerMenuPage(props) {
 
+  
   useEffect(() => {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
-        console.log(response.data[0])
+        setListMenu(response.data[0].menu);
       })
       .catch((err) => alert(err));
 
@@ -20,6 +22,34 @@ function OwnerMenuPage(props) {
 
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
+  const [ListMenu, setListMenu] = useState([]);
+
+  
+  const columns = [
+    {
+      title: '사진',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, menu) => {
+        return (
+         <div>
+         <img style={{ maxWidth: '10%' }}src={`http://localhost:5000/${menu.image}`}/>
+         
+         </div>
+       );},
+    },
+    {
+      title: '상품명',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: '가격',
+      dataIndex: 'price',
+      key: 'price',
+    }
+  ];
+
     return (
       <div>
         <Layout>
@@ -79,7 +109,18 @@ function OwnerMenuPage(props) {
             minHeight: 280,
           }}
         >
-          <a href={`/store/${Store._id}/menu/add`} >메뉴 추가</a>
+  
+         {/* Menu Table 생성 */}
+          <Table columns={columns} dataSource={ListMenu} />
+  
+        
+          <Button >
+            <a href={`/store/${Store._id}/menu/add`} >메뉴 추가</a>
+          </Button>
+          
+        
+          
+          
         </Content>
       </Layout>
     </Layout>
