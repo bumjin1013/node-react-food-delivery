@@ -17,6 +17,8 @@ import OwnerOrderCompletedPage from './views/OwnerDetailStorePage/OwnerOrderComp
 import OwnerMenuPage from './views/OwnerDetailStorePage/OwnerMenuPage';
 import OwnerReviewPage from './views/OwnerDetailStorePage/OwnerReviewPage';
 import AddMenuPage from './views/OwnerDetailStorePage/Section/AddMenuPage';
+import StoreListPage from './views/StorePage/StoreListPage/StoreListPage';
+import UserStorePage from './views/UserStorePage/UserStorePage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -30,8 +32,10 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
+          
           <Route exact path="/register/owner" componet={AuthOwner(OwnerRegisterPage, null)} />
           <Route exact path="/login/owner" component={AuthOwner(OwnerLoginPage, null)} />
+
           <Route exact path="/store" component={AuthOwner(StorePage, true)} />  
           <Route exact path="/store/addstore" component={AuthOwner(AddStorePage, true)} />
           <Route exact path="/store/:storeId/order/proceeding" component={AuthOwner(OwnerOrderProceedingPage, true)} />
@@ -39,9 +43,12 @@ function App() {
           <Route exact path="/store/:storeId/menu" component={AuthOwner(OwnerMenuPage, true)} />
           <Route exact path="/store/:storeId/review" component={AuthOwner(OwnerReviewPage, true)} />
           <Route exact path="/store/:storeId/menu/add" component={AuthOwner(AddMenuPage, true)} />
-         
-          OwnerOrderProceedingPage
+          
+          <Route exact path="/chicken" component={Auth(StoreListPage, null)} />
 
+          <Route exact path="/store/:storeId/detail" component={Auth(UserStorePage, null)} />
+         
+      
         </Switch>
       </div>
       <Footer />

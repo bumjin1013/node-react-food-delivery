@@ -153,7 +153,43 @@ router.post("/addMenu", (req, res) => {
     )
 });
 
+router.get("/chicken", (req, res) => {
 
+  Store.find({ category : "chicken" })
+    .exec((err, store) => {
+      if (err) return res.status(400).send({ success: false, err });
+      return res.status(200).send({ success: true, store });
+      
+    });
+});
+
+router.get("/stores_by_id/detail", (req, res) => {
+  let type = req.query.type;
+  let storeIds = req.query.id;
+
+  if (type === "array") {
+    //id=123123123,324234234,324234234 이거를
+    //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
+    let ids = req.query.id.split(",");
+    let menus = req.query.menu.split(",");
+    storeIds = ids.map((item) => {
+      return item;
+    });
+    menuList = menus.map((menu) => {
+      return menu;
+      console.log(menu);
+    })
+  }
+
+  //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
+
+  Store.find({ _id: { $in: storeIds } })
+    .populate("id")
+    .exec((err, store) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(store);
+    });
+});
 
 
 module.exports = router;
