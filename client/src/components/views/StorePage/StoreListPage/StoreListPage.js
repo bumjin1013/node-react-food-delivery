@@ -8,7 +8,7 @@ function StoreListPage() {
     
   useEffect(() => {
       axios.get("/api/store/chicken").then((response) => {
-          setStoreList(response.data.store);      
+          setStoreList(response.data.store);   
         })
       .catch((err) => alert(err));
   }, []);

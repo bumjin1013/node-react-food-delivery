@@ -34,7 +34,9 @@ const storeSchema = mongoose.Schema({
     }],
     review: [{
         writer: { type: String },
-        comment: { type: String } 
+        comment: { type: String },
+        star: { type: Number },
+        image: { type: [] }
     }],
     location: {
         address: String,

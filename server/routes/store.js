@@ -191,5 +191,21 @@ router.get("/stores_by_id/detail", (req, res) => {
     });
 });
 
+router.post("/addreview", (req, res) => {
+
+  Store.findOneAndUpdate({ _id : req.body.id},{
+    '$push': {
+      "review": {
+        "writer": req.body.writer, 
+        "comment": req.body.comment,
+        "image": req.body.image,
+        "star": req.body.star
+      }}},{ new: true },
+      (err, reviewInfo) => {
+          if (err) return res.status(400).json({ success: false, err })
+          res.status(200).send({ success: true, reviewInfo })
+      }
+    )
+});
 
 module.exports = router;
