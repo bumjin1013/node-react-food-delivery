@@ -19,6 +19,7 @@ import OwnerReviewPage from './views/OwnerDetailStorePage/OwnerReviewPage';
 import AddMenuPage from './views/OwnerDetailStorePage/Section/AddMenuPage';
 import StoreListPage from './views/StorePage/StoreListPage/StoreListPage';
 import UserStorePage from './views/UserStorePage/UserStorePage';
+import OrderPage from './views/OrderPage/OrderPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -47,6 +48,8 @@ function App() {
           <Route exact path="/chicken" component={Auth(StoreListPage, null)} />
 
           <Route exact path="/store/:storeId/detail" component={Auth(UserStorePage, null)} />
+
+          <Route exact path="/order" component={Auth(OrderPage, true)} />
          
       
         </Switch>

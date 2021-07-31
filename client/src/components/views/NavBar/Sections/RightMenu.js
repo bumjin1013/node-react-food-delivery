@@ -24,7 +24,9 @@ function RightMenu(props) {
   };
 
   const handleOk = () => {
+    
     setIsModalVisible(false);
+    props.history.push('/order');
   };
 
   const handleCancel = () => {
@@ -77,12 +79,9 @@ function RightMenu(props) {
           <Badge count={user.userData && user.userData.cart.length}>
               <Icon type="shopping-cart" style={{ fontSize: 30, marginBottom: 3}} onClick={showModal} />
               <Modal title="장바구니" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} cancelText="닫기" okText="주문하기">
-              
                 <h1>{storeName}</h1>
                 {renderCart}
                 <br />
-                  
-                  
                 <h3>총 주문금액 : {totalPrice}</h3> 
                   
               </Modal>
