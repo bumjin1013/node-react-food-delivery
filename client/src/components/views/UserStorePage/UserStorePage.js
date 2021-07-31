@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Icon } from 'antd';
 import axios from 'axios';
 import { updateLocale } from 'moment';
 import Meta from "antd/lib/card/Meta";
 import FileUpload from '../../utils/FileUpload';
+import { addToCart } from '../../../_actions/user_actions';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
 
 function UserStorePage(props) {
 
-  
+  const dispatch = useDispatch();
+
   useEffect(() => {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
@@ -31,6 +35,8 @@ function UserStorePage(props) {
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
   const [Review, setReview] = useState([]);
+  
+
    
 
   const commentChangeHandler = (event) => {
@@ -77,10 +83,25 @@ function UserStorePage(props) {
     setIsModalVisible(false);
   }
 
-
+ 
   const renderMenu = ListMenu.map((menu, index) => {
+    const clickHandler = () => {
+      let body = {
+        menuId: menu._id,
+        name: menu.name,
+        price: menu.price,
+        image: menu.image,
+        storeId: Store._id,
+        storeName: Store.title
+      }
+      //필요한 정보를 Cart 필드에다가 넣어 준다.
+      dispatch(addToCart(body))
+  }
+
     return (
+      
       <Col lg={6} md={8} xs={24} key={index}>
+        
         <Card
           hoverable
           cover={
@@ -94,6 +115,10 @@ function UserStorePage(props) {
         >
           <Meta title={menu.name} />
         </Card>
+        <br />
+        <Button size="large" shape="round" type="danger" onClick={clickHandler}>
+          Add to Cart
+        </Button>
       </Col>
     );
   });

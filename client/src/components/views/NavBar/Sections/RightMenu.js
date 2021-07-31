@@ -1,17 +1,25 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
-import { Menu, Icon, Badge, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Menu, Icon, Badge, Modal, Card } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 function RightMenu(props) {
-  const user = useSelector(state => state.user)
 
+  const user = useSelector(state => state.user)
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [Cart, setCart] = useState([]);
+  const [StoreName, setStoreName] = useState();
+
+  let storeName;
+  let totalPrice =0;
+  
 
   const showModal = () => {
+    setCart(user.userData.cart);
     setIsModalVisible(true);
   };
 
@@ -33,9 +41,23 @@ function RightMenu(props) {
     });
   };
 
-  const cartHandler = () => {
+  const renderCart = Cart.map((cart, index) => {
+    storeName = Cart[0].storeName;
+    totalPrice += cart.quantity * cart.price
 
-  }
+    console.log(storeName);
+    return(
+      <div>
+        <Card key={index} style={{ width: 470 }}>
+          <p>{cart.name}</p>
+          <p>{cart.quantity}개</p>
+          <p>{cart.price * cart.quantity}원</p>
+        </Card>
+      </div>
+    );
+  })
+
+  
 
   if (user.userData && !user.userData.isAuth) {
     return (
@@ -55,7 +77,14 @@ function RightMenu(props) {
           <Badge count={user.userData && user.userData.cart.length}>
               <Icon type="shopping-cart" style={{ fontSize: 30, marginBottom: 3}} onClick={showModal} />
               <Modal title="장바구니" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} cancelText="닫기" okText="주문하기">
-                  장바구니!
+              
+                <h1>{storeName}</h1>
+                {renderCart}
+                <br />
+                  
+                  
+                <h3>총 주문금액 : {totalPrice}</h3> 
+                  
               </Modal>
           </Badge>
         </Menu.Item>
