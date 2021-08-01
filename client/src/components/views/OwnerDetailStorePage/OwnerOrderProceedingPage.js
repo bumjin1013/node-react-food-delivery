@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd';
 import axios from 'axios';
 
 const { SubMenu } = Menu;
@@ -12,6 +12,7 @@ function OwnerOrderProceedingPage(props) {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
+        setOrder(response.data[0].order);
         console.log(response.data[0])
       })
       .catch((err) => alert(err));
@@ -21,6 +22,32 @@ function OwnerOrderProceedingPage(props) {
 
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
+  const [Order, setOrder] = useState([]);
+
+  const renderOrder = Order.map((order, index) => {
+    let menuList = ""
+
+    for(let i=0; i<order.menu.length; i++){
+        menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
+        
+      }
+    return(
+      <Card size="small" title={order.userId}  style={{ width: 300 }}>
+        <h3>메뉴 : {menuList}</h3>
+
+        주소 : {order.address}
+        <br/>
+        전화번호 : {order.phoneNumber}
+        <br/>
+        사장님에게 : {order.toOwner}
+        <br/>
+        배달기사에게 : {order.toRider}
+      </Card>
+    )
+  })
+
+  
+
     return (
       <div>
         <Layout>
@@ -81,7 +108,7 @@ function OwnerOrderProceedingPage(props) {
             minHeight: 280,
           }}
         >
-          Content
+          {renderOrder}
         </Content>
       </Layout>
     </Layout>

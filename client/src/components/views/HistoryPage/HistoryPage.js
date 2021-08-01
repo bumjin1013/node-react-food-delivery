@@ -1,39 +1,45 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Icon } from 'antd';
+import axios from 'axios';
 
-function HistoryPage(props) {
+function HistoryPage() {
+
+    useEffect(() => {
+        axios.get("/api/users/history").then((response) => {
+          if (response.data.success) {
+            setHistory(response.data.history.history); 
+          } else {
+            alert(" 상점을 로드하는데 실패하였습니다. ");
+          }
+        });
+      }, []);
+
+    const [History, setHistory] = useState([]);
+   
+
+    const renderHistory = History.map((history, index) => {
+
+        let menuList = ""
+
+        for(let i=0; i<history.menu.length; i++){
+            menuList += history.menu[i].name + "-" + history.menu[i].quantity + "개  ";
+        }
+        return(
+            <div>
+                <Card key={index} title={history.storeName}  style={{ width: 300 }}>
+                <p>주문가격: {history.price} 원</p>
+                <p></p>
+                <p>메뉴 : {menuList}</p>
+                </Card>
+            </div>
+        )
+    })
 
     return (
-        <div style={{ width: '80%', margin: '3rem auto' }}>
-            <div style={{ textAlign: 'center' }}>
-                <h1>History</h1>
-            </div>
-            <br />
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Payment Id</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Date of Purchase</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {props.user.userData && props.user.userData.history &&
-                        props.user.userData.history.map(item => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.price}</td>
-                                <td>{item.quantity}</td>
-                                <td>{item.dateOfPurchase}</td>
-                            </tr>
-                        ))}
-
-
-                </tbody>
-            </table>
+        <div style={{ width: '60%', margin: '3rem auto' }}>
+            <h2> <Icon type="read"/> 주문내역 </h2> 
+            
+            {renderHistory}
         </div>
     )
 }

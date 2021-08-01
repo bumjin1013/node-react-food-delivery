@@ -3,6 +3,8 @@ const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 const async = require('async');
+const { Store } = require('../models/Store');
+const { set } = require('mongoose');
 
 //=================================
 //             User
@@ -125,5 +127,38 @@ router.post("/addToCart", auth, (req, res) => {
         })
 });
 
+router.post("/order", auth, (req, res) => {
 
+    //먼저  User Collection에 해당 유저의 정보를 가져오기 
+    User.findOneAndUpdate({ _id: req.user._id },{
+        $push: {
+            history: {
+              storeId: req.body.storeId, 
+              storeName: req.body.storeName,
+              menu: req.body.menu,
+              address: req.body.address,
+              phoneNumber: req.body.phoneNumber,
+              price: req.body.price,
+              toOwner: req.body.toOwner,
+              toRider: req.body.toRider,
+              OrderTime: Date.now()
+            }},
+              $set:{cart: []}  
+            },{ new: true },
+            (err, orderInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).send({ success: true, orderInfo })
+            }
+          )
+});
+  
+router.get('/history', auth, (req, res) => {
+   
+    User.findOne({ _id: req.user._id })
+    .exec((err, history) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, history })
+    });
+});
+  
 module.exports = router;

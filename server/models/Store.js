@@ -34,7 +34,7 @@ const storeSchema = mongoose.Schema({
     }],
     review: [{
         writer: { type: String },
-        comment: { type: String },
+        contents: { type: String },
         star: { type: Number },
         image: { type: [] }
     }],
@@ -42,6 +42,10 @@ const storeSchema = mongoose.Schema({
         address: String,
         latitue: Number,
         longitude: Number
+    },
+    order: {
+        type: Array,
+        default: []
     }
 }, { timestamps: true})
 

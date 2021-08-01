@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const { Store } = require("../models/Store");
+const { User } = require("../models/User");
 
 //=================================
 //             Store
@@ -197,7 +198,7 @@ router.post("/addreview", (req, res) => {
     '$push': {
       "review": {
         "writer": req.body.writer, 
-        "comment": req.body.comment,
+        "contents": req.body.contents,
         "image": req.body.image,
         "star": req.body.star
       }}},{ new: true },
@@ -207,5 +208,27 @@ router.post("/addreview", (req, res) => {
       }
     )
 });
+
+router.post('/order', (req, res) => {
+  Store.findOneAndUpdate({ _id: req.body.storeId },{
+    $push: {
+        order: {
+          userId: req.body.userId,
+          menu: req.body.menu,
+          address: req.body.address,
+          phoneNumber: req.body.phoneNumber,
+          price: req.body.price,
+          toOwner: req.body.toOwner,
+          toRider: req.body.toRider,
+          OrderTime: Date.now()
+        }}},{ new: true },
+        (err, orderInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, orderInfo })
+        }
+  );
+})
+
+
 
 module.exports = router;

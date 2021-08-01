@@ -114,7 +114,7 @@ function OwnerMenuPage(props) {
           <Table columns={columns} dataSource={ListMenu} />
   
         
-          <Button >
+          <Button type="primary">
             <a href={`/store/${Store._id}/menu/add`} >메뉴 추가</a>
           </Button>
           

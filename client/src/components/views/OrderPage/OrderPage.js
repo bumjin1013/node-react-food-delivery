@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Form, Input, Divider, Button } from 'antd';
-import Axios from 'axios';
+import axios from 'axios';
 
 
 function OrderPage(props) {
@@ -33,29 +33,45 @@ function OrderPage(props) {
     const toRiderChangeHandler = (event) => {
         setToRider(event.currentTarget.value)
     }
+
     const submitHandler = (event) => {
         event.preventDefault();
 
-        if (!Address || !PhoneNumber  === 0) {
-            return alert(" 모든 값을 넣어주셔야 합니다.")
+        if (!Address === 0) {
+            return alert("주소를 입력해주세요.")
+        }
+
+        if (!PhoneNumber === 0) {
+            return alert("전화번호를 입력해주세요.")
         }
 
 
         //서버에 채운 값들을 request로 보낸다.
+        let body = {
+            userId: props.user.userData._id,
+            address: Address, 
+            phoneNumber: PhoneNumber,
+            toOwner: ToOwner,
+            toRider: ToRider,
+            menu: Cart,
+            price: totalPrice,
+            storeId: Cart[0].storeId,
+            storeName: Cart[0].storeName
+        }
 
+        console.log(body);
       
-    /*
-      Axios.post('/api/user/order', body) && Axios.post('api/owner/order')
+        
+        axios.post('/api/users/order', body) && axios.post('/api/store/order', body)
             .then(response => {
                 if (response.data.success) {
                     alert('주문에 성공했습니다.')
-                    propshistory.push('/')
+                    props.history.push('/history')
                 } else {
                     alert('주문에 실패하였습니다.')
                 }
             })
-            */
-          
+            
     }
 
     return (
@@ -81,12 +97,12 @@ function OrderPage(props) {
             <h2>결제금액</h2>
             <label>주문금액 : {totalPrice}원</label>
             <br/>
-            <label>배달팁 : 2000원</label>
+            <label>배달팁 : 0원</label>
             <Divider />
-            <h2>총 결제금액 : {totalPrice  + 2000}원</h2>
+            <h2>총 결제금액 : {totalPrice}원</h2>
 
-            <Button type="primary" shape="round" icon="dollar" size={'large'}>
-                {totalPrice + 2000}원 결제하기
+            <Button type="primary" shape="round" icon="dollar" size={'large'} onClick={submitHandler}>
+                {totalPrice}원 결제하기
             </Button>
             
             

@@ -42,7 +42,7 @@ function StorePage() {
   });
 
   return (
-    <div style={{ width: "75%", margin: "3rem auto" }}>
+    <div style={{ width: "75%", margin: "3rem auto" }}>ㅋ
       <Row gutter={[16, 16]}>{renderCards}</Row>
 
       <Empty

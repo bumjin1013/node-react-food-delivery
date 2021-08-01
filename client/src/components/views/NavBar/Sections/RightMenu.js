@@ -59,6 +59,10 @@ function RightMenu(props) {
     );
   })
 
+  const historyClickHandler = () => {
+    props.history.push('/history');
+  }
+
   
 
   if (user.userData && !user.userData.isAuth) {
@@ -74,7 +78,13 @@ function RightMenu(props) {
     )
   } else {
     return (
+      
       <Menu mode={props.mode}>
+        
+        <Menu.Item key="history" style= {{paddingBottom: 3}}>
+              <Icon type="read" style={{ fontSize: 30}} onClick={historyClickHandler} />
+        </Menu.Item>
+
         <Menu.Item key="cart" style= {{paddingBottom: 3}}>
           <Badge count={user.userData && user.userData.cart.length}>
               <Icon type="shopping-cart" style={{ fontSize: 30, marginBottom: 3}} onClick={showModal} />
@@ -91,6 +101,7 @@ function RightMenu(props) {
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>
+
       </Menu>
     )
   }

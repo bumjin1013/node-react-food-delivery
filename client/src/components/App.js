@@ -20,6 +20,7 @@ import AddMenuPage from './views/OwnerDetailStorePage/Section/AddMenuPage';
 import StoreListPage from './views/StorePage/StoreListPage/StoreListPage';
 import UserStorePage from './views/UserStorePage/UserStorePage';
 import OrderPage from './views/OrderPage/OrderPage';
+import HistoryPage from './views/HistoryPage/HistoryPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -50,6 +51,7 @@ function App() {
           <Route exact path="/store/:storeId/detail" component={Auth(UserStorePage, null)} />
 
           <Route exact path="/order" component={Auth(OrderPage, true)} />
+          <Route exact path="/history" component={Auth(HistoryPage, true)} />
          
       
         </Switch>

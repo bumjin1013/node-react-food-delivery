@@ -31,7 +31,7 @@ function UserStorePage(props) {
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [Comment, setComment] = useState("");
+  const [Contents, setContents] = useState("");
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
   const [Review, setReview] = useState([]);
@@ -39,8 +39,8 @@ function UserStorePage(props) {
 
    
 
-  const commentChangeHandler = (event) => {
-    setComment(event.currentTarget.value)
+  const contentsChangeHandler = (event) => {
+    setContents(event.currentTarget.value)
 }
 
   const showModal = () => {
@@ -69,7 +69,7 @@ function UserStorePage(props) {
       image: Image,
       writer: props.user.userData._id,
       star: Star,
-      comment: Comment
+      contents: Contents
     }
 
     axios.post('/api/store/addreview', body)
@@ -138,7 +138,7 @@ function UserStorePage(props) {
             </a>
           }
         >
-          <Meta title={review.comment} />
+          <Meta title={review.contents} />
         </Card>
       </Col>
     );
@@ -183,7 +183,7 @@ function UserStorePage(props) {
                 </div>
                     
                 <Form.Item name={['user', 'introduction']} label="내용">
-                  <Input.TextArea onChange={commentChangeHandler} value={Comment} />
+                  <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
                 </Form.Item>
               </Modal>
               <div style={{ textAlign: 'center' }}>
