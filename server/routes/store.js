@@ -229,6 +229,18 @@ router.post('/order', (req, res) => {
   );
 })
 
+router.post('/addcomments', (req, res) => {
+
+  Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: { _id: req.body.reviewId }}},{
+    $push: {
+        comments: req.body.comments
+        }},{ new: true },
+        (err, commentsInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, commentsInfo })
+        }
+  );
+})
 
 
 module.exports = router;

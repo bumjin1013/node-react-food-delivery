@@ -36,7 +36,8 @@ const storeSchema = mongoose.Schema({
         writer: { type: String },
         contents: { type: String },
         star: { type: Number },
-        image: { type: [] }
+        image: { type: [] },
+        comments: { type: String }
     }],
     location: {
         address: String,

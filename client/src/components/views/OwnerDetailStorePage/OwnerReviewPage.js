@@ -1,11 +1,13 @@
-import React, { useEffect, useState, createElement } from 'react'
-import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar, Rate, Input, Button } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const { TextArea } = Input;
+
 
 function OwnerReviewPage(props) {
 
@@ -26,31 +28,55 @@ function OwnerReviewPage(props) {
   const [Store, setStore] = useState({});
   const [Review, sestReveiw] = useState([]);
 
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState(null);
 
-  const like = () => {
-    setLikes(1);
-    setDislikes(0);
-    setAction('liked');
-  };
+  const [ReplyVisible, setReplyVisible] = useState(false);
+  const [Contents, setContents] = useState("");
+  
 
-  const dislike = () => {
-    setLikes(0);
-    setDislikes(1);
-    setAction('disliked');
-  };
+  const replyClickHandler = () => {
+    setReplyVisible(!ReplyVisible);
+  }
+
+  const contentsChangeHandler = (event) => {
+    setContents(event.currentTarget.value);
+  }
+
+  
 
   
 
   const renderReview = Review.map((review, index) => {
 
     const actions = [
-      <span key="comment-basic-reply-to">Reply to</span>,
+      <span key={index} onClick={replyClickHandler}>Reply to</span>,
     ];
 
-    return(
+    const submitHandler = (event) => {
+      event.preventDefault();
+      //서버에 comments를 request로 보낸다.
+  
+    const body = {
+      omments: Contents,
+      reviewId: review._id,
+      storeId: storeId
+    }
+
+    console.log(body);
+  
+    axios.post('/api/store/addcomments', body)
+      .then(response => {
+        if (response.data.success) {
+          alert('댓글을 등록했습니다.')
+          console.log(response.data);     
+        } else {
+          alert('댓글 등록에 실패하였습니다.')
+        }
+    })
+  }
+
+  return(
+      
+    <div key={index}>
       <Comment
         actions={actions}
         author={<a>{review.writer}</a>}
@@ -62,6 +88,8 @@ function OwnerReviewPage(props) {
         }
         content={
           <p>
+            <Rate value={review.star} />
+            <br/>
             <img src={`http://localhost:5000/${review.image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
             <br/>
             {review.contents}
@@ -72,16 +100,19 @@ function OwnerReviewPage(props) {
             <span>{moment().fromNow()}</span>
           </Tooltip>
         }
-      />
+    />
+
+    {ReplyVisible ? 
+      <div style={{ padding: '0 30px 24px' }} key={index}>
+        <TextArea onChange={contentsChangeHandler} value={Contents} />
+        <br/>
+        <br/>
+        <Button type="primary" onClick={submitHandler}>댓글 등록하기</Button>
+      </div>
+      : ""} 
+    </div>
     )
-  })
-
-  
-
-
-
-
-
+})
 
     return (
       <div>
@@ -148,7 +179,8 @@ function OwnerReviewPage(props) {
 
 
     {renderReview}
- 
+
+   
 
 
 
