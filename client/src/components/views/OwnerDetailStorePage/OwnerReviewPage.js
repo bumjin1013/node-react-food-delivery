@@ -113,11 +113,6 @@ function OwnerReviewPage(props) {
             {review.comments[0]}
           </div>
         }
-        datetime={
-          <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-            <span>{moment().fromNow()}</span>
-          </Tooltip>
-        }
       />
     </div>
     : null}
@@ -198,13 +193,7 @@ function OwnerReviewPage(props) {
         >
 
 
-
-
-
-    {renderReview}
-
-   
-
+        {renderReview}
 
 
         </Content>

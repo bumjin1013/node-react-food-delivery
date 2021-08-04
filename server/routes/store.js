@@ -192,6 +192,7 @@ router.get("/stores_by_id/detail", (req, res) => {
     });
 });
 
+//Store 스키마의 review에 유저의 리뷰 추가
 router.post("/addreview", (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
@@ -210,6 +211,7 @@ router.post("/addreview", (req, res) => {
     )
 });
 
+//상점의 order에 주문내역 넣기
 router.post('/order', (req, res) => {
   Store.findOneAndUpdate({ _id: req.body.storeId },{
     $push: {
@@ -230,6 +232,7 @@ router.post('/order', (req, res) => {
   );
 })
 
+//사장님 댓글 추가
 router.post('/addcomments', (req, res) => {
 
   console.log(req.body);

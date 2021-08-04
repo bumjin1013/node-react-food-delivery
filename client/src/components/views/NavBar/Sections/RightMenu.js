@@ -51,9 +51,7 @@ function RightMenu(props) {
     return(
       <div>
         <Card key={index} style={{ width: 470 }}>
-          <p>{cart.name}</p>
-          <p>{cart.quantity}개</p>
-          <p>{cart.price * cart.quantity}원</p>
+          {cart.name} - {cart.quantity}개 : {cart.price * cart.quantity}원
         </Card>
       </div>
     );

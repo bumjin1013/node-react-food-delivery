@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Icon } from 'antd';
+import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip } from 'antd';
 import axios from 'axios';
 import { updateLocale } from 'moment';
 import Meta from "antd/lib/card/Meta";
 import FileUpload from '../../utils/FileUpload';
 import { addToCart } from '../../../_actions/user_actions';
+import moment from 'moment';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -67,7 +68,7 @@ function UserStorePage(props) {
     const body ={
       id: Store._id,
       image: Image,
-      writer: props.user.userData._id,
+      writer: props.user.userData.name,
       star: Star,
       contents: Contents
     }
@@ -126,21 +127,53 @@ function UserStorePage(props) {
    const renderReview = Review.map((review, index) => {
     return (
       
-      <Col lg={6} md={8} xs={24} key={index}>
-        <Avatar icon="user" /> {review.writer}
-        <Card
-          cover={
-            <a href={`/store/${review._id}/detail`}>
-              <img
-                style={{ width: "100%", maxHeight: "150px" }}
-                src={`http://localhost:5000/${review.image[0]}`}
-              />
-            </a>
-          }
-        >
-          <Meta title={review.contents} />
-        </Card>
-      </Col>
+      <div key={index}>
+      <Comment
+        author={<a>{review.writer}</a>}
+        avatar={
+          <Avatar
+            key={index}
+            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            alt={review.writer}
+          />
+        }
+        content={
+          <div>
+            <Rate value={review.star} />
+            <br/>
+            <img src={`http://localhost:5000/${review.image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
+            <br/>
+            {review.contents}
+          </div>
+        }
+        datetime={
+          <Tooltip title={moment(review.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+            <span>{moment(review.createdAt).fromNow()}</span>
+          </Tooltip>
+        }
+      />
+
+    {review.comments[0] ?
+    <div style={{ padding: '0 30px 24px' }} key={index}>
+      <Comment
+        key={index}
+        author={<a>사장님</a>}
+        avatar={
+          <Avatar
+            key={index}
+            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            alt="사장님"
+          />
+        }
+        content={
+          <div>
+            {review.comments[0]}
+          </div>
+        }
+      />
+    </div>
+    : null}
+    </div>
     );
   });
 
@@ -162,8 +195,8 @@ function UserStorePage(props) {
             <img style={{ maxWidth: '50%' }} src={`http://localhost:5000/${Store.image}`}/>
           </div >
         
-          <Tabs style={{ textAlign: 'center' }} defaultActiveKey="1" >
-            <TabPane tab="메뉴" key="1">
+          <Tabs defaultActiveKey="1" >
+            <TabPane tab="메뉴" key="1" style={{textAlign:'center'}}>
               {renderMenu}
           </TabPane>
           <TabPane tab="정보" key="2">
@@ -172,9 +205,13 @@ function UserStorePage(props) {
 
           <TabPane tab="리뷰" key="3">
             <>
+              <div style={{textAlign:'center'}}>
               <Button type="primary" onClick={showModal}>
                 리뷰 작성하기
               </Button>
+              </div>
+              
+              {/* 리뷰 작성 모달창 */}
               <Modal title="리뷰 작성" visible={isModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
                 별점 : <Rate allowHalf defaultValue={5} onChange={starChangeHandler} value={Star}/>
                 <br />
@@ -186,13 +223,10 @@ function UserStorePage(props) {
                   <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
                 </Form.Item>
               </Modal>
-              <div style={{ textAlign: 'center' }}>
-                
-                <br/>
-                <div style={{ textAlign: 'center' }}>
-                  {renderReview}
-                </div>
-              </div>
+
+
+              {renderReview}
+             
           </>
         </TabPane>
       </Tabs>

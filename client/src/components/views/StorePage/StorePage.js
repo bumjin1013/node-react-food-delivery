@@ -42,9 +42,11 @@ function StorePage() {
   });
 
   return (
-    <div style={{ width: "75%", margin: "3rem auto" }}>ㅋ
-      <Row gutter={[16, 16]}>{renderCards}</Row>
+    <div style={{ width: "75%", margin: "3rem auto" }}>
 
+      {Stores.length>0 ?
+      <Row gutter={[16, 16]}>{renderCards}</Row>
+        :
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         imageStyle={{
@@ -52,7 +54,10 @@ function StorePage() {
         }}
         description={<span>운영 중인 가게가 없습니다</span>}
       />
+    }
       <a href="/store/addstore">
+        <br />
+        <br />
         <Button type="primary">가게 추가하기</Button>
       </a>
     </div>
