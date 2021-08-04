@@ -33,11 +33,12 @@ const storeSchema = mongoose.Schema({
         sold: { type: Number, default: 0 }
     }],
     review: [{
+        createdAt: { type: String },
         writer: { type: String },
         contents: { type: String },
         star: { type: Number },
         image: { type: [] },
-        comments: { type: String }
+        comments: { type: [] }
     }],
     location: {
         address: String,

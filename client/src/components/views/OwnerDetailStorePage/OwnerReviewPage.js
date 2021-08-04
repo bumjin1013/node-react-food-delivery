@@ -25,53 +25,46 @@ function OwnerReviewPage(props) {
   }, []);
 
   const storeId = props.match.params.storeId;
+
   const [Store, setStore] = useState({});
   const [Review, sestReveiw] = useState([]);
-
-
   const [ReplyVisible, setReplyVisible] = useState(false);
   const [Contents, setContents] = useState("");
-  
-
-  const replyClickHandler = () => {
-    setReplyVisible(!ReplyVisible);
-  }
 
   const contentsChangeHandler = (event) => {
     setContents(event.currentTarget.value);
   }
 
-  
+  const replyClickHandler = () => {
+    setReplyVisible(!ReplyVisible);
+  }
 
-  
-
+  //리뷰 랜더링
   const renderReview = Review.map((review, index) => {
 
     const actions = [
-      <span key={index} onClick={replyClickHandler}>Reply to</span>,
+      <span onClick={replyClickHandler}>Reply to</span>,
     ];
 
     const submitHandler = (event) => {
       event.preventDefault();
       //서버에 comments를 request로 보낸다.
   
-    const body = {
-      omments: Contents,
-      reviewId: review._id,
-      storeId: storeId
-    }
-
-    console.log(body);
+      const body = {
+        comments: Contents,
+        reviewId: review._id,
+        storeId: storeId
+      }
   
-    axios.post('/api/store/addcomments', body)
-      .then(response => {
-        if (response.data.success) {
-          alert('댓글을 등록했습니다.')
-          console.log(response.data);     
-        } else {
-          alert('댓글 등록에 실패하였습니다.')
-        }
-    })
+      axios.post('/api/store/addcomments', body)
+        .then(response => {
+          if (response.data.success) {
+            alert('댓글을 등록했습니다.')
+            window.location.reload()
+          } else {
+            alert('댓글 등록에 실패하였습니다.')
+          }
+      })
   }
 
   return(
@@ -82,34 +75,64 @@ function OwnerReviewPage(props) {
         author={<a>{review.writer}</a>}
         avatar={
           <Avatar
+            key={index}
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
             alt={review.writer}
           />
         }
         content={
-          <p>
+          <div>
             <Rate value={review.star} />
             <br/>
             <img src={`http://localhost:5000/${review.image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
             <br/>
             {review.contents}
-          </p>
+          </div>
+        }
+        datetime={
+          <Tooltip title={moment(review.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+            <span>{moment(review.createdAt).fromNow()}</span>
+          </Tooltip>
+        }
+      />
+
+    {review.comments[0] ?
+    <div style={{ padding: '0 30px 24px' }} key={index}>
+      <Comment
+        key={index}
+        author={<a>사장님</a>}
+        avatar={
+          <Avatar
+            key={index}
+            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            alt="사장님"
+          />
+        }
+        content={
+          <div>
+            {review.comments[0]}
+          </div>
         }
         datetime={
           <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
             <span>{moment().fromNow()}</span>
           </Tooltip>
         }
-    />
+      />
+    </div>
+    : null}
+      
 
+      
+  
     {ReplyVisible ? 
       <div style={{ padding: '0 30px 24px' }} key={index}>
         <TextArea onChange={contentsChangeHandler} value={Contents} />
         <br/>
         <br/>
-        <Button type="primary" onClick={submitHandler}>댓글 등록하기</Button>
+        <Button type="primary" onClick={submitHandler} key={index}>댓글 등록하기</Button>
       </div>
-      : ""} 
+      : null} 
     </div>
     )
 })

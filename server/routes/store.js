@@ -80,7 +80,7 @@ router.get("/stores_by_id", (req, res) => {
     .populate("id")
     .exec((err, store) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).send(store);
+      return res.status(200).json(store);
     });
 });
 
@@ -197,6 +197,7 @@ router.post("/addreview", (req, res) => {
   Store.findOneAndUpdate({ _id : req.body.id},{
     '$push': {
       "review": {
+        "createdAt" : Date(),
         "writer": req.body.writer, 
         "contents": req.body.contents,
         "image": req.body.image,
@@ -231,9 +232,11 @@ router.post('/order', (req, res) => {
 
 router.post('/addcomments', (req, res) => {
 
-  Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: { _id: req.body.reviewId }}},{
-    $push: {
-        comments: req.body.comments
+  console.log(req.body);
+
+  Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: {_id: req.body.reviewId }}},{
+    "$push": {
+      "review.$.comments": req.body.comments
         }},{ new: true },
         (err, commentsInfo) => {
             if (err) return res.status(400).json({ success: false, err })
