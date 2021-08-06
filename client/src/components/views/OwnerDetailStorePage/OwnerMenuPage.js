@@ -159,7 +159,11 @@ function OwnerMenuPage(props) {
       
       style={{ lineHeight: '64px' }}
     >
-      <Menu.Item key="1">nav 1</Menu.Item>
+       <Menu.Item key="1">
+        <a href={`/store/${Store._id}/detail`}>
+          {Store.title}
+        </a>
+      </Menu.Item>
     </Menu>
     </Header>
     <Layout>
@@ -211,15 +215,15 @@ function OwnerMenuPage(props) {
         >
   
          {/* Menu Table 생성 */}
-          <Button type="primary">
+          <Button type="primary" style={{margin: '3px'}}>
             <a href={`/store/${Store._id}/menu/add`} >메뉴 추가</a>
           </Button>
              
-          <Button onClick={showModal}> 
-            메뉴 수정
+          <Button onClick={showModal} style={{margin: '3px'}}> 
+            선택 수정
           </Button>
 
-          <Button type="danger" onClick={deleteHandler}> 
+          <Button type="danger" onClick={deleteHandler} style={{margin: '3px'}}> 
             선택 삭제
           </Button>
 

@@ -75,7 +75,11 @@ function OwnerStoreSettingPage(props) {
       
       style={{ lineHeight: '64px' }}
     >
-      <Menu.Item key="1">nav 1</Menu.Item>
+      <Menu.Item key="1">
+        <a href={`/store/${Store._id}/detail`}>
+          {Store.title}
+        </a>
+      </Menu.Item>
     </Menu>
     </Header>
     <Layout>
@@ -133,7 +137,7 @@ function OwnerStoreSettingPage(props) {
         {Edit ? 
           <div>
             <Form.Item>
-              <Input.TextArea onChange={descriptionChangeHandler} defaultValue={Description} />
+              <Input.TextArea onChange={descriptionChangeHandler} defaultValue={Description} style={{ height: 120 }} />
             </Form.Item> 
             <br />
             <Button shape="circle" icon="check" onClick={editSubmitHandler}/>

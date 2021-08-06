@@ -33,7 +33,11 @@ function OwnerOrderCompletedPage(props) {
       defaultSelectedKeys={['0']}
       style={{ lineHeight: '64px' }}
     >
-      <Menu.Item key="1">nav 1</Menu.Item>
+       <Menu.Item key="1">
+        <a href={`/store/${Store._id}/detail`}>
+          {Store.title}
+        </a>
+      </Menu.Item>
     </Menu>
     </Header>
     <Layout>
