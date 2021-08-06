@@ -27,9 +27,9 @@ const storeSchema = mongoose.Schema({
         required: true
     },
     menu: [{
-        name : { type : String },
-        price : { type : Number, required: true },
-        image : { type : [] },
+        name : { type: String },
+        price : { type: Number, required: true },
+        image : { type: [] },
         sold: { type: Number, default: 0 }
     }],
     review: [{
@@ -41,9 +41,9 @@ const storeSchema = mongoose.Schema({
         comments: { type: [] }
     }],
     location: {
-        address: String,
-        latitue: Number,
-        longitude: Number
+        address: { type: String, default: "주소를 입력해주세요" },
+        latitue: { type: String, default: 0 },
+        longitude: { type: String, default: 0 }
     },
     order: {
         type: Array,

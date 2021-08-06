@@ -7,6 +7,7 @@ import Meta from "antd/lib/card/Meta";
 import FileUpload from '../../utils/FileUpload';
 import { addToCart } from '../../../_actions/user_actions';
 import moment from 'moment';
+import MapContainer from '../../utils/MapContainer';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -194,21 +195,28 @@ function UserStorePage(props) {
           <div style={{ textAlign: 'center' }}>
             <img style={{ maxWidth: '50%' }} src={`http://localhost:5000/${Store.image}`}/>
           </div >
-        
-          <Tabs defaultActiveKey="1" >
-            <TabPane tab="메뉴" key="1" style={{textAlign:'center'}}>
-              {renderMenu}
-          </TabPane>
-          <TabPane tab="정보" key="2">
-            Content of Tab Pane 2
-          </TabPane>
 
-          <TabPane tab="리뷰" key="3">
-            <>
+          <Tabs defaultActiveKey="1" style={{textAlign:'center'}}>
+
+            {/* 메뉴 탭 */}
+            <TabPane tab="메뉴" key="1">
+              {renderMenu}
+            </TabPane>
+
+            {/* 정보 탭 */}
+            <TabPane tab="정보" key="2">
+              <div style={{whiteSpace: 'pre-wrap'}} >
+                {Store.description}
+              </div>
+              <MapContainer/>
+            </TabPane>
+
+            {/* 리뷰 탭 */}
+            <TabPane tab="리뷰" key="3" style={{textAlign:'left'}}> 
               <div style={{textAlign:'center'}}>
-              <Button type="primary" onClick={showModal}>
-                리뷰 작성하기
-              </Button>
+                <Button type="primary" onClick={showModal}>
+                  리뷰 작성하기
+                </Button>
               </div>
               
               {/* 리뷰 작성 모달창 */}
@@ -224,13 +232,11 @@ function UserStorePage(props) {
                 </Form.Item>
               </Modal>
 
-
               {renderReview}
-             
-          </>
-        </TabPane>
-      </Tabs>
-    </div>
+              
+            </TabPane>
+          </Tabs>
+        </div>
   )
 }
 

@@ -249,4 +249,20 @@ router.post('/addcomments', (req, res) => {
 })
 
 
+//상점 정보 수정
+router.post('/editstoreinfo', (req, res) => {
+
+  console.log(req.body);
+
+  Store.findOneAndUpdate({_id: req.body.storeId},{
+    $set: {
+      description: req.body.description
+        }},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, changedInfo })
+        }
+  );
+})
+
 module.exports = router;

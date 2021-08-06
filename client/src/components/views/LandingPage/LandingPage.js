@@ -10,12 +10,19 @@ function LandingPage() {
         <div style={{ width: '75%', margin: '3rem auto' }}>
 
             <div style={{ textAlign: 'center' }}>
-                <h2> Banner </h2>
+                <h1>배달의 민족</h1>
             </div>
-
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <Category />
 
-            <br />
+            
 
 
         </div>

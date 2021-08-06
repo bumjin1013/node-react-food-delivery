@@ -23,6 +23,13 @@ function OwnerMenuPage(props) {
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
+  const [EditMenu, setEditMenu] = useState([]);
+
+  const menuEditor = ListMenu.map((menu, index) => {
+
+    setEditMenu[index](menu)
+
+  })
 
   
   const columns = [
@@ -93,6 +100,9 @@ function OwnerMenuPage(props) {
             </Menu.Item>
             <Menu.Item key="4">
                 <a href={`/store/${Store._id}/review`} >리뷰관리</a>
+            </Menu.Item>
+            <Menu.Item key="5">
+                <a href={`/store/${Store._id}/setting`} >상점관리</a>
             </Menu.Item>
           
         </Menu>
