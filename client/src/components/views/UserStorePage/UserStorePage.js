@@ -32,7 +32,7 @@ function UserStorePage(props) {
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [IsModalVisible, setIsModalVisible] = useState(false);
   const [Contents, setContents] = useState("");
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
@@ -220,7 +220,7 @@ function UserStorePage(props) {
               </div>
               
               {/* 리뷰 작성 모달창 */}
-              <Modal title="리뷰 작성" visible={isModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
+              <Modal title="리뷰 작성" visible={IsModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
                 별점 : <Rate allowHalf defaultValue={5} onChange={starChangeHandler} value={Star}/>
                 <br />
                 <div>

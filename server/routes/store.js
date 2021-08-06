@@ -265,4 +265,37 @@ router.post('/editstoreinfo', (req, res) => {
   );
 })
 
+//메뉴 수정
+router.post('/updatemenu', (req, res) => {
+
+  console.log(req.body);
+
+
+  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
+    "$set": {
+      "menu.$.name": req.body.name,
+      "menu.$.price": req.body.price
+        }},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, changedInfo })
+        }
+  );
+})
+
+router.post('/deletemenu', (req, res) => {
+
+  console.log(req.body);
+  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
+    "$pull": {
+      "menu": {
+        _id: req.body.menuId
+      }}},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, changedInfo })
+        }
+  );
+})
+
 module.exports = router;
