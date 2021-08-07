@@ -77,6 +77,7 @@ function UserStorePage(props) {
       .then(response => {
         if (response.data.success) {
           alert('리뷰를 성공적으로 등록하였습니다.')
+          window.location.reload();
               } else {
               alert('리뷰 등록에 실패 했습니다.')
             }
@@ -100,7 +101,6 @@ function UserStorePage(props) {
   }
 
     return (
-      
       <Col lg={6} md={8} xs={24} key={index}>
         
         <Card

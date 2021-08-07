@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography} from 'antd';
 import axios from 'axios';
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const { Title } = Typography;
+
 
 function OwnerOrderProceedingPage(props) {
-
 
   useEffect(() => {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
@@ -23,16 +25,101 @@ function OwnerOrderProceedingPage(props) {
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
   const [Order, setOrder] = useState([]);
+  
 
+
+  //주문 렌더링
   const renderOrder = Order.map((order, index) => {
-    let menuList = ""
+
+    const orderConfirm = () => {
+    
+      const body ={
+        storeId: storeId,
+        orderId: order.orderId,
+        state: "조리중"
+      }
+
+      axios.post('/api/store/updateorderstate', body)
+        .then(response => {
+          if (response.data.success) {
+            window.location.reload();
+          } else {
+            alert('상태 변경에 실패하였습니다.');
+          }
+        })
+    }
+  
+    const orderCancel = () => {
+      const body ={
+        storeId: storeId,
+        orderId: order.orderId,
+        state: "주문취소"
+      }
+  
+      console.log(body);
+  
+      axios.post('/api/store/updateorderstate', body)
+        .then(response => {
+          if (response.data.success) {
+            alert('주문을 취소하였습니다.');
+            window.location.reload();
+          } else {
+            alert('주문 취소에 실패하였습니다..');
+          }
+        })
+    }
+    const deliveryStart = () => {
+      const body ={
+        storeId: storeId,
+        orderId: order.orderId,
+        state: "배달중"
+      }
+  
+      console.log(body);
+  
+      axios.post('/api/store/updateorderstate', body)
+        .then(response => {
+          if (response.data.success) {
+            window.location.reload();
+          } else {
+            alert('상태 변경에 실패하였습니다.')
+          }
+        })
+    }
+    const deliveryFinish = () => {
+      const body ={
+        storeId: storeId,
+        orderId: order.orderId,
+        state: "배달완료"
+      }
+  
+      console.log(body);
+  
+      axios.post('/api/store/updateorderstate', body)
+        .then(response => {
+          if (response.data.success) {
+          window.location.reload();
+          } else {
+            alert('상태 변경에 실패하였습니다.')
+          }
+        })
+    }
+    let menuList = "";
 
     for(let i=0; i<order.menu.length; i++){
         menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
         
       }
     return(
-      <Card size="small" title={order.userId}  style={{ width: 300 }}>
+      <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
+      actions={[
+        <Button type="primary" onClick={orderConfirm}>주문 확인</Button>,
+        <Button type="danger" onClick={orderCancel}>주문 취소</Button>,
+        <Button type="primary" onClick={deliveryStart}>배달 출발</Button>,
+        <Button type="primary" onClick={deliveryFinish}>배달 완료</Button>
+      ]}
+      >
+        
         <h3>메뉴 : {menuList}</h3>
 
         주소 : {order.address}
@@ -42,6 +129,9 @@ function OwnerOrderProceedingPage(props) {
         사장님에게 : {order.toOwner}
         <br/>
         배달기사에게 : {order.toRider}
+        <br />
+
+        
       </Card>
     )
   })

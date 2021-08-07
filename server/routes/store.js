@@ -223,7 +223,8 @@ router.post('/order', (req, res) => {
           price: req.body.price,
           toOwner: req.body.toOwner,
           toRider: req.body.toRider,
-          OrderTime: Date.now()
+          orderId: Date.now(),
+          state: "확인중"
         }}},{ new: true },
         (err, orderInfo) => {
             if (err) return res.status(400).json({ success: false, err })
@@ -298,6 +299,7 @@ router.post('/deletemenu', (req, res) => {
   );
 })
 
+// 판매중 <-> 품절 상태 변경
 router.post('/changestate', (req, res) => {
 
   console.log(req.body);
@@ -312,4 +314,24 @@ router.post('/changestate', (req, res) => {
   );
 })
 
+//주문 상태 변경
+//주문확인 -> 조리중
+//주문취소 -> 주문취소
+//배달출발 -> 배달중
+//배달완료 -> 배달완료
+router.post('/updateorderstate', (req, res) => {
+
+  console.log(req.body);
+
+  //body로 받은 storeId, orderId를 이용하여 찾고 state를 body.state로 변경
+  Store.findOneAndUpdate({_id: req.body.storeId, order: { $elemMatch: {orderId: req.body.orderId }}},{
+    "$set": {
+      "order.$.state": req.body.state
+      }},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true, changedInfo })
+        }
+  );
+})
 module.exports = router;
