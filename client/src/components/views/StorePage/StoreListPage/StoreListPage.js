@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Col, Card, Row, PageHeader, Rate } from "antd";
 import Meta from "antd/lib/card/Meta";
+
 function StoreListPage() {
 
-    
-    
   useEffect(() => {
       axios.get("/api/store/chicken").then((response) => {
           setStoreList(response.data.store);   
@@ -43,7 +42,7 @@ function StoreListPage() {
           <Meta 
             title={
               <h4>
-                <Rate value={totalStar/store.review.length} />
+                <Rate value={totalStar/store.review.length} disabled={true}/>
                 <br/>
                 {store.title}({totalStar/store.review.length})
                 

@@ -112,7 +112,13 @@ function UserStorePage(props) {
           }
           style={{marginTop:'10px', marginBottom:'3px'}}
         >
-          <Meta title={menu.name} />
+          <Meta title={
+          
+          <h4>
+            {menu.name}
+            <br/>
+            {menu.price}원
+          </h4>} />
         </Card>
         {menu.state ? 
         <Button size="large" shape="round" type="primary" onClick={clickHandler}>
@@ -143,7 +149,7 @@ function UserStorePage(props) {
         }
         content={
           <div>
-            <Rate value={review.star} />
+            <Rate value={review.star} disabled={true}/>
             <br/>
             <img src={`http://localhost:5000/${review.image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
             <br/>
