@@ -31,10 +31,10 @@ export default function(state={},action){
         return { ...state, cartDetail: action.payload }
         case REMOVE_CART_ITEM:
             return {
-                ...state, cartDetail: action.payload.productInfo,
+                ...state, 
                 userData: {
                     ...state.userData,
-                    cart: action.payload.cart
+                    cart: action.payload      
                 }
             }
         default:

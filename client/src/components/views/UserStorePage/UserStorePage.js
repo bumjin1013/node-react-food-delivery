@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip } from 'antd';
 import axios from 'axios';
-import { updateLocale } from 'moment';
 import Meta from "antd/lib/card/Meta";
 import FileUpload from '../../utils/FileUpload';
 import { addToCart } from '../../../_actions/user_actions';

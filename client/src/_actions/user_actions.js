@@ -84,21 +84,10 @@ export function getCartItems(cartItems, userCart) {
     }
 }
 
-export function removeCartItem(productId) {
+export function removeCartItem(body) {
 
-    const request = axios.get(`/api/users/removeFromCart?id=${productId}`)
-        .then(response => {
-            //productInfo ,  cart 정보를 조합해서   CartDetail을 만든다. 
-            response.data.cart.forEach(item => {
-                response.data.productInfo.forEach((product, index) => {
-                    if (item.id === product._id) {
-                        response.data.productInfo[index].quantity = item.quantity
-                    }
-
-                })
-            })
-            return response.data;
-        });
+    const request = axios.post(`${USER_SERVER}/removeFromCart`, body)
+    .then(response => response.data);
 
     return {
         type: REMOVE_CART_ITEM,

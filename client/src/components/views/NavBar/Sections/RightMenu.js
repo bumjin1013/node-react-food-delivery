@@ -1,21 +1,23 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Menu, Icon, Badge, Modal, Card } from 'antd';
+import { Menu, Icon, Badge, Modal, Card, Button } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import { removeCartItem } from '../../../../_actions/user_actions';
 
 function RightMenu(props) {
 
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [Cart, setCart] = useState([]);
   const [StoreName, setStoreName] = useState();
 
   let storeName;
-  let totalPrice =0;
+  let totalPrice = 0;
   
 
   const showModal = () => {
@@ -43,19 +45,35 @@ function RightMenu(props) {
     });
   };
 
+  
+
   const renderCart = Cart.map((cart, index) => {
     storeName = Cart[0].storeName;
-    totalPrice += cart.quantity * cart.price
+    totalPrice += cart.quantity * cart.price;
 
+
+    const deleteHandler = () => {
+      let body = {
+        menuId: cart.id
+      }
+
+      console.log(body);
+      dispatch(removeCartItem(body))
+     
+    }
+    
     console.log(storeName);
     return(
       <div>
         <Card key={index} style={{ width: 470 }}>
           {cart.name} - {cart.quantity}개 : {cart.price * cart.quantity}원
+            <Button icon="delete" onClick={deleteHandler}/>
         </Card>
       </div>
     );
   })
+
+  
 
   const historyClickHandler = () => {
     props.history.push('/history');

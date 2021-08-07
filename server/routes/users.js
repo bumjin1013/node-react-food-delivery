@@ -94,7 +94,7 @@ router.post("/addToCart", auth, (req, res) => {
                     { $inc: { "cart.$.quantity": 1 } },
                     { new: true },
                     (err, userInfo) => {
-                        if (err) return res.status(200).json({ success: false, err })
+                        if (err) return res.status(400).json({ success: false, err })
                         res.status(200).send(userInfo.cart)
                     }
                 )
@@ -160,5 +160,24 @@ router.get('/history', auth, (req, res) => {
         res.status(200).json({ success: true, history })
     });
 });
+
+//장바구니에서 상품 삭제
+router.post('/removeFromCart', auth, (req, res) => {
+
+    console.log(req.body);
+    //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+            "$pull":
+                { "cart": { "id": req.body.menuId } }
+        },
+        { new: true },
+        (err, userInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send(userInfo.cart)
+        }
+    )
+})
   
 module.exports = router;
