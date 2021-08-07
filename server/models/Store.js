@@ -30,7 +30,8 @@ const storeSchema = mongoose.Schema({
         name : { type: String },
         price : { type: Number, required: true },
         image : { type: [] },
-        sold: { type: Number, default: 0 }
+        sold: { type: Number, default: 0 },
+        state : { type: Boolean, default: true}
     }],
     review: [{
         createdAt: { type: String },
