@@ -105,22 +105,26 @@ function UserStorePage(props) {
       <Col lg={6} md={8} xs={24} key={index}>
         
         <Card
-          hoverable
           cover={
-            <a href={`/store/${menu._id}/detail`}>
               <img
                 style={{ width: "100%", maxHeight: "150px" }}
                 src={`http://localhost:5000/${menu.image[0]}`}
               />
-            </a>
           }
+          style={{marginTop:'10px', marginBottom:'3px'}}
         >
           <Meta title={menu.name} />
         </Card>
-        <br />
-        <Button size="large" shape="round" type="danger" onClick={clickHandler}>
-          Add to Cart
+        {menu.state ? 
+        <Button size="large" shape="round" type="primary" onClick={clickHandler}>
+          장바구니
         </Button>
+        :
+        <Button size="large" shape="round" type="danger" disabled="true">
+          품절
+        </Button>
+        }
+        
       </Col>
     );
   });
