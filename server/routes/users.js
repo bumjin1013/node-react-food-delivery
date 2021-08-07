@@ -141,7 +141,7 @@ router.post("/order", auth, (req, res) => {
               price: req.body.price,
               toOwner: req.body.toOwner,
               toRider: req.body.toRider,
-              OrderTime: Date.now()
+              orderTime: Date()
             }},
               $set:{cart: []}  
             },{ new: true },

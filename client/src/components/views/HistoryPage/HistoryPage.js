@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Icon } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 function HistoryPage() {
 
@@ -26,7 +27,7 @@ function HistoryPage() {
         }
         return(
             <div>
-                <Card key={index} title={history.storeName}  style={{ width: 300 }}>
+                <Card key={index} title={history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(history.orderTime).format('YY년MM월DD일 HH시mm분')}>
                 <p>주문가격: {history.price} 원</p>
                 <p></p>
                 <p>메뉴 : {menuList}</p>

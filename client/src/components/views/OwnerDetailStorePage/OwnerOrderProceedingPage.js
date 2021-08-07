@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography} from 'antd';
 import axios from 'axios';
-
+import moment from 'moment';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -122,7 +122,8 @@ function OwnerOrderProceedingPage(props) {
       >
         
         <h3>메뉴 : {menuList}</h3>
-
+        주문일시 : {moment(order.orderTime).format('YY년MM월DD일 HH시mm분')}
+        <br/>
         주소 : {order.address}
         <br/>
         전화번호 : {order.phoneNumber}
