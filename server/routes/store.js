@@ -315,10 +315,10 @@ router.post('/changestate', (req, res) => {
 })
 
 //주문 상태 변경
-//주문확인 -> 조리중
-//주문취소 -> 주문취소
-//배달출발 -> 배달중
-//배달완료 -> 배달완료
+// 주문확인 -> 조리중 
+// 주문취소 -> 주문취소 
+// 배달출발 -> 배달중 
+// 배달완료 -> 배달완료 
 router.post('/updateorderstate', (req, res) => {
 
   console.log(req.body);

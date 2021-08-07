@@ -108,8 +108,9 @@ function OwnerOrderProceedingPage(props) {
 
     for(let i=0; i<order.menu.length; i++){
         menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
-        
-      }
+    }
+
+    
     return(
       <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
       actions={[

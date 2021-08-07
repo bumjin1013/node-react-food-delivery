@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Col, Card, Row, PageHeader } from "antd";
+import { Col, Card, Row, PageHeader, Rate } from "antd";
 import Meta from "antd/lib/card/Meta";
 function StoreListPage() {
 
@@ -19,6 +19,14 @@ function StoreListPage() {
     
     console.log('rednerStore', store);
 
+    //별점 계산
+    let totalStar = 0;
+
+    for(let i=0; i<store.review.length; i++){
+      totalStar += store.review[i].star
+    }
+
+
     return (
       <Col lg={6} md={8} xs={24} key={index}>
         <Card
@@ -32,7 +40,16 @@ function StoreListPage() {
             </a>
           }
         >
-          <Meta title={store.title} />
+          <Meta 
+            title={
+              <h4>
+                <Rate value={totalStar/store.review.length} />
+                <br/>
+                {store.title}({totalStar/store.review.length})
+                
+              </h4> 
+            } 
+          />
         </Card>
       </Col>
     );
