@@ -20,6 +20,7 @@ function UserStorePage(props) {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
+        console.log(response.data[0])
         setListMenu(response.data[0].menu);
         setReview(response.data[0].review);
       })
@@ -87,7 +88,12 @@ function UserStorePage(props) {
 
  
   const renderMenu = ListMenu.map((menu, index) => {
+
     const clickHandler = () => {
+
+      if(props.user.userData.cart >0 && props.user.userData.cart[0].StoreName != Store.title)
+        alert('장바구니에는 다른 상점의 메뉴를 담을 수 없습니다.')
+      else{
       let body = {
         menuId: menu._id,
         name: menu.name,
@@ -98,6 +104,7 @@ function UserStorePage(props) {
       }
       //필요한 정보를 Cart 필드에다가 넣어 준다.
       dispatch(addToCart(body))
+    }
   }
 
     return (

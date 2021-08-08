@@ -18,7 +18,7 @@ function OwnerStoreSettingPage(props) {
         //현재 DB에 있는 상점 Description을 Description state에 넣어줌.
         setDescription(response.data[0].description);
 
-        setLocation(response.data[0].location);
+        setLocation(response.data[0].location.address);
         
       })
       .catch((err) => alert(err));
@@ -63,6 +63,7 @@ function OwnerStoreSettingPage(props) {
             }
         })
   }
+
     return (
       <div>
         <Layout>
@@ -148,13 +149,14 @@ function OwnerStoreSettingPage(props) {
           </div>
         }
         <br />
-        주소 : {Location.address} 
-        <br />
-        위도 : {Location.latitude}
-        <br />
-        경도 : {Location.logitude}
+        주소 : {Location} 
 
-        <MapContainer x={Location.latitude} y={Location.logitude} />
+      
+
+        {console.log('Location', Location.toString())}
+        
+        
+        <MapContainer address={Location} />
 
         </Content>
       </Layout>
