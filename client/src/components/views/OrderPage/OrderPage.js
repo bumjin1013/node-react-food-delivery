@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Form, Input, Divider, Button } from 'antd';
 import axios from 'axios';
 
-
 function OrderPage(props) {
     
     const [Cart, setCart] = useState(props.user.userData.cart);
@@ -104,7 +103,6 @@ function OrderPage(props) {
             <Button type="primary" shape="round" icon="dollar" size={'large'} onClick={submitHandler}>
                 {totalPrice}원 결제하기
             </Button>
-            
             
         </div>
     )

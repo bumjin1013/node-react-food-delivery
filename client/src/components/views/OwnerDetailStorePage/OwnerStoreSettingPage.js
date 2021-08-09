@@ -150,12 +150,7 @@ function OwnerStoreSettingPage(props) {
         }
         <br />
         주소 : {Location} 
-
-      
-
-        {console.log('Location', Location.toString())}
-        
-        
+  
         <MapContainer address={Location} />
 
         </Content>

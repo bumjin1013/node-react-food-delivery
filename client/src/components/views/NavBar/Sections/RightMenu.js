@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Menu, Icon, Badge, Modal, Card, Button } from 'antd';
+import { Menu, Icon, Badge, Modal, Card, Button,Tooltip } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
@@ -79,6 +79,10 @@ function RightMenu(props) {
     props.history.push('/history');
   }
 
+  const userClickHandler = () => {
+    props.history.push('/user');
+  }
+
   
 
   if (user.userData && !user.userData.isAuth) {
@@ -96,23 +100,32 @@ function RightMenu(props) {
     return (
       
       <Menu mode={props.mode}>
-        
+        <Menu.Item key="user" style= {{paddingBottom: 3}}>
+          <Tooltip placement="bottom" title={"마이페이지"}>
+              <Icon type="user" style={{ fontSize: 30}} onClick={userClickHandler} />
+            </Tooltip>
+        </Menu.Item>
+
         <Menu.Item key="history" style= {{paddingBottom: 3}}>
-              <Icon type="read" style={{ fontSize: 30}} onClick={historyClickHandler} />
+          <Tooltip placement="bottom" title={"주문내역"}>
+            <Icon type="read" style={{ fontSize: 30}} onClick={historyClickHandler} />
+            </Tooltip>
         </Menu.Item>
 
         <Menu.Item key="cart" style= {{paddingBottom: 3}}>
           <Badge count={user.userData && user.userData.cart.length}>
+            <Tooltip placement="bottom" title={"장바구니"}>
               <Icon type="shopping-cart" style={{ fontSize: 30, marginBottom: 3}} onClick={showModal} />
+              </Tooltip>
               <Modal title="장바구니" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} cancelText="닫기" okText="주문하기">
                 <h1>{storeName}</h1>
                 {renderCart}
                 <br />
                 <h3>총 주문금액 : {totalPrice}</h3> 
-                  
               </Modal>
           </Badge>
         </Menu.Item>
+      
 
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>

@@ -18,6 +18,7 @@ router.get("/auth", auth, (req, res) => {
         email: req.user.email,
         name: req.user.name,
         lastname: req.user.lastname,
+        nickname: req.user.nickname,
         role: req.user.role,
         image: req.user.image,
         cart: req.user.cart,
@@ -179,5 +180,31 @@ router.post('/removeFromCart', auth, (req, res) => {
         }
     )
 })
-  
+
+//유저 정보 출력 (마이페이지)
+router.get('/userinfo', auth, (req, res) => {
+
+    User.findOne({ _id: req.user._id })
+    .exec((err, userInfo) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, userInfo })
+    });
+
+    
+})
+
+//닉네임 수정
+router.post('/edituserinfo', auth, (req, res) => {
+
+    User.findOneAndUpdate({ _id: req.user._id },{
+        $set:{nickname: req.body.nickname}  
+        },{ new: true },
+        (err, userInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, userInfo })
+        }
+    )
+})
+
+
 module.exports = router;

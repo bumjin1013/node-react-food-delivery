@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip } from 'antd';
+import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip, Empty } from 'antd';
 import axios from 'axios';
 import Meta from "antd/lib/card/Meta";
 import FileUpload from '../../utils/FileUpload';
@@ -69,7 +69,7 @@ function UserStorePage(props) {
     const body ={
       id: Store._id,
       image: Image,
-      writer: props.user.userData.name,
+      writer: props.user.userData.nickname,
       star: Star,
       contents: Contents
     }
@@ -141,13 +141,14 @@ function UserStorePage(props) {
     );
   });
 
+  //리뷰 내역 랜더링
    const renderReview = Review.map((review, index) => {
     return (
       
       <div key={index}>
-      <Comment
-        author={<a>{review.writer}</a>}
-        avatar={
+        <Comment
+          author={<a>{review.writer}</a>}
+          avatar={
           <Avatar
             key={index}
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -224,7 +225,7 @@ function UserStorePage(props) {
               <div style={{whiteSpace: 'pre-wrap'}} >
                 {Store.description}
               </div>
-              <MapContainer/>
+              
             </TabPane>
 
             {/* 리뷰 탭 */}
@@ -248,7 +249,17 @@ function UserStorePage(props) {
                 </Form.Item>
               </Modal>
 
-              {renderReview}
+              {/*리뷰 랜더링*/}
+
+              {renderReview 
+                ? renderReview 
+                : 
+                <div>
+                  <br/>
+                    <Empty description={"작성된 리뷰가 없습니다."}/>
+                </div>  
+              }
+              
               
             </TabPane>
           </Tabs>
