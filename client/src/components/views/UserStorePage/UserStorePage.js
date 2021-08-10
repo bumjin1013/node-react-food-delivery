@@ -32,61 +32,7 @@ function UserStorePage(props) {
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
-  const [IsModalVisible, setIsModalVisible] = useState(false);
-  const [Contents, setContents] = useState("");
-  const [Star, setStar] = useState("5");
-  const [Image, setImage] = useState([]);
   const [Review, setReview] = useState([]);
-
-  const contentsChangeHandler = (event) => {
-    setContents(event.currentTarget.value)
-}
-
-  const showModal = () => {
-    if(props.user.userData.histroy.reviewAuth){
-      setIsModalVisible(true);
-    } else {
-      alert('리뷰 작성 권한이 없습니다.');
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const starChangeHandler = (value) => {
-    setStar(value)
-    console.log(Star);
-  }
-
-  const updateImage = (newImage) => {
-    setImage(newImage)
-  }
-  
-
-  const reviewHandler = (event) => {
-    event.preventDefault();
-
-    const body ={
-      id: Store._id,
-      image: Image,
-      writer: props.user.userData.nickname,
-      star: Star,
-      contents: Contents
-    }
-
-    axios.post('/api/store/addreview', body)
-      .then(response => {
-        if (response.data.success) {
-          alert('리뷰를 성공적으로 등록하였습니다.')
-          window.location.reload();
-              } else {
-              alert('리뷰 등록에 실패 했습니다.')
-            }
-        })
-    setIsModalVisible(false);
-  }
-
  
   const renderMenu = ListMenu.map((menu, index) => {
 
@@ -227,23 +173,8 @@ function UserStorePage(props) {
             {/* 리뷰 탭 */}
             <TabPane tab="리뷰" key="3" style={{textAlign:'left'}}> 
               <div style={{textAlign:'center'}}>
-                <Button type="primary" onClick={showModal}>
-                  리뷰 작성하기
-                </Button>
-              </div>
               
-              {/* 리뷰 작성 모달창 */}
-              <Modal title="리뷰 작성" visible={IsModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
-                별점 : <Rate allowHalf defaultValue={5} onChange={starChangeHandler} value={Star}/>
-                <br />
-                <div>
-                  <FileUpload refreshFunction={updateImage} />
-                </div>
-                    
-                <Form.Item name={['user', 'introduction']} label="내용">
-                  <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
-                </Form.Item>
-              </Modal>
+              </div>
 
               {/*리뷰 랜더링*/}
 
