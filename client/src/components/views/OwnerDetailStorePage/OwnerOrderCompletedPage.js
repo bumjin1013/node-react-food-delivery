@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const { Title } = Typography;
 
 function OwnerOrderCompletedPage(props) {
 
@@ -12,12 +14,45 @@ function OwnerOrderCompletedPage(props) {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
-        console.log(response.data[0])
+        setOrder(response.data[0].order);
       })
       .catch((err) => alert(err));
 
      
   }, []);
+
+  const [Order, setOrder] = useState([]);
+
+  //이전주문 렌더링
+  const renderOrder = Order.map((order, index) => {
+    
+    let menuList = "";
+  
+    for(let i=0; i<order.menu.length; i++){
+        menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
+    }
+  
+    if(order.state !== ("확인중" || "배달중")) 
+    return(
+      <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
+      actions={[
+      ]}
+      >
+          
+        <h3>메뉴 : {menuList}</h3>
+        주문일시 : {moment(order.orderTime).format('YY년MM월DD일 HH시mm분')}
+        <br/>
+        주소 : {order.address}
+        <br/>
+        전화번호 : {order.phoneNumber}
+        <br/>
+        사장님에게 : {order.toOwner}
+        <br/>
+        배달기사에게 : {order.toRider}
+         <br />
+    </Card>
+    )
+  })
 
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
@@ -88,7 +123,7 @@ function OwnerOrderCompletedPage(props) {
             minHeight: 280,
           }}
         >
-          Content
+          {renderOrder}
         </Content>
       </Layout>
     </Layout>

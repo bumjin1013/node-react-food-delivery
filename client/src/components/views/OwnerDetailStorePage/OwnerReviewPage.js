@@ -3,7 +3,6 @@ import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar, Rate, Input, 
 import axios from 'axios';
 import moment from 'moment';
 
-
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TextArea } = Input;

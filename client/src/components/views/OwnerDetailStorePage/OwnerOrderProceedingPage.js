@@ -15,7 +15,6 @@ function OwnerOrderProceedingPage(props) {
       .then((response) => {
         setStore(response.data[0]);
         setOrder(response.data[0].order);
-        console.log(response.data[0])
       })
       .catch((err) => alert(err));
 
@@ -110,7 +109,7 @@ function OwnerOrderProceedingPage(props) {
         menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
     }
 
-    
+    if(order.state !== ("주문취소" || "배달완료")) 
     return(
       <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
       actions={[
