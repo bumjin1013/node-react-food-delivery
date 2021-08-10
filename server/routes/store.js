@@ -137,7 +137,7 @@ router.get("/stores_by_id/menu", (req, res) => {
     });
 });
 
-
+//메뉴 추가
 router.post("/addMenu", (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
@@ -154,6 +154,7 @@ router.post("/addMenu", (req, res) => {
     )
 });
 
+//카테고리 클릭시 해당 카테고리 상점 출력
 router.get("/chicken", (req, res) => {
 
   Store.find({ category : "chicken" })
@@ -285,6 +286,7 @@ router.post('/updatemenu', (req, res) => {
   );
 })
 
+//메뉴 삭제
 router.post('/deletemenu', (req, res) => {
 
   console.log(req.body);

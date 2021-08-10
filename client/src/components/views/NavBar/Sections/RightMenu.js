@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Menu, Icon, Badge, Modal, Card, Button,Tooltip } from 'antd';
+import { Menu, Icon, Badge, Modal, Card, Button,Tooltip, Empty } from 'antd';
 import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
@@ -28,7 +28,11 @@ function RightMenu(props) {
   const handleOk = () => {
     
     setIsModalVisible(false);
+    if(Cart.length > 0){
     props.history.push('/order');
+    } else {
+      alert('장바구니에 메뉴를 추가해주세요.');
+    }
   };
 
   const handleCancel = () => {
@@ -54,6 +58,7 @@ function RightMenu(props) {
         menuId: cart.id
       }
       dispatch(removeCartItem(body))
+      
       
       setCart(user.userData.cart);
       console.log(Cart);
@@ -115,7 +120,8 @@ function RightMenu(props) {
               </Tooltip>
               <Modal title="장바구니" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} cancelText="닫기" okText="주문하기">
                 <h1>{storeName}</h1>
-                {renderCart}
+
+                {renderCart ? renderCart : <Empty />}
                 <br />
                 <h3>총 주문금액 : {totalPrice}원</h3> 
               </Modal>

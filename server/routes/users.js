@@ -10,6 +10,7 @@ const { set } = require('mongoose');
 //             User
 //=================================
 
+//인증
 router.get("/auth", auth, (req, res) => {
     res.status(200).json({
         _id: req.user._id,
@@ -38,6 +39,7 @@ router.post("/register", (req, res) => {
     });
 });
 
+//로그인
 router.post("/login", (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (!user)
@@ -64,6 +66,7 @@ router.post("/login", (req, res) => {
     });
 });
 
+//로그아웃
 router.get("/logout", auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
         if (err) return res.json({ success: false, err });
@@ -73,6 +76,7 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 
+//장바구니 추가
 router.post("/addToCart", auth, (req, res) => {
 
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
@@ -160,6 +164,7 @@ router.post("/addToCart", auth, (req, res) => {
         })
 });
 
+//주문
 router.post("/order", auth, (req, res) => {
 
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
@@ -185,6 +190,7 @@ router.post("/order", auth, (req, res) => {
           )
 });
   
+//주문내역
 router.get('/history', auth, (req, res) => {
    
     User.findOne({ _id: req.user._id })
