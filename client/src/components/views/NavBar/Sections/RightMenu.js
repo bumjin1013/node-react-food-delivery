@@ -44,9 +44,7 @@ function RightMenu(props) {
       }
     });
   };
-
   
-
   const renderCart = Cart.map((cart, index) => {
     storeName = Cart[0].storeName;
     totalPrice += cart.quantity * cart.price;

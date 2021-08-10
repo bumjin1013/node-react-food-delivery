@@ -37,9 +37,6 @@ function UserStorePage(props) {
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
   const [Review, setReview] = useState([]);
-  
-
-   
 
   const contentsChangeHandler = (event) => {
     setContents(event.currentTarget.value)
@@ -89,22 +86,17 @@ function UserStorePage(props) {
  
   const renderMenu = ListMenu.map((menu, index) => {
 
-    const clickHandler = () => {
-
-      if(props.user.userData.cart >0 && props.user.userData.cart[0].StoreName != Store.title)
-        alert('장바구니에는 다른 상점의 메뉴를 담을 수 없습니다.')
-      else{
-      let body = {
-        menuId: menu._id,
-        name: menu.name,
-        price: menu.price,
-        image: menu.image,
-        storeId: Store._id,
-        storeName: Store.title
-      }
-      //필요한 정보를 Cart 필드에다가 넣어 준다.
-      dispatch(addToCart(body))
-    }
+    const addCart = () => {
+        let body = {
+          menuId: menu._id,
+          name: menu.name,
+          price: menu.price,
+          image: menu.image,
+          storeId: Store._id,
+          storeName: Store.title
+        }
+         //필요한 정보를 Cart 필드에다가 넣어 준다.
+        dispatch(addToCart(body))
   }
 
     return (
@@ -128,7 +120,7 @@ function UserStorePage(props) {
           </h4>} />
         </Card>
         {menu.state ? 
-        <Button size="large" shape="round" type="primary" onClick={clickHandler}>
+        <Button size="large" shape="round" type="primary" onClick={addCart}>
           장바구니
         </Button>
         :

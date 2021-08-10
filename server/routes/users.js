@@ -80,32 +80,25 @@ router.post("/addToCart", auth, (req, res) => {
         (err, userInfo) => {
 
             // 가져온 정보에서 카트에다 넣으려 하는 상품이 이미 들어 있는지 확인 
-
             let duplicate = false;
+            // 담으려고 하는 메뉴의 상점Id가 다를경우
+            let difStore = false;
+
             userInfo.cart.forEach((item) => {
                 if (item.id === req.body.menuId) {
                     duplicate = true;
                 }
+                if(item.storeId !== req.body.storeId) {
+                    difStore = true;
+                }
             })
-
-            //상품이 이미 있을때
-            if (duplicate) {
-                User.findOneAndUpdate(
-                    { _id: req.user._id, "cart.id": req.body.menuId },
-                    { $inc: { "cart.$.quantity": 1 } },
-                    { new: true },
-                    (err, userInfo) => {
-                        if (err) return res.status(400).json({ success: false, err })
-                        res.status(200).send(userInfo.cart)
-                    }
-                )
-            }
-            //상품이 이미 있지 않을때 
-            else {
+            
+            //담으려고 하는 메뉴의 상점Id가 이미 담겨있는 메뉴의 상점Id와 다를 때
+            if(difStore){
                 User.findOneAndUpdate(
                     { _id: req.user._id },
                     {
-                        $push: {
+                        $set: {
                             cart: {
                                 id: req.body.menuId,
                                 name: req.body.name,
@@ -124,6 +117,45 @@ router.post("/addToCart", auth, (req, res) => {
                         res.status(200).send(userInfo.cart)
                     }
                 )
+            
+            } else {
+                 //상품이 이미 있을때
+                if (duplicate) {
+                    User.findOneAndUpdate(
+                        { _id: req.user._id, "cart.id": req.body.menuId },
+                        { $inc: { "cart.$.quantity": 1 } },
+                        { new: true },
+                        (err, userInfo) => {
+                            if (err) return res.status(400).json({ success: false, err })
+                            res.status(200).send(userInfo.cart)
+                        }
+                    )
+                }
+                //상품이 이미 있지 않을때 
+                else {
+                    User.findOneAndUpdate(
+                        { _id: req.user._id },
+                        {
+                            $push: {
+                                cart: {
+                                    id: req.body.menuId,
+                                    name: req.body.name,
+                                    quantity: 1,
+                                    date: Date.now(),
+                                    price: req.body.price,
+                                    image: req.body.image,
+                                    storeId: req.body.storeId,
+                                    storeName: req.body.storeName
+                                }
+                            }
+                        },
+                        { new: true },
+                        (err, userInfo) => {
+                            if (err) return res.status(400).json({ success: false, err })
+                            res.status(200).send(userInfo.cart)
+                        }
+                    )
+                }
             }
         })
 });
