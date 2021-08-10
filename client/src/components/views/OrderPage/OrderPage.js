@@ -55,7 +55,9 @@ function OrderPage(props) {
             menu: Cart,
             price: totalPrice,
             storeId: Cart[0].storeId,
-            storeName: Cart[0].storeName
+            storeName: Cart[0].storeName,
+            orderTime: Date(),
+            orderId: Date.now()
         }
 
         console.log(body);

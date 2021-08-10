@@ -224,8 +224,8 @@ router.post('/order', (req, res) => {
           price: req.body.price,
           toOwner: req.body.toOwner,
           toRider: req.body.toRider,
-          orderId: Date.now(),
-          orderTime: Date(),
+          orderId: req.body.orderId,
+          orderTime: req.body.orderTime,
           state: "확인중"
         }}},{ new: true },
         (err, orderInfo) => {

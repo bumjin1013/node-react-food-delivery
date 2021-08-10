@@ -68,8 +68,9 @@ function RightMenu(props) {
       <div>
         <Card key={index} style={{ width: 'auto' }}>
           {cart.name} - {cart.quantity}개 : {cart.price * cart.quantity}원
-              <Button icon="delete" onClick={deleteHandler} />
+          <Button icon="delete" onClick={deleteHandler} />
         </Card>
+        
       </div>
     );
   })
@@ -121,7 +122,7 @@ function RightMenu(props) {
               <Modal title="장바구니" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} cancelText="닫기" okText="주문하기">
                 <h1>{storeName}</h1>
 
-                {renderCart ? renderCart : <Empty />}
+                {renderCart}
                 <br />
                 <h3>총 주문금액 : {totalPrice}원</h3> 
               </Modal>

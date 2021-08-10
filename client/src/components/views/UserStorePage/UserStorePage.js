@@ -43,7 +43,11 @@ function UserStorePage(props) {
 }
 
   const showModal = () => {
-    setIsModalVisible(true);
+    if(props.user.userData.histroy.reviewAuth){
+      setIsModalVisible(true);
+    } else {
+      alert('리뷰 작성 권한이 없습니다.');
+    }
   };
 
   const handleCancel = () => {

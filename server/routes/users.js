@@ -23,7 +23,8 @@ router.get("/auth", auth, (req, res) => {
         role: req.user.role,
         image: req.user.image,
         cart: req.user.cart,
-        history: req.user.history
+        history: req.user.history,
+        review: req.user.review
     });
 });
 
@@ -179,7 +180,9 @@ router.post("/order", auth, (req, res) => {
               price: req.body.price,
               toOwner: req.body.toOwner,
               toRider: req.body.toRider,
-              orderTime: Date()
+              orderTime: req.body.orderTime,
+              orderId: req.body.orderId,
+              reviewAuth: true
             }},
               $set:{cart: []}  
             },{ new: true },
@@ -243,6 +246,29 @@ router.post('/edituserinfo', auth, (req, res) => {
         }
     )
 })
+
+//리뷰 추가
+router.post("/addreview", auth, (req, res) => {
+    //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
+    User.findOneAndUpdate({ _id : req.user._id, "history.orderId": req.body.orderId },{
+        "$push": {
+            "review": {
+                "createdAt" : Date(),
+                "writer": req.body.writer, 
+                "contents": req.body.contents,
+                "image": req.body.image,
+                "star": req.body.star
+            }},
+        "$set": {
+            "history.$.reviewAuth": false
+        }
+        },{ new: true },
+        (err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, reviewInfo })
+        }
+      )
+  });
 
 
 module.exports = router;
