@@ -49,23 +49,21 @@ function RightMenu(props) {
     storeName = Cart[0].storeName;
     totalPrice += cart.quantity * cart.price;
 
-
     const deleteHandler = () => {
       let body = {
         menuId: cart.id
       }
-
-      console.log(body);
       dispatch(removeCartItem(body))
-     
+      
+      setCart(user.userData.cart);
+      console.log(Cart);
     }
-    
-    console.log(storeName);
+
     return(
       <div>
-        <Card key={index} style={{ width: 470 }}>
+        <Card key={index} style={{ width: 'auto' }}>
           {cart.name} - {cart.quantity}개 : {cart.price * cart.quantity}원
-            <Button icon="delete" onClick={deleteHandler}/>
+              <Button icon="delete" onClick={deleteHandler} />
         </Card>
       </div>
     );
@@ -119,7 +117,7 @@ function RightMenu(props) {
                 <h1>{storeName}</h1>
                 {renderCart}
                 <br />
-                <h3>총 주문금액 : {totalPrice}</h3> 
+                <h3>총 주문금액 : {totalPrice}원</h3> 
               </Modal>
           </Badge>
         </Menu.Item>
