@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Icon, Form, Input, Modal, Rate, Button, Tooltip } from 'antd';
+import { Card, Row, Col, Icon, Form, Input, Modal, Rate, Button, Tooltip, Divider } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import FileUpload from '../../utils/FileUpload';
@@ -83,12 +83,14 @@ function HistoryPage(props) {
         contents: Contents,
         orderId: history.orderId
       }
-      
+
+
       //저장한 정보들을 addreview 라우터로 전송
       axios.post('/api/store/addreview', body) && axios.post('/api/users/addreview', body)
         .then(response => {
           if (response.data.success) {
             alert('리뷰를 성공적으로 등록하였습니다.')
+            window.location.reload();
           } else {
             alert('리뷰 등록에 실패 했습니다.')
           }
@@ -100,8 +102,8 @@ function HistoryPage(props) {
       
 
     return(
-      <div>
-        <Card key={index} title={history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(history.orderTime).format('YY년MM월DD일 HH시mm분')}>
+      <div key={index}>
+        <Card title={history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(history.orderTime).format('YY년MM월DD일 HH시mm분')}>
           <p>메뉴 : {menuList}</p>
           <p></p>
           <p>주문가격: {history.price} 원</p>
@@ -112,12 +114,20 @@ function HistoryPage(props) {
             <Button type="primary" onClick={showModal}>
               리뷰 작성하기
             </Button> : 
-            <Button onClick={showReview}>
-              작성한 리뷰 보기
-            </Button>
+             <div>
+             <Divider />
+             <h4>작성한 리뷰</h4>
+             작성일자: {moment(history.review[0].orderTime).format('YY년MM월DD일 HH시mm분')}
+             <br/>
+             <Rate value={history.review[0].star} disabled={true}/>
+             <br/>
+             <img src={`http://localhost:5000/${history.review[0].image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
+             <br/>
+             내용: {history.review[0].contents}
+           </div> 
           }
 
-          <Modal title="리뷰 작성" visible={IsModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
+          <Modal title="리뷰 작성" visible={IsModalVisible} onOk={reviewHandler} onCancel={handleCancel} >
             별점 : <Rate allowHalf defaultValue={5} onChange={starChangeHandler} value={Star}/>
             <br />
             <div>
@@ -128,18 +138,7 @@ function HistoryPage(props) {
             </Form.Item>
           </Modal>
 
-          <Modal title="작성한 리뷰" visible={showReviewModal} onOk={closeReviewModal} onCancel={closeReviewModal} >
-            작성일 : 
-            <Tooltip title={moment(history.review[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}>
-              <span>{moment(history.review[0].createdAt).fromNow()}</span>
-            </Tooltip>
-            <br/>
-            별점 : <Rate value={history.review[0].star} disabled={true}/>
-            <br/>
-            <img src={`http://localhost:5000/${history.review[0].image}`} style={{width: "15%", maxHeight: "150px"}} />
-            <br/>
-            내용 : {history.review[0].contents}
-          </Modal>
+          
         </Card>
         <br/>
       </div>

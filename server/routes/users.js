@@ -182,7 +182,8 @@ router.post("/order", auth, (req, res) => {
               toRider: req.body.toRider,
               orderTime: req.body.orderTime,
               orderId: req.body.orderId,
-              reviewAuth: true
+              reviewAuth: true,
+              review: []
             }},
               $set:{cart: []}  
             },{ new: true },

@@ -38,9 +38,6 @@ const userSchema = mongoose.Schema({
         type: Array,
         default: []
     },
-    review: {
-        type: Array
-    },
     image: String,
     token : {
         type: String,
