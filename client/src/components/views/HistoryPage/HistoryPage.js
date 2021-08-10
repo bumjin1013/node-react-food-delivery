@@ -104,9 +104,18 @@ function HistoryPage(props) {
     return(
       <div key={index}>
         <Card title={history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(history.orderTime).format('YY년MM월DD일 HH시mm분')}>
-          <p>메뉴 : {menuList}</p>
-          <p></p>
-          <p>주문가격: {history.price} 원</p>
+          <div>
+          주소 : {history.address}
+          <br/>
+          메뉴 : {menuList}
+          <br/>
+          주문가격 : {history.price} 원
+          <br/>
+          사장님께 : {history.toOwner}
+          <br/>
+          배달기사께 : {history.toRider}
+
+          </div>
           
 
           {/* 리뷰를 작성한 경우에는 리뷰작성 버튼 보이지 않음 reviewAuth = false */}
