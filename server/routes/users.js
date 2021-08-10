@@ -252,7 +252,7 @@ router.post("/addreview", auth, (req, res) => {
     //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
     User.findOneAndUpdate({ _id : req.user._id, "history.orderId": req.body.orderId },{
         "$push": {
-            "review": {
+            "history.$.review": {
                 "createdAt" : Date(),
                 "writer": req.body.writer, 
                 "contents": req.body.contents,

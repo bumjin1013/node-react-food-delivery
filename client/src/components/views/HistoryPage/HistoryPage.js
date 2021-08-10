@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Icon, Form, Input, Modal, Rate, Button } from 'antd';
+import { Card, Row, Col, Icon, Form, Input, Modal, Rate, Button, Tooltip } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import FileUpload from '../../utils/FileUpload';
@@ -21,6 +21,8 @@ function HistoryPage(props) {
   const [Contents, setContents] = useState("");
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
+  const [Review, setReview] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   //리뷰 내용
   const contentsChangeHandler = (event) => {
@@ -42,6 +44,20 @@ function HistoryPage(props) {
   const updateImage = (newImage) => {
     setImage(newImage)
   }
+
+  //리뷰 보기 버튼 클릭 시 
+  const showReview = () => {
+    //작성한 리뷰의 모달창 Show
+    setShowReviewModal(true)
+  }
+
+  //모달창 닫기 버튼 클릭 시 
+  const closeReviewModal = () => {
+    setShowReviewModal(false);
+  }
+
+
+
  
 
   //주문내역 랜더링
@@ -81,6 +97,8 @@ function HistoryPage(props) {
         setIsModalVisible(false);
       }
 
+      
+
     return(
       <div>
         <Card key={index} title={history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(history.orderTime).format('YY년MM월DD일 HH시mm분')}>
@@ -94,7 +112,9 @@ function HistoryPage(props) {
             <Button type="primary" onClick={showModal}>
               리뷰 작성하기
             </Button> : 
-            null
+            <Button onClick={showReview}>
+              작성한 리뷰 보기
+            </Button>
           }
 
           <Modal title="리뷰 작성" visible={IsModalVisible} onOk={reviewHandler} onCancel={handleCancel}>
@@ -106,6 +126,19 @@ function HistoryPage(props) {
             <Form.Item name={['user', 'introduction']} label="내용">
               <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
             </Form.Item>
+          </Modal>
+
+          <Modal title="작성한 리뷰" visible={showReviewModal} onOk={closeReviewModal} onCancel={closeReviewModal} >
+            작성일 : 
+            <Tooltip title={moment(history.review[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+              <span>{moment(history.review[0].createdAt).fromNow()}</span>
+            </Tooltip>
+            <br/>
+            별점 : <Rate value={history.review[0].star} disabled={true}/>
+            <br/>
+            <img src={`http://localhost:5000/${history.review[0].image}`} style={{width: "15%", maxHeight: "150px"}} />
+            <br/>
+            내용 : {history.review[0].contents}
           </Modal>
         </Card>
         <br/>
