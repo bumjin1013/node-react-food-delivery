@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip, Empty } from 'antd';
 import axios from 'axios';
 import Meta from "antd/lib/card/Meta";
-import FileUpload from '../../utils/FileUpload';
 import { addToCart } from '../../../_actions/user_actions';
 import moment from 'moment';
 import MapContainer from '../../utils/MapContainer';

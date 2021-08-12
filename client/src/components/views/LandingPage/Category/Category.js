@@ -5,6 +5,7 @@ import chineese from './Icon/chineese.png';
 import fastfood from './Icon/fastfood.png';
 import pizza from './Icon/pizza.png';
 import chicken from './Icon/chicken.png';
+import Axios from 'axios';
 
 
 const iconStyle = {
@@ -14,31 +15,27 @@ const iconStyle = {
 
 function Category(props) {
 
-    const clickHandler = (event) => {
-        
-    }
-
     return (
         <div>
             <div style={{textAlign: 'center'}}>
-                <a href={`/korean`} onClick={clickHandler}>
-                    <img src={korean} alt="korean" style={iconStyle} value={korean}/>
+                <a href={`/${"korean"}`}>
+                    <img src={korean} alt="korean" style={iconStyle} name="korean" />
                 </a>
-                <a href={`/bunsick`}>
-                    <img src={bunsick} alt="bunsick" style={iconStyle} value={bunsick}/>
+                <a href={`/${"bunsick"}`}>
+                    <img src={bunsick} alt="bunsick" style={iconStyle} name="bunsick" />
                 </a>
-                <a href={`/chineese`}>
-                    <img src={chineese} alt="chineese" style={iconStyle} value={chineese}/>
+                <a href={`/${"chineese"}`}>
+                    <img src={chineese} alt="chineese" style={iconStyle} name="chineese" />
                 </a>
-                <a href={`/chicken`} >
-                    <img src={chicken} alt="chicken" style={iconStyle} value={chicken} onClick={clickHandler}/>
+                <a href={`/${"chicken"}`} >
+                    <img src={chicken} alt="chicken" style={iconStyle} name="chicken" />
                 </a>
                 <br />
-                <a href={`/pizza`}>
-                    <img src={pizza} alt="pizza" style={iconStyle} value={pizza}/>
+                <a href={`/${"pizza"}`}>
+                    <img src={pizza} alt="pizza" style={iconStyle} name="pizza" />
                 </a>
-                <a href={`/fastfood`}>
-                    <img src={fastfood} alt="fastfood" style={iconStyle} value={fastfood}/>
+                <a href={`/${"fastfood"}`}>
+                    <img src={fastfood} alt="fastfood" style={iconStyle} name="fastfood" />
                 </a>
             </div>
     </div>

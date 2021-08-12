@@ -3,16 +3,17 @@ import axios from 'axios';
 import { Col, Card, Row, PageHeader, Rate } from "antd";
 import Meta from "antd/lib/card/Meta";
 
-function StoreListPage() {
+function StoreListPage(props) {
 
   useEffect(() => {
-      axios.get("/api/store/chicken").then((response) => {
+      axios.get(`/api/store/category?category=${category}`).then((response) => {
           setStoreList(response.data.store);   
         })
       .catch((err) => alert(err));
   }, []);
 
   const [StoreList, setStoreList] = useState([]);
+  const category = props.match.params.category;
 
   const renderStore = StoreList.map((store, index) => {
     
@@ -46,7 +47,7 @@ function StoreListPage() {
           <Meta 
             title={
               <h4>
-                <Rate value={Star} disabled={true} />
+                <Rate value={Star} disabled={true} key={index}/>
                 <br/>
                 {store.title}({Star})
                 
@@ -66,7 +67,7 @@ function StoreListPage() {
         border: '1px solid rgb(235, 237, 240)',
         }}
         onBack={() => window.history.back()}
-        title="치킨"
+        title={category}
       />
       <br />
       <Row gutter={[16, 16]}>{renderStore}</Row>

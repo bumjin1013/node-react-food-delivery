@@ -49,7 +49,7 @@ function App() {
           <Route exact path="/store/:storeId/setting" component={AuthOwner(OwnerStoreSettingPage, true)} />
           <Route exact path="/store/:storeId/menu/add" component={AuthOwner(AddMenuPage, true)} />
           
-          <Route exact path="/chicken" component={Auth(StoreListPage, null)} />
+          <Route exact path="/:category" component={Auth(StoreListPage, null)} />
 
           <Route exact path="/store/:storeId/detail" component={Auth(UserStorePage, null)} />
 
