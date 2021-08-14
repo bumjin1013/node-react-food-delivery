@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const { Store } = require("../models/Store");
-const { User } = require("../models/User");
-
+const { auth } = require("../middleware/authOwner");
 //=================================
 //             Store
 //=================================
 
+//multer로 이미지 저장
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -19,7 +19,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file");
 
-router.post("/image", (req, res) => {
+router.post("/image", auth, (req, res) => {
   //가져온 이미지를 저장을 해주면 된다.
   upload(req, res, (err) => {
     if (err) {
@@ -33,7 +33,8 @@ router.post("/image", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+
+router.post("/", auth, (req, res) => {
   let store = new Store({
     id: req.body.id,
     title: req.body.title,
@@ -52,16 +53,16 @@ router.post("/", (req, res) => {
   });
 });
 
-router.get("/stores", (req, res) => {
-  Store.find()
-    .populate("writer")
+router.get("/stores", auth, (req, res) => {
+  console.log(req.owner)
+  Store.find({ "id": req.owner._id })
     .exec((err, storeInfo) => {
       if (err) return res.status(400).json({ success: false, err });
       return res.status(200).json({ success: true, storeInfo });
     });
 });
 
-router.get("/stores_by_id", (req, res) => {
+router.get("/stores_by_id", auth, (req, res) => {
   let type = req.query.type;
   let storeIds = req.query.id;
 
@@ -87,7 +88,7 @@ router.get("/stores_by_id", (req, res) => {
 
 
 //메뉴 추가
-router.post("/addMenu", (req, res) => {
+router.post("/addMenu", auth, (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
     '$push': {
@@ -104,7 +105,7 @@ router.post("/addMenu", (req, res) => {
 });
 
 //치킨 카테고리
-router.get("/category", (req, res) => {
+router.get("/category", auth, (req, res) => {
 
   let category = req.query.category;
 
@@ -117,7 +118,7 @@ router.get("/category", (req, res) => {
 });
 
 //Store 스키마의 review에 유저의 리뷰 추가
-router.post("/addreview", (req, res) => {
+router.post("/addreview", auth, (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
     "$push": {
@@ -136,7 +137,7 @@ router.post("/addreview", (req, res) => {
 });
 
 //상점의 order에 주문내역 넣기
-router.post('/order', (req, res) => {
+router.post('/order', auth, (req, res) => {
   Store.findOneAndUpdate({ _id: req.body.storeId },{
     $push: {
         order: {
@@ -159,7 +160,7 @@ router.post('/order', (req, res) => {
 })
 
 //사장님 댓글 추가
-router.post('/addcomments', (req, res) => {
+router.post('/addcomments', auth, (req, res) => {
 
   console.log(req.body);
 
@@ -176,7 +177,7 @@ router.post('/addcomments', (req, res) => {
 
 
 //상점 정보 수정
-router.post('/editstoreinfo', (req, res) => {
+router.post('/editstoreinfo', auth, (req, res) => {
 
   console.log(req.body);
 
@@ -210,7 +211,7 @@ router.post('/updatemenu', (req, res) => {
 })
 
 //메뉴 삭제
-router.post('/deletemenu', (req, res) => {
+router.post('/deletemenu', auth, (req, res) => {
 
   console.log(req.body);
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
@@ -226,7 +227,7 @@ router.post('/deletemenu', (req, res) => {
 })
 
 // 판매중 <-> 품절 상태 변경
-router.post('/changestate', (req, res) => {
+router.post('/changestate', auth, (req, res) => {
 
   console.log(req.body);
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
@@ -245,7 +246,7 @@ router.post('/changestate', (req, res) => {
 // 주문취소 -> 주문취소 
 // 배달출발 -> 배달중 
 // 배달완료 -> 배달완료 
-router.post('/updateorderstate', (req, res) => {
+router.post('/updateorderstate', auth, (req, res) => {
 
   console.log(req.body);
 

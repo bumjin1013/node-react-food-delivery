@@ -34,7 +34,7 @@ const tailFormItemLayout = {
   },
 };
 
-function RegisterPage(props) {
+function OwnerRegisterPage(props) {
   const dispatch = useDispatch();
   return (
 
@@ -200,4 +200,4 @@ function RegisterPage(props) {
 };
 
 
-export default RegisterPage
+export default OwnerRegisterPage

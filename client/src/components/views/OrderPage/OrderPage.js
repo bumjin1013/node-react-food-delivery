@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Form, Input, Divider, Button } from 'antd';
 import axios from 'axios';
 
+
 function OrderPage(props) {
     
     const [Cart, setCart] = useState(props.user.userData.cart);
@@ -44,7 +45,6 @@ function OrderPage(props) {
             return alert("전화번호를 입력해주세요.")
         }
 
-
         //서버에 채운 값들을 request로 보낸다.
         let body = {
             userId: props.user.userData._id,
@@ -72,8 +72,9 @@ function OrderPage(props) {
                     alert('주문에 실패하였습니다.')
                 }
             })
+        }
             
-    }
+            
 
     return (
         <div style={{ width: '60%', margin: '3rem auto' }}>
@@ -109,5 +110,6 @@ function OrderPage(props) {
         </div>
     )
 }
+
 
 export default OrderPage

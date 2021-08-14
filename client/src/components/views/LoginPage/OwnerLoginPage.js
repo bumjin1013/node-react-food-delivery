@@ -134,7 +134,7 @@ function OwnerLoginPage(props) {
                     Log in
                 </Button>
                 </div>
-                Or <a href="/register/owner">register now!</a>
+                Or <a href="/register/owner">사장님 회원가입</a>
                 <a href="/login" style={{ float: 'right' }}>login user</a>
               </Form.Item>
             </form>

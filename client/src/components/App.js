@@ -35,9 +35,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null) || AuthOwner(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
-          <Route exact path="/register" component={Auth(RegisterPage, false)} />
+          <Route exact path="/register" component={Auth(RegisterPage, false) || AuthOwner(OwnerRegisterPage, false)} />
           
-          <Route exact path="/register/owner" componet={AuthOwner(OwnerRegisterPage, null)} />
+          <Route exact path="/register/owner" component={Auth(OwnerRegisterPage, false) || AuthOwner(OwnerRegisterPage, false)} />
           <Route exact path="/login/owner" component={AuthOwner(OwnerLoginPage, null)} />
 
           <Route exact path="/store" component={AuthOwner(StorePage, true)} />  
@@ -49,7 +49,7 @@ function App() {
           <Route exact path="/store/:storeId/setting" component={AuthOwner(OwnerStoreSettingPage, true)} />
           <Route exact path="/store/:storeId/menu/add" component={AuthOwner(AddMenuPage, true)} />
           
-          <Route exact path="/:category" component={Auth(StoreListPage, null)} />
+          <Route exact path="/store/:category" component={Auth(StoreListPage, null)} />
 
           <Route exact path="/store/:storeId/detail" component={Auth(UserStorePage, null)} />
 

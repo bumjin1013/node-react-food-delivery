@@ -18,23 +18,23 @@ function Category(props) {
     return (
         <div>
             <div style={{textAlign: 'center'}}>
-                <a href={`/${"korean"}`}>
+                <a href={`/store/${"korean"}`}>
                     <img src={korean} alt="korean" style={iconStyle} name="korean" />
                 </a>
-                <a href={`/${"bunsick"}`}>
+                <a href={`/store/${"bunsick"}`}>
                     <img src={bunsick} alt="bunsick" style={iconStyle} name="bunsick" />
                 </a>
-                <a href={`/${"chineese"}`}>
+                <a href={`/store/${"chineese"}`}>
                     <img src={chineese} alt="chineese" style={iconStyle} name="chineese" />
                 </a>
-                <a href={`/${"chicken"}`} >
+                <a href={`/store/${"chicken"}`} >
                     <img src={chicken} alt="chicken" style={iconStyle} name="chicken" />
                 </a>
                 <br />
-                <a href={`/${"pizza"}`}>
+                <a href={`/store/${"pizza"}`}>
                     <img src={pizza} alt="pizza" style={iconStyle} name="pizza" />
                 </a>
-                <a href={`/${"fastfood"}`}>
+                <a href={`/store/${"fastfood"}`}>
                     <img src={fastfood} alt="fastfood" style={iconStyle} name="fastfood" />
                 </a>
             </div>
