@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Form, Input, Divider, Button } from 'antd';
 import axios from 'axios';
-
+var IMP = window.IMP; // 생략 가능
+IMP.init("imp54545514"); // 예: imp00000000
 
 function OrderPage(props) {
     
@@ -34,8 +35,8 @@ function OrderPage(props) {
         setToRider(event.currentTarget.value)
     }
 
-    const submitHandler = (event) => {
-        event.preventDefault();
+
+    const requestPay = () => {
 
         if (!Address === 0) {
             return alert("주소를 입력해주세요.")
@@ -45,33 +46,69 @@ function OrderPage(props) {
             return alert("전화번호를 입력해주세요.")
         }
 
-        //서버에 채운 값들을 request로 보낸다.
-        let body = {
-            userId: props.user.userData._id,
-            address: Address, 
-            phoneNumber: PhoneNumber,
-            toOwner: ToOwner,
-            toRider: ToRider,
-            menu: Cart,
-            price: totalPrice,
-            storeId: Cart[0].storeId,
-            storeName: Cart[0].storeName,
-            orderTime: Date(),
-            orderId: Date.now()
-        }
-
-        console.log(body);
-      
         
-        axios.post('/api/users/order', body) && axios.post('/api/store/order', body)
-            .then(response => {
-                if (response.data.success) {
+        // IMP.request_pay(param, callback) 결제창 호출
+        IMP.request_pay({ // param
+          pg: "html5_inicis",
+          pay_method: "card",
+          merchant_uid: "ORD20180131-0000011",
+          name: Cart[0].name,
+          amount: totalPrice,
+          buyer_email: props.user.userData.email,
+          buyer_name: props.user.userData.name,
+          buyer_tel: PhoneNumber,
+          buyer_addr: Address,
+          buyer_postcode: "01181"
+        }, rsp => { // callback
+            if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+              // axios로 HTTP 요청
+              axios({
+                url: '/api/payments/complete', // 예: https://www.myservice.com/payments/complete
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                data: {
+                  imp_uid: rsp.imp_uid,
+                  merchant_uid: rsp.merchant_uid
+                }
+            }).then((data) => { // 응답 처리
+                switch(data.status) {
+                  case "vbankIssued":
+                    // 가상계좌 발급 시 로직
+                    break;
+                  case "success":
                     alert('주문에 성공했습니다.')
                     props.history.push('/history')
-                } else {
-                    alert('주문에 실패하였습니다.')
+                    break;
                 }
-            })
+              });
+
+              //서버에 채운 값들을 request로 보낸다.
+                let body = {
+                    userId: props.user.userData._id,
+                    address: Address, 
+                    phoneNumber: PhoneNumber,
+                    toOwner: ToOwner,
+                    toRider: ToRider,
+                    menu: Cart,
+                    price: totalPrice,
+                    storeId: Cart[0].storeId,
+                    storeName: Cart[0].storeName,
+                    orderTime: Date(),
+                    orderId: Date.now()
+                }
+              //DB에 저장
+                axios.post('/api/users/order', body) && axios.post('/api/store/order', body)
+                .then(response => {
+                    if (response.data.success) {
+                        alert('주문에 성공했습니다.')
+                    } else {
+                        alert('주문에 실패하였습니다.')
+                    }
+                })
+            } else {
+              alert(`결제에 실패하였습니다. 에러 내용: ${rsp.error_msg}`);
+            }
+          });
         }
             
             
@@ -103,7 +140,7 @@ function OrderPage(props) {
             <Divider />
             <h2>총 결제금액 : {totalPrice}원</h2>
 
-            <Button type="primary" shape="round" icon="dollar" size={'large'} onClick={submitHandler}>
+            <Button type="primary" shape="round" icon="dollar" size={'large'} onClick={requestPay}>
                 {totalPrice}원 결제하기
             </Button>
             

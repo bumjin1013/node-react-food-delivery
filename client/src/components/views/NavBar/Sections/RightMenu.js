@@ -8,10 +8,12 @@ import { withRouter } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { removeCartItem } from '../../../../_actions/user_actions';
 
+
 function RightMenu(props) {
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user);
+  const owner = useSelector(state => state.owner);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [Cart, setCart] = useState([]);
   const [StoreName, setStoreName] = useState();
@@ -95,6 +97,14 @@ function RightMenu(props) {
         </Menu.Item>
         <Menu.Item key="app">
           <a href="/register">Signup</a>
+        </Menu.Item>
+      </Menu>
+    )
+  } else if(owner.ownerData) {
+    return(
+      <Menu mode={props.mode}>
+         <Menu.Item key="logout">
+          <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>
       </Menu>
     )
