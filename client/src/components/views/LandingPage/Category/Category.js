@@ -5,7 +5,6 @@ import chineese from './Icon/chineese.png';
 import fastfood from './Icon/fastfood.png';
 import pizza from './Icon/pizza.png';
 import chicken from './Icon/chicken.png';
-import Axios from 'axios';
 
 
 const iconStyle = {
@@ -34,7 +33,7 @@ function Category(props) {
                 <a href={`/store/${"pizza"}`}>
                     <img src={pizza} alt="pizza" style={iconStyle} name="pizza" />
                 </a>
-                <a href={`/store/${"fastfood"}`}>
+                <a href={`/store/${"burger"}`}>
                     <img src={fastfood} alt="fastfood" style={iconStyle} name="fastfood" />
                 </a>
             </div>

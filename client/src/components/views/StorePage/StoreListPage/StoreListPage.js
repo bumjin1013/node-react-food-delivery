@@ -15,6 +15,30 @@ function StoreListPage(props) {
   const [StoreList, setStoreList] = useState([]);
   const category = props.match.params.category;
 
+  //DB카테고리 한글로 변경
+  let Category;
+
+  switch(category) {
+    case "korean":
+      Category = "한식";
+      break;
+    case "bunsick":
+      Category = "분식";
+      break;
+    case "chinese":
+      Category = "중식";
+      break;
+    case "chicken":
+      Category = "치킨";
+      break;
+    case "pizza":
+      Category = "피자";
+      break;
+    case "burger":
+      Category = "햄버거";
+      break;  
+  } 
+
   const renderStore = StoreList.map((store, index) => {
     
     console.log('rednerStore', store);
@@ -30,6 +54,8 @@ function StoreListPage(props) {
     let Star;
     //리뷰가 1개 이상이면 더한 총 별점 / 리뷰 갯수 = Star , 리뷰가 없으면 0
     store.review.length > 0 ? Star = (totalStar/store.review.length).toFixed(1) : Star = 0
+
+ 
   
     return (
       <Col lg={6} md={8} xs={24} key={index}>
@@ -67,7 +93,7 @@ function StoreListPage(props) {
         border: '1px solid rgb(235, 237, 240)',
         }}
         onBack={() => window.history.back()}
-        title={category}
+        title={Category}
       />
       <br />
       <Row gutter={[16, 16]}>{renderStore}</Row>

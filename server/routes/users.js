@@ -24,7 +24,8 @@ router.get("/auth", auth, (req, res) => {
         image: req.user.image,
         cart: req.user.cart,
         history: req.user.history,
-        review: req.user.review
+        review: req.user.review,
+        coupon: req.user.coupon
     });
 });
 
@@ -271,5 +272,21 @@ router.post("/addreview", auth, (req, res) => {
       )
   });
 
+//10000원 쿠폰 받기
+router.post('/getcoupon', auth, (req, res) => {
+    User.findOneAndUpdate({ _id: req.user._id },{
+        "$push": {
+            "coupon": {
+                "coupon": req.body.coupon,
+                "value": req.body.value,
+                "isUsed": false
+            }
+        }
+    },{ new: true },
+    (err, couponInfo) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).send({ success: true, couponInfo })
+    })
+})
 
 module.exports = router;

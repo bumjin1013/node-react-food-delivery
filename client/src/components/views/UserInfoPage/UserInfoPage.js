@@ -72,10 +72,14 @@ function UserInfoPage() {
                     <Button icon="edit" onClick={editClick}/>
                   </div>
                 }
+                 </Card>
                 
                 
-
+           <Icon type="percentage"/> 쿠폰 
+           
+            <Card style={{ width: 'auto' }}>
             </Card>
+           
         </div>
     )
 }

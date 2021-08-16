@@ -34,8 +34,12 @@ function OrderPage(props) {
     const toRiderChangeHandler = (event) => {
         setToRider(event.currentTarget.value)
     }
-
-
+  
+    //10000000 ~ 99999999 까지의 난수 생성
+    let ranNum = Math.floor(Math.random() * 99999999 + 10000000);
+    //Date.now에 난수를 더하여 중복 방지
+    let orderId = Date.now() + '-' + ranNum;
+    
     const requestPay = () => {
 
         if (!Address === 0) {
@@ -51,7 +55,7 @@ function OrderPage(props) {
         IMP.request_pay({ // param
           pg: "html5_inicis",
           pay_method: "card",
-          merchant_uid: "ORD20180131-0000011",
+          merchant_uid: orderId,
           name: Cart[0].name,
           amount: totalPrice,
           buyer_email: props.user.userData.email,

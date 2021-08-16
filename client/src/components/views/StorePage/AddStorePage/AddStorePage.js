@@ -5,13 +5,12 @@ import Axios from 'axios';
 const { TextArea } = Input;
 
 const Categorys = [
-    { key: 1, value: "한식" },
-    { key: 2, value: "분식" },
-    { key: 3, value: "중식" },
-    { key: 4, value: "일식" },
-    { key: 5, value: "치킨" },
-    { key: 6, value: "피자" },
-    { key: 7, value: "프랜차이즈" }
+    { key: "korean", value: "한식" },
+    { key: "bunsick", value: "분식" },
+    { key: "chinese", value: "중식" },
+    { key: "chicken", value: "치킨" },
+    { key: "pizza", value: "피자" },
+    { key: "burger", value: "햄버거" }
 ]
 
 function AddStorePage(props) {
@@ -19,7 +18,7 @@ function AddStorePage(props) {
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
     const [Address, setAddress] = useState("")
-    const [Category, setCategory] = useState(1)
+    const [Category, setCategory] = useState(1);
     const [Image, setImage] = useState([])
 
     const titleChangeHandler = (event) => {

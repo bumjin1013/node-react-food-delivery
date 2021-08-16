@@ -53,7 +53,7 @@ router.post("/",  (req, res) => {
   });
 });
 
-router.get("/stores",  (req, res) => {
+router.get("/stores",  auth, (req, res) => {
   console.log(req.owner)
   Store.find({ "id": req.owner._id })
     .exec((err, storeInfo) => {
