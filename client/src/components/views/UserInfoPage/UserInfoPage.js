@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Icon, Card, Button, Input } from 'antd';
+import { Icon, Card, Button, Input, Empty } from 'antd';
 
 
 
@@ -11,6 +11,7 @@ function UserInfoPage() {
             console.log(response.data);
               setUserInfo(response.data.userInfo);
               setNickname(response.data.userInfo.nickname);
+              setCoupon(response.data.userInfo.coupon)
           } else {
             alert("유저 정보 로드에 실패하였습니다.");
           }
@@ -21,6 +22,7 @@ function UserInfoPage() {
     const [Nickname, setNickname] = useState();
     const [IsEdit, setIsEdit] = useState(false);
     const [EditedNickname, setEditedNickname] = useState(UserInfo.nickname);
+    const [Coupon, setCoupon] = useState([]);
 
     const editClick = () => {
       setIsEdit(true);
@@ -48,6 +50,18 @@ function UserInfoPage() {
       setEditedNickname(event.currentTarget.value);
     }
 
+    const renderCoupon = Coupon.map((coupon, index) => {
+      
+      return(
+          <Card>
+            <h3>{coupon.coupon}</h3>
+            <br/>
+            {coupon.contents}
+            <br />
+          </Card>
+      )
+    })
+
     return (
         <div style={{ width: '60%', margin: '3rem auto' }}>
             <h2> <Icon type="user"/> 사용자 정보 </h2> 
@@ -73,12 +87,12 @@ function UserInfoPage() {
                   </div>
                 }
                  </Card>
-                
-                
-           <Icon type="percentage"/> 쿠폰 
-           
-            <Card style={{ width: 'auto' }}>
-            </Card>
+
+          <br />   
+          <h2><Icon type="smile"/> 쿠폰 </h2>
+          <Card style={{ width: 'auto' }}>
+            {renderCoupon}
+          </Card>
            
         </div>
     )

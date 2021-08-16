@@ -279,6 +279,8 @@ router.post('/getcoupon', auth, (req, res) => {
             "coupon": {
                 "coupon": req.body.coupon,
                 "value": req.body.value,
+                "minPrice": req.body.minPrice,
+                "contents": req.body.contents,
                 "isUsed": false
             }
         }
