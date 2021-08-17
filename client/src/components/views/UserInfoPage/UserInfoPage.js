@@ -52,14 +52,16 @@ function UserInfoPage() {
 
     const renderCoupon = Coupon.map((coupon, index) => {
       
-      return(
+      if(!coupon.isUsed){
+        return(
           <Card>
             <h3>{coupon.coupon}</h3>
             <br/>
             {coupon.contents}
             <br />
           </Card>
-      )
+        )
+      }
     })
 
     return (

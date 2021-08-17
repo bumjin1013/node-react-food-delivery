@@ -74,13 +74,16 @@ function OrderPage(props) {
         const selectCoupon = () => {
             setSelectedCoupon(coupon);
         }
-        return(
-            <Card>     
-                <Radio value={index} onChange={selectCoupon}>{coupon.coupon}</Radio>
-                <br/>
-                {coupon.contents}
-            </Card>
-        )
+        //사용 가능한 쿠폰만 보이게
+        if(!coupon.isUsed){
+            return(
+                <Card>     
+                    <Radio value={index} onChange={selectCoupon}>{coupon.coupon}</Radio>
+                    <br/>
+                    {coupon.contents}
+                </Card>
+            )
+        }
     })
 
     
@@ -156,6 +159,7 @@ function OrderPage(props) {
                 .then(response => {
                     if (response.data.success) {
                         alert('주문에 성공했습니다.')
+                        props.history.push('/history')
                     } else {
                         alert('주문에 실패하였습니다.')
                     }

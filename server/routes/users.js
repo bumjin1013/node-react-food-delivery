@@ -166,41 +166,23 @@ router.post("/addToCart", auth, (req, res) => {
         })
 });
 
-//장바구니에서 상품 삭제
-router.post('/removeFromCart', auth, (req, res) => {
-
-    console.log(req.body);
-    //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
-    User.findOneAndUpdate(
-        { _id: req.user._id },
-        {
-            "$pull":
-                { "cart": { "id": req.body.menuId } }
-        },
-        { new: true },
-        (err, userInfo) => {
-            if (err) return res.status(400).json({ success: false, err })
-            res.status(200).send(userInfo.cart)
-        }
-    )
-})
-
 //주문
 router.post("/order", auth, (req, res) => {
 
-    //사용한 쿠폰이 존재하면 쿠폰 삭제
+    console.log(req.body);
+    //쿠폰이 사용된 경우 해당 쿠폰의 isUsed를 true로 변경
     if(req.body.coupon != null) {
-        User.findOneAndUpdate(
-            { _id: req.user._id },
-            {
-                "$pull":
-                    { "coupon": { "coupon": req.body.coupon.coupon } }
-            },
-            { new: true }
-        )
+        User.findOneAndUpdate({ _id: req.user._id, coupon: { $elemMatch: {coupon: req.body.coupon.coupon }}},{
+            $set: {
+                "coupon.$.isUsed": true
+            }
+        },{ new: true },
+         (err, coupon) => {
+                if (err) return res.status(400).json({ success: false, err })
+            })
     }
     
-    //history정보 업데이트
+    //먼저  User Collection에 해당 유저의 정보를 가져오기 
     User.findOneAndUpdate({ _id: req.user._id },{
         $push: {
             history: {
@@ -217,7 +199,7 @@ router.post("/order", auth, (req, res) => {
               reviewAuth: true,
               review: []
             }},
-              $set:{cart: []} //주문 성공후 장바구니를 비워줌
+              $set:{cart: []}  
             },{ new: true },
             (err, orderInfo) => {
                 if (err) return res.status(400).json({ success: false, err })
@@ -236,7 +218,24 @@ router.get('/history', auth, (req, res) => {
     });
 });
 
+//장바구니에서 상품 삭제
+router.post('/removeFromCart', auth, (req, res) => {
 
+    console.log(req.body);
+    //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+            "$pull":
+                { "cart": { "id": req.body.menuId } }
+        },
+        { new: true },
+        (err, userInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send(userInfo.cart)
+        }
+    )
+})
 
 //유저 정보 출력 (마이페이지)
 router.get('/userinfo', auth, (req, res) => {

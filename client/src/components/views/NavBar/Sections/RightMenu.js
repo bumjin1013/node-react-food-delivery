@@ -56,14 +56,12 @@ function RightMenu(props) {
     totalPrice += cart.quantity * cart.price;
 
     const deleteHandler = () => {
+      setCart(user.userData.cart);
       let body = {
         menuId: cart.id
       }
       dispatch(removeCartItem(body))
-      
-      
-      setCart(user.userData.cart);
-      console.log(Cart);
+     
     }
 
     return(
