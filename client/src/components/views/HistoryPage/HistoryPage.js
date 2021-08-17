@@ -21,8 +21,7 @@ function HistoryPage(props) {
   const [Contents, setContents] = useState("");
   const [Star, setStar] = useState("5");
   const [Image, setImage] = useState([]);
-  const [Review, setReview] = useState(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
+
 
   //리뷰 내용
   const contentsChangeHandler = (event) => {
@@ -44,22 +43,6 @@ function HistoryPage(props) {
   const updateImage = (newImage) => {
     setImage(newImage)
   }
-
-  //리뷰 보기 버튼 클릭 시 
-  const showReview = () => {
-    //작성한 리뷰의 모달창 Show
-    setShowReviewModal(true)
-  }
-
-  //모달창 닫기 버튼 클릭 시 
-  const closeReviewModal = () => {
-    setShowReviewModal(false);
-  }
-
-
-
- 
-
   //주문내역 랜더링
   const renderHistory = History.map((history, index) => {
     
@@ -142,7 +125,7 @@ function HistoryPage(props) {
             <div>
               <FileUpload refreshFunction={updateImage} />
             </div>    
-            <Form.Item name={['user', 'introduction']} label="내용">
+            <Form.Item label="내용">
               <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
             </Form.Item>
           </Modal>

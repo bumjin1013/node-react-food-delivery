@@ -166,45 +166,6 @@ router.post("/addToCart", auth, (req, res) => {
         })
 });
 
-//주문
-router.post("/order", auth, (req, res) => {
-
-    //먼저  User Collection에 해당 유저의 정보를 가져오기 
-    User.findOneAndUpdate({ _id: req.user._id },{
-        $push: {
-            history: {
-              storeId: req.body.storeId, 
-              storeName: req.body.storeName,
-              menu: req.body.menu,
-              address: req.body.address,
-              phoneNumber: req.body.phoneNumber,
-              price: req.body.price,
-              toOwner: req.body.toOwner,
-              toRider: req.body.toRider,
-              orderTime: req.body.orderTime,
-              orderId: req.body.orderId,
-              reviewAuth: true,
-              review: []
-            }},
-              $set:{cart: []}  
-            },{ new: true },
-            (err, orderInfo) => {
-                if (err) return res.status(400).json({ success: false, err })
-                res.status(200).send({ success: true, orderInfo })
-            }
-          )
-});
-  
-//주문내역
-router.get('/history', auth, (req, res) => {
-   
-    User.findOne({ _id: req.user._id })
-    .exec((err, history) => {
-        if (err) return res.status(400).json({ success: false, err })
-        res.status(200).json({ success: true, history })
-    });
-});
-
 //장바구니에서 상품 삭제
 router.post('/removeFromCart', auth, (req, res) => {
 
@@ -224,6 +185,59 @@ router.post('/removeFromCart', auth, (req, res) => {
     )
 })
 
+//주문
+router.post("/order", auth, (req, res) => {
+
+    //사용한 쿠폰이 존재하면 쿠폰 삭제
+    if(req.body.coupon != null) {
+        User.findOneAndUpdate(
+            { _id: req.user._id },
+            {
+                "$pull":
+                    { "coupon": { "coupon": req.body.coupon.coupon } }
+            },
+            { new: true }
+        )
+    }
+    
+    //history정보 업데이트
+    User.findOneAndUpdate({ _id: req.user._id },{
+        $push: {
+            history: {
+              storeId: req.body.storeId, 
+              storeName: req.body.storeName,
+              menu: req.body.menu,
+              address: req.body.address,
+              phoneNumber: req.body.phoneNumber,
+              price: req.body.price,
+              toOwner: req.body.toOwner,
+              toRider: req.body.toRider,
+              orderTime: req.body.orderTime,
+              orderId: req.body.orderId,
+              reviewAuth: true,
+              review: []
+            }},
+              $set:{cart: []} //주문 성공후 장바구니를 비워줌
+            },{ new: true },
+            (err, orderInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).send({ success: true, orderInfo })
+            }
+          )
+});
+  
+//주문내역
+router.get('/history', auth, (req, res) => {
+   
+    User.findOne({ _id: req.user._id })
+    .exec((err, history) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, history })
+    });
+});
+
+
+
 //유저 정보 출력 (마이페이지)
 router.get('/userinfo', auth, (req, res) => {
 
@@ -232,8 +246,6 @@ router.get('/userinfo', auth, (req, res) => {
         if (err) return res.status(400).json({ success: false, err })
         res.status(200).json({ success: true, userInfo })
     });
-
-    
 })
 
 //닉네임 수정
@@ -290,5 +302,27 @@ router.post('/getcoupon', auth, (req, res) => {
         res.status(200).send({ success: true, couponInfo })
     })
 })
+
+//결제 페이지 - 상품의 토탈 가격을 백엔드 에서 계산에서 json으로 추가해 넘겨줌
+router.get('/payments', auth, (req, res) => {
+
+    let totalPrice = 0;
+
+    User.findOne({ _id: req.user._id })
+    .exec((err, userInfo) => {
+        //장바구니에 담겨있는 상품의 가격 * 개수 
+        userInfo.cart.map((cart, index) => {
+            totalPrice += cart.price * cart.quantity
+        })
+        //userInfo object에 직접 object값을 변경해줘도 반영이 되지 않음 
+        //userInfo 를 Deep Copy하여 paymentsInfo를 만들어 준후 totalPrice값을 paymentsInfo에 추가해 준 후 paymentsInfo를 res.json으로 보냄
+        paymentsInfo = JSON.parse(JSON.stringify(userInfo)); 
+        paymentsInfo["totalPrice"] = totalPrice;
+
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, paymentsInfo })
+    });
+})
+
 
 module.exports = router;

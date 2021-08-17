@@ -19,7 +19,7 @@ function LandingPage(props) {
                 minPrice: 15000
             }
             //userData에서 coupon을 확인해 쿠폰 중복 발급 제한
-            if(props.user.userData.coupon.length>0){
+            if(props.user.userData.coupon){
                 alert('이미 쿠폰을 발급 받으셨습니다.');
             } else {
                 axios.post('/api/users/getcoupon', body)
