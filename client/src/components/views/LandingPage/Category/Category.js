@@ -8,7 +8,7 @@ import chicken from './Icon/chicken.png';
 
 
 const iconStyle = {
-    width: '13%',
+    width: '100px',
     margin: 10
   };
 

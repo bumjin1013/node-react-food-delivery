@@ -1,5 +1,4 @@
 import React from 'react'
-import { Input } from 'antd';
 import SingleComment from './SingleComment';
 
 function Comments(props) {

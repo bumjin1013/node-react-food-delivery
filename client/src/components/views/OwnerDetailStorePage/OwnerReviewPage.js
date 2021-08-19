@@ -15,7 +15,6 @@ function OwnerReviewPage(props) {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
-        setReveiw(response.data[0].review);
         setCommentLists(response.data[0].review);
         console.log(response.data[0])
       })
