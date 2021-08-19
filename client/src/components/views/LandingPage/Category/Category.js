@@ -23,7 +23,7 @@ function Category(props) {
                 <a href={`/store/${"bunsick"}`}>
                     <img src={bunsick} alt="bunsick" style={iconStyle} name="bunsick" />
                 </a>
-                <a href={`/store/${"chineese"}`}>
+                <a href={`/store/${"chinese"}`}>
                     <img src={chineese} alt="chineese" style={iconStyle} name="chineese" />
                 </a>
                 <a href={`/store/${"chicken"}`} >
