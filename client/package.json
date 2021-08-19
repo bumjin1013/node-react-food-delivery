@@ -8,6 +8,7 @@
     "core-js": "^3.6.4",
     "formik": "^1.5.8",
     "html-react-parser": "^1.2.7",
+    "immer": "^1.10.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-addons-update": "^15.6.3",

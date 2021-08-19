@@ -263,8 +263,9 @@ router.post('/edituserinfo', auth, (req, res) => {
 
 //리뷰 추가
 router.post("/addreview", auth, (req, res) => {
+    console.log(req.body);
     //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
-    User.findOneAndUpdate({ _id : req.user._id, "history.orderId": req.body.orderId },{
+    User.findOneAndUpdate({ _id : req.user._id, history: {$elemMatch: {orderId: req.body.orderId }}},{
         "$push": {
             "history.$.review": {
                 "createdAt" : Date(),
@@ -282,7 +283,7 @@ router.post("/addreview", auth, (req, res) => {
             res.status(200).send({ success: true, reviewInfo })
         }
       )
-  });
+  });0.
 
 //10000원 쿠폰 받기
 router.post('/getcoupon', auth, (req, res) => {
