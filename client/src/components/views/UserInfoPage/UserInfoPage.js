@@ -52,16 +52,16 @@ function UserInfoPage() {
 
     const renderCoupon = Coupon.map((coupon, index) => {
       
+      //사용 한 쿠폰 출력 X
       if(!coupon.isUsed){
-        return(
+      return(
           <Card>
             <h3>{coupon.coupon}</h3>
             <br/>
             {coupon.contents}
             <br />
           </Card>
-        )
-      }
+      )}
     })
 
     return (
