@@ -67,30 +67,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-io.on("connection", (socket) => {
-  socket.on("Input Chat Message", msg => {
-    connect.then(db => {
-      try {
-        let chat = new Chat({ message: msg.chatMessage, sender:msg.userId, type: msg.type })
-        console.log(socket.id);
-        chat.save((err, doc) => {
-          if(err) return res.json({ success: false, err })
-
-          Chat.find({ "_id": doc._id })
-          .populate("sender")
-          .exec((err, doc) => {
-            return io.emit("Output Chat Message", doc)
-          })
-        })
-      } catch (error) {
-        console.error(error);
-
-      }
-    })
-  })
-})
-
-
 const port = process.env.PORT || 5000
 
 server.listen(port, () => {

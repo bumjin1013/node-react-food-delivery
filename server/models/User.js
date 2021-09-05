@@ -47,7 +47,13 @@ const userSchema = mongoose.Schema({
     },
     tokenExp :{
         type: Number
-    }
+    },
+    friends: [{
+        name: { type: String },
+        email: { type: String },
+        id: { type: String },
+        chats: []
+    }]
 })
 
 

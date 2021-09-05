@@ -6,7 +6,7 @@ import axios from 'axios';
 import { USER_SERVER } from '../../../Config';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from "react-redux";
-import { removeCartItem } from '../../../../_actions/user_actions';
+import { removeCartItem, getCartItems } from '../../../../_actions/user_actions';
 
 
 function RightMenu(props) {
@@ -14,23 +14,25 @@ function RightMenu(props) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const owner = useSelector(state => state.owner);
+  const cart = user.cartDetail && user.cartDetail.isAuth ? user.cartDetail : null;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [Cart, setCart] = useState([]);
   const [StoreName, setStoreName] = useState();
 
+  //장바구니에 표시될 상점 이름, 총 가격
   let storeName;
   let totalPrice = 0;
-  
+
+  //장바구니 내역 불러오기
+  dispatch(getCartItems());
 
   const showModal = () => {
-    setCart(user.userData.cart);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
     
     setIsModalVisible(false);
-    if(Cart.length > 0){
+    if(cart.length > 0){
     props.history.push('/order');
     } else {
       alert('장바구니에 메뉴를 추가해주세요.');
@@ -51,19 +53,22 @@ function RightMenu(props) {
     });
   };
   
-  const renderCart = Cart.map((cart, index) => {
-    storeName = Cart[0].storeName;
+  //장바구니 랜더링
+  const renderCart = cart && cart.map((cart, index) => {
+    storeName = cart.storeName;
     totalPrice += cart.quantity * cart.price;
 
     const deleteHandler = () => {
       let body = {
         menuId: cart.id
       }
-      dispatch(removeCartItem(body))
-      
-      
-      setCart(user.userData.cart);
-      console.log(Cart);
+      //장바구니 해당 메뉴 삭제
+      dispatch(removeCartItem(body));
+
+      //삭제 후 재 랜더링
+      setTimeout(() => {
+        dispatch(getCartItems());
+      }, 10);
     }
 
     return(

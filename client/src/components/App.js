@@ -23,6 +23,7 @@ import OrderPage from './views/OrderPage/OrderPage';
 import HistoryPage from './views/HistoryPage/HistoryPage';
 import OwnerStoreSettingPage from './views/OwnerDetailStorePage/OwnerStoreSettingPage';
 import UserInfoPage from './views/UserInfoPage/UserInfoPage';
+
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -56,9 +57,7 @@ function App() {
           <Route exact path="/order" component={Auth(OrderPage, true)} />
           <Route exact path="/history" component={Auth(HistoryPage, true)} />
           <Route exact path="/user" component={Auth(UserInfoPage, true)} />
-          
-         
-      
+
           
 
         </Switch>

@@ -11,5 +11,3 @@ export const REGISTER_OWNER = 'register_owner';
 export const AUTH_OWNER = 'auth_owner';
 export const LOGOUT_OWNER = 'logout_owner';
 
-export const GET_CHATS = 'get_chat';
-export const AFTER_POST_MESSAGE = 'after_post_message';

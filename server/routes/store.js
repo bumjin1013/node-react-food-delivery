@@ -45,8 +45,6 @@ router.post("/",  (req, res) => {
     image: req.body.image,
   });
 
-  console.log(store);
-
   store.save((err) => {
     if (err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true });
@@ -54,7 +52,6 @@ router.post("/",  (req, res) => {
 });
 
 router.get("/stores",  auth, (req, res) => {
-  console.log(req.owner)
   Store.find({ "id": req.owner._id })
     .exec((err, storeInfo) => {
       if (err) return res.status(400).json({ success: false, err });

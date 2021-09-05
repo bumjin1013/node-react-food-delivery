@@ -185,6 +185,17 @@ router.post('/removeFromCart', auth, (req, res) => {
     )
 })
 
+//장바구니 상품 조회
+router.get('/getCartItems', auth, (req, res) => {
+
+    User.findOne({ _id: req.user._id })
+    .exec((err, doc) => {
+        let cartItems = doc.cart
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).send(cartItems)
+    });
+})
+
 //주문
 router.post("/order", auth, (req, res) => {
 
@@ -323,6 +334,34 @@ router.get('/payments', auth, (req, res) => {
         if (err) return res.status(400).json({ success: false, err })
         res.status(200).json({ success: true, paymentsInfo })
     });
+})
+
+router.post("/search", auth, (req, res) => {
+    console.log(req.body.friendsName)
+    User.find({ name: req.body.friendsName })
+    .exec((err, search) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, search })
+        console.log(search);
+    });
+})
+
+router.post("/addfriends", auth, (req, res) => {
+    
+    console.log(req.body); 
+    console.log(req.user._id);
+    User.findOneAndUpdate({ _id: req.user._id }, {
+        "$push": {
+            "friends": {
+                "name": req.body.name,
+                "email": req.body.email
+            }
+        }
+    },{ new: true },
+    (err, friendsList) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).send({ success: true, friendsList })
+    })
 })
 
 
