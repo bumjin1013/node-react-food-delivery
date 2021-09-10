@@ -190,9 +190,9 @@ router.get('/getCartItems', auth, (req, res) => {
 
     User.findOne({ _id: req.user._id })
     .exec((err, doc) => {
-        let cartItems = doc.cart
+
         if (err) return res.status(400).json({ success: false, err })
-        res.status(200).send(cartItems)
+        res.status(200).send(doc.cart)
     });
 })
 

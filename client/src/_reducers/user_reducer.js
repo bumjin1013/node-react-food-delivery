@@ -18,7 +18,7 @@ export default function(state={},action){
         case AUTH_USER:
             return {...state, userData: action.payload }
         case LOGOUT_USER:
-            return {...state }
+            return {...state, cartDetail: null}
         case ADD_TO_CART:
             return {
                 ...state, 
@@ -28,7 +28,7 @@ export default function(state={},action){
                 }
             }
         case GET_CART_ITEMS:
-        return { ...state, cartDetail: action.payload }
+            return { ...state, cartDetail: action.payload }
         case REMOVE_CART_ITEM:
             return {
                 ...state, 
