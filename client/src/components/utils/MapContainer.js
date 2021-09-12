@@ -4,8 +4,6 @@ const { kakao } = window;
 
 const MapContainer = (props) => {
 
-
-   
     useEffect(() => {
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -21,7 +19,7 @@ const MapContainer = (props) => {
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
 
-    console.log(props.address !== undefined && props.address);
+    console.log(props.address);
 
     // 주소로 좌표를 검색합니다
     geocoder.addressSearch(props.address, function(result, status) {
@@ -39,7 +37,7 @@ const MapContainer = (props) => {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">위치</div>'
         });
         infowindow.open(map, marker);
 

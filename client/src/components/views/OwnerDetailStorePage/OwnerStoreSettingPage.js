@@ -35,6 +35,13 @@ function OwnerStoreSettingPage(props) {
   const [Edit, setEdit] = useState(false);
   const [ChangedDescription, setChangedDescription] = useState(Description);
 
+  const renderMap = () => {
+    console.log(Location);
+    return (
+      <MapContainer address={Location} />
+    )
+  }
+  
   const editClickHandler = () => {
       setEdit(!Edit);
   }
@@ -151,7 +158,7 @@ function OwnerStoreSettingPage(props) {
         <br />
         주소 : {Location} 
   
-        <MapContainer address={Location} />
+        {Location.length > 0 ? renderMap() : <Icon type="loading" />}
 
         </Content>
       </Layout>
