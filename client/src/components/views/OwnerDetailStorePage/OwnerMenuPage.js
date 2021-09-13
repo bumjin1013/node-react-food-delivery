@@ -1,139 +1,105 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Menu, Breadcrumb, Icon, Table, Modal, Form, Button, Input } from 'antd';
 import axios from 'axios';
 import { updateLocale } from 'moment';
+import { getMenu, changeState, changeMenu, deleteMenu } from '../../../_actions/store_actions';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 function OwnerMenuPage(props) {
 
-  useEffect(() => {
-    axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
-      .then((response) => {
-        setStore(response.data[0]);
-        setListMenu(response.data[0].menu);
-      })
-      .catch((err) => alert(err));
+    const dispatch = useDispatch();
+    const storeId = props.match.params.storeId;
 
-     
-  }, []);
+    useEffect(() => {
+        dispatch(getMenu(storeId));
+    }, []);
 
-  
-  const storeId = props.match.params.storeId;
-  const [Store, setStore] = useState({});
-  const [ListMenu, setListMenu] = useState([]);
-  const [IsModalVisible, setIsModalVisible] = useState(false);
-  const [Selected, setSelected] = useState([]);
-  const [ChangedName, setChangedName] = useState();
-  const [ChangedPrice, setChangedPrice] = useState();
+    const menu = useSelector(state => state.store.menu);
+    const [IsModalVisible, setIsModalVisible] = useState(false);
+    const [Selected, setSelected] = useState([]);
+    const [ChangedName, setChangedName] = useState();
+    const [ChangedPrice, setChangedPrice] = useState();
 
-
-  const menuChangeHandler = (event) => {
-    setChangedName(event.currentTarget.value);
-  }
-
-  const priceChangeHandler = (event) => {
-    setChangedPrice(event.currentTarget.value);
-  }
-
-  //radio버튼 선택후 메뉴 수정 버튼 누를시
-  const showModal = () => {
-    //선택 Radio Button 메뉴의 정보 (Selected[0]에 담김), 그 내용들을 ChangedName, ChangedPrice에 담아주어 Default로 넣어줌
-    //이렇게 안하고 모달창을 띄워버리면 Input에 Default값으로 해당 메뉴의 이름과 가격의 값이 출력되긴하나 확인버튼을 누르면
-    //서버에 ChangedName과 ChangedPrice의 값의 null로 입력되어있어 그 상태로 update가 되어버림 
-    setChangedName(Selected[0].name); 
-    setChangedPrice(Selected[0].price);
-    setIsModalVisible(true);
-  };
-
-  //모달창 끄기
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  //메뉴 수정 버튼 클릭시
-  const updateMenu = (event) => {
-    event.preventDefault();
-
-    const body = {
-      storeId: storeId,
-      menuId: Selected[0]._id,
-      name:  ChangedName,
-      price: ChangedPrice 
+    const menuChangeHandler = (event) => {
+        setChangedName(event.currentTarget.value);
     }
 
-    axios.post('/api/store/updatemenu', body)
-      .then(response => {
-        if (response.data.success) {
-          alert('메뉴를 수정하였습니다.');
-        } else {
-          alert('메뉴 수정에 실패하였습니다.');
-        }
-      })
-    setIsModalVisible(false);
-  }
-
-  //메뉴 삭제 버튼 클릭시 
-  const deleteHandler = (event) => {
-    event.preventDefault();
-
-    const body = {
-      menuId: Selected[0]._id,
-      storeId: Store._id
+    const priceChangeHandler = (event) => {
+        setChangedPrice(event.currentTarget.value);
     }
 
-    axios.post('/api/store/deletemenu', body)
-      .then(response => {
-        if (response.data.success) {
-          alert('메뉴를 삭제하였습니다.');
-          window.location.reload()
-        } else {
-          alert('메뉴 삭제에 실패하였습니다.');
+    //radio버튼 선택후 메뉴 수정 버튼 누를시
+    const showModal = () => {
+       
+        setIsModalVisible(true);
+        setChangedName(Selected[0].name); 
+        setChangedPrice(Selected[0].price);
+    };
+
+    //모달창 끄기
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    //메뉴 수정 버튼 클릭시
+    const updateMenu = (event) => {
+        event.preventDefault();
+
+        const body = {
+            storeId: storeId,
+            menuId: Selected[0]._id,
+            name:  ChangedName,
+            price: ChangedPrice 
         }
-      })
-  }
 
-  //메뉴 상태 변경 버튼 클릭시
-  const stateChangeHandler = (event) => {
+        dispatch(changeMenu(body));
 
-    let CurrentState;
-  
-    Selected[0].state ? CurrentState = false : CurrentState = true;
-
-    event.preventDefault();
-
-    const body = {
-      storeId: Store._id,
-      menuId: Selected[0]._id,
-      state: CurrentState
+        setIsModalVisible(false);
     }
 
-    axios.post('/api/store/changestate', body)
-      .then(response => {
-        if (response.data.success) {
-          alert(Selected[0].name + '의 상태를 변경하였습니다.');
-          window.location.reload();
-        } else {
-          alert('상태 변경에 실패하였습니다.');
+    //메뉴 삭제 버튼 클릭시 
+    const deleteHandler = (event) => {
+        event.preventDefault();
+
+        const body = {
+            menuId: Selected[0]._id,
+            storeId: storeId
         }
-      })
-  }
+
+        dispatch(deleteMenu(body));
+    } 
+
+    //메뉴 상태 변경 버튼 클릭시
+    const stateChangeHandler = (event) => {
+       
+        let CurrentState;
+        Selected[0].state ? CurrentState = false : CurrentState = true;
+        const body = {
+            storeId: storeId,
+            menuId: Selected[0]._id,
+            state: CurrentState
+        }   
+        dispatch(changeState(body))
+    }
 
   
-  //메뉴 수정 모달 렌더링
-  const renderEditMenu = Selected.map((item, index) => {
+    //메뉴 수정 모달 렌더링
+    const renderEditMenu = Selected.map((item, index) => {
 
-    return(
-      <div style={{textAlign:'center'}} > 
-        <img style={{ maxWidth: '60%' }} src={`http://localhost:5000/${Selected[index].image}`}/>
-        <br/>
-        <div style={{textAlign:'left'}}>
-        메뉴 : <Input defaultValue={ChangedName} onChange={menuChangeHandler}/>
-        가격 : <Input defaultValue={ChangedPrice} onChange={priceChangeHandler}/>
-        </div>
-      </div>
-    )
-  })
+        return(
+            <div style={{textAlign:'center'}} > 
+                <img style={{ maxWidth: '60%' }} src={`http://localhost:5000/${Selected[index].image}`}/>
+                <br/>
+                <div style={{textAlign:'center'}}>
+                    메뉴 : <Input defaultValue={Selected[0].name} onChange={menuChangeHandler} style={{width:'200px'}}/>
+                    <br />
+                    가격 : <Input defaultValue={Selected[0].price} onChange={priceChangeHandler} style={{width:'200px'}}/>
+                </div>
+            </div>
+        )
+    })
 
   
   //테이블 columns
@@ -262,10 +228,10 @@ function OwnerMenuPage(props) {
         </div>
         <br />
 
-          <Table rowSelection={rowSelection} columns={columns} dataSource={ListMenu} />
+          <Table rowSelection={rowSelection} columns={columns} dataSource={menu} />
           
           {/*메뉴 수정 클릭시 나오는 모달 창 */}
-          <Modal title="메뉴 수정" visible={IsModalVisible} onOk={updateMenu} onCancel={handleCancel}>
+          <Modal title="메뉴 수정" visible={IsModalVisible} onOk={updateMenu} onCancel={handleCancel} destroyOnClose={true}>
             <Form.Item>
               {renderEditMenu}
             </Form.Item>

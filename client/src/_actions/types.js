@@ -12,3 +12,7 @@ export const AUTH_OWNER = 'auth_owner';
 export const LOGOUT_OWNER = 'logout_owner';
 
 export const GET_MENU = 'get_menu';
+export const ADD_MENU = 'add_menu';
+export const CHANGE_STATE = 'change_state';
+export const CHANGE_MENU = 'change_menu';
+export const DELETE_MENU = 'delete_menu';

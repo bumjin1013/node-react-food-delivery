@@ -77,15 +77,25 @@ router.get("/stores_by_id",  (req, res) => {
   Store.find({ _id: { $in: storeIds } })
     .populate("id")
     .exec((err, store) => {
+
       if (err) return res.status(400).send(err);
       return res.status(200).json(store);
     });
+
+    
 });
 
-router.get("/stores_by_id/getMenu", (req, res) => {
-
+//getMenu
+router.get("/menu/storeId", (req, res) => {
+  
+  Store.findOne({ _id : req.query.id})
+  .exec((err, store) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json(store.menu);
+    
+  });
+    
 })
-
 
 
 //메뉴 추가
@@ -194,10 +204,7 @@ router.post('/editstoreinfo', (req, res) => {
 })
 
 //메뉴 수정
-router.post('/updatemenu', (req, res) => {
-
-  console.log(req.body);
-
+router.post('/changemenu', (req, res) => {
 
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
     "$set": {
@@ -206,7 +213,7 @@ router.post('/updatemenu', (req, res) => {
         }},{ new: true },
         (err, changedInfo) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true, changedInfo })
+            res.status(200).json( changedInfo.menu )
         }
   );
 })
@@ -214,7 +221,6 @@ router.post('/updatemenu', (req, res) => {
 //메뉴 삭제
 router.post('/deletemenu', (req, res) => {
 
-  console.log(req.body);
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
     "$pull": {
       "menu": {
@@ -222,7 +228,7 @@ router.post('/deletemenu', (req, res) => {
       }}},{ new: true },
         (err, changedInfo) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true, changedInfo })
+            res.status(200).json(changedInfo.menu)
         }
   );
 })
@@ -230,14 +236,14 @@ router.post('/deletemenu', (req, res) => {
 // 판매중 <-> 품절 상태 변경
 router.post('/changestate', (req, res) => {
 
-  console.log(req.body);
+  console.log('body', req.body);
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
     "$set": {
       "menu.$.state": req.body.state
       }},{ new: true },
-        (err, changedInfo) => {
+        (err, store) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true, changedInfo })
+            res.status(200).json(store.menu)
         }
   );
 })
