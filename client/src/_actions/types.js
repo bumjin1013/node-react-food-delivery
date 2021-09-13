@@ -11,3 +11,4 @@ export const REGISTER_OWNER = 'register_owner';
 export const AUTH_OWNER = 'auth_owner';
 export const LOGOUT_OWNER = 'logout_owner';
 
+export const GET_MENU = 'get_menu';

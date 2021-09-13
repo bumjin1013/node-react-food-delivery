@@ -70,7 +70,7 @@ router.get("/stores_by_id",  (req, res) => {
     storeIds = ids.map((item) => {
       return item;
     });
-  }
+  } 
 
   //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
 
@@ -81,6 +81,10 @@ router.get("/stores_by_id",  (req, res) => {
       return res.status(200).json(store);
     });
 });
+
+router.get("/stores_by_id/getMenu", (req, res) => {
+
+})
 
 
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
-   ADD_MENU_STORE
+   ADD_MENU_STORE,
+   GET_MENU
 } from './types';
 import { STORE_SERVER } from '../components/Config.js';
 
@@ -10,6 +11,16 @@ export function addMenu(dataToSubmit){
     
     return {
         type: ADD_MENU_STORE,
+        payload: request
+    }
+}
+
+export function getMenu(){
+    const request = axios.get(`${STORE_SERVER}/stores_by_id/getMenu`)
+        .then(response => response.data);
+    
+    return {
+        type: GET_MENU,
         payload: request
     }
 }

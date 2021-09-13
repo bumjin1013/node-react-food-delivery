@@ -58,23 +58,7 @@ function OwnerOrderCompletedPage(props) {
   const [Store, setStore] = useState({});
     return (
       <div>
-        <Layout>
-            <Header className="header">
-      <div className="logo" />
-
-    <Menu
-      theme="dark"
-      mode="horizontal"
-      defaultSelectedKeys={['0']}
-      style={{ lineHeight: '64px' }}
-    >
-       <Menu.Item key="1">
-        <a href={`/store/${Store._id}/detail`}>
-          {Store.title}
-        </a>
-      </Menu.Item>
-    </Menu>
-    </Header>
+       
     <Layout>
       <Sider width={200} style={{ background: '#fff' }}>
         <Menu
@@ -93,20 +77,20 @@ function OwnerOrderCompletedPage(props) {
             }
           >
             <Menu.Item key="1">
-                <a href={`/store/${Store._id}/order/proceeding`} >주문현황</a>
+                <a href={`/store/${storeId}/order/proceeding`} >주문현황</a>
             </Menu.Item>
             <Menu.Item key="2">
-                <a href={`/store/${Store._id}/order/completed`} >이전주문</a>
+                <a href={`/store/${storeId}/order/completed`} >이전주문</a>
             </Menu.Item>
           </SubMenu>
             <Menu.Item key="3">
-                <a href={`/store/${Store._id}/menu`} >메뉴관리</a>
+                <a href={`/store/${storeId}/menu`} >메뉴관리</a>
             </Menu.Item>
             <Menu.Item key="4">
-                <a href={`/store/${Store._id}/review`} >리뷰관리</a>
+                <a href={`/store/${storeId}/review`} >리뷰관리</a>
             </Menu.Item>
             <Menu.Item key="5">
-                <a href={`/store/${Store._id}/setting`} >상점관리</a>
+                <a href={`/store/${storeId}/setting`} >상점관리</a>
             </Menu.Item>
           
         </Menu>
@@ -127,7 +111,7 @@ function OwnerOrderCompletedPage(props) {
         </Content>
       </Layout>
     </Layout>
-  </Layout>
+
         </div>
     )
 }
