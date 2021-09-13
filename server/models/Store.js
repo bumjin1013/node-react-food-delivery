@@ -41,10 +41,8 @@ const storeSchema = mongoose.Schema({
         image: { type: [] },
         comments: { type: [] }
     }],
-    location: {
-        address: { type: String, default: "주소를 입력해주세요" },
-        latitue: { type: String, default: 0 },
-        longitude: { type: String, default: 0 }
+    address: { 
+        type: String, default: "주소를 입력해주세요"
     },
     order: {
         type: Array,

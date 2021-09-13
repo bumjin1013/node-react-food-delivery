@@ -17,8 +17,8 @@ function OwnerStoreSettingPage(props) {
 
         //현재 DB에 있는 상점 Description을 Description state에 넣어줌.
         setDescription(response.data[0].description);
-
-        setLocation(response.data[0].location.address);
+        //주소 
+        setAddress(response.data[0].address);
         
       })
       .catch((err) => alert(err));
@@ -26,19 +26,20 @@ function OwnerStoreSettingPage(props) {
      
   }, []);
 
+
   const storeId = props.match.params.storeId;
   const [Store, setStore] = useState({});
   const [Description, setDescription] = useState();
-  const [Location, setLocation] = useState([])
+  const [Address, setAddress] = useState();
 
   //수정 버튼을 눌렀을 때 true -> TextArea에 Description내용이 들어가게 해야함, 다시 한번 누르면 false
   const [Edit, setEdit] = useState(false);
   const [ChangedDescription, setChangedDescription] = useState(Description);
 
   const renderMap = () => {
-    console.log(Location);
+
     return (
-      <MapContainer address={Location} />
+      <MapContainer address={Address} title={Store.title} />
     )
   }
   
@@ -156,9 +157,9 @@ function OwnerStoreSettingPage(props) {
           </div>
         }
         <br />
-        주소 : {Location} 
+        주소 : {Address} 
   
-        {Location.length > 0 ? renderMap() : <Icon type="loading" />}
+        {Address ? renderMap() : <Icon type="loading" />}
 
         </Content>
       </Layout>

@@ -22,6 +22,7 @@ function UserStorePage(props) {
         console.log(response.data[0])
         setListMenu(response.data[0].menu);
         setReview(response.data[0].review);
+        setAddress(response.data[0].address)
       })
       .catch((err) => alert(err));
 
@@ -32,6 +33,7 @@ function UserStorePage(props) {
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
   const [Review, setReview] = useState([]);
+  const [Address, setAddress] = useState([]);
  
   const renderMenu = ListMenu.map((menu, index) => {
 
@@ -163,8 +165,9 @@ function UserStorePage(props) {
 
             {/* 정보 탭 */}
             <TabPane tab="정보" key="2">
-              <div style={{whiteSpace: 'pre-wrap'}} >
+              <div style={{whiteSpace: 'pre-wrap', float:'center'}} >
                 {Store.description}
+                <MapContainer address={Address} title={Store.title}/>
               </div>
               
             </TabPane>
