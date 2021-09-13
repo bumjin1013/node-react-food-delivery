@@ -2,9 +2,11 @@ import React from 'react'
 import SingleComment from './SingleComment';
 
 function Comments(props) {
+
+    console.log(props.CommentsLists);
     return (
         <div>
-            {props.CommentLists && props.CommentLists.map((comment, index) => (
+            {props.review && props.review.map((comment, index) => (
                 (!comment.responseTo &&
                     <React.Fragment>
                         <SingleComment comment={comment} storeId={props.storeId}/>

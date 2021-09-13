@@ -16,3 +16,9 @@ export const ADD_MENU = 'add_menu';
 export const CHANGE_STATE = 'change_state';
 export const CHANGE_MENU = 'change_menu';
 export const DELETE_MENU = 'delete_menu';
+
+export const GET_ORDER = 'get_order';
+export const UPDATE_ORDER_STATE = 'update_order_state';
+
+export const GET_REVIEW = 'get_review';
+export const ADD_COMMENTS = 'add_comments';

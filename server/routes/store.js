@@ -110,7 +110,7 @@ router.post("/addMenu", (req, res) => {
       }}},{ new: true },
       (err, menuInfo) => {
           if (err) return res.status(400).json({ success: false, err })
-          res.status(200).send({ success: true, menuInfo })
+          res.status(200).send( menuInfo.menu )
       }
     )
 });
@@ -147,6 +147,18 @@ router.post("/addreview", (req, res) => {
     )
 });
 
+//getOrder
+router.get("/order/storeId", (req, res) => {
+  
+  Store.findOne({ _id : req.query.id})
+  .exec((err, store) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json(store.order);
+    
+  });
+  
+})
+
 //상점의 order에 주문내역 넣기
 router.post('/order', (req, res) => {
   Store.findOneAndUpdate({ _id: req.body.storeId },{
@@ -170,18 +182,28 @@ router.post('/order', (req, res) => {
   );
 })
 
+
+//getReview
+router.get("/review/storeId", (req, res) => {
+  
+  Store.findOne({ _id : req.query.id})
+  .exec((err, store) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json(store.review);
+    
+  });
+})
+
 //사장님 댓글 추가
 router.post('/addcomments', (req, res) => {
-
-  console.log(req.body);
 
   Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: {_id: req.body.reviewId }}},{
     "$push": {
       "review.$.comments": req.body.comments
         }},{ new: true },
-        (err, commentsInfo) => {
+        (err, store) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true, commentsInfo })
+            res.status(200).json(store.review)
         }
   );
 })
@@ -189,8 +211,6 @@ router.post('/addcomments', (req, res) => {
 
 //상점 정보 수정
 router.post('/editstoreinfo', (req, res) => {
-
-  console.log(req.body);
 
   Store.findOneAndUpdate({_id: req.body.storeId},{
     $set: {
@@ -200,7 +220,7 @@ router.post('/editstoreinfo', (req, res) => {
             if (err) return res.status(400).json({ success: false, err })
             res.status(200).json({ success: true, changedInfo })
         }
-  );
+    );
 })
 
 //메뉴 수정
@@ -236,7 +256,6 @@ router.post('/deletemenu', (req, res) => {
 // 판매중 <-> 품절 상태 변경
 router.post('/changestate', (req, res) => {
 
-  console.log('body', req.body);
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
     "$set": {
       "menu.$.state": req.body.state
@@ -255,8 +274,6 @@ router.post('/changestate', (req, res) => {
 // 배달완료 -> 배달완료 
 router.post('/updateorderstate', (req, res) => {
 
-  console.log(req.body);
-
   //body로 받은 storeId, orderId를 이용하여 찾고 state를 body.state로 변경
   Store.findOneAndUpdate({_id: req.body.storeId, order: { $elemMatch: {orderId: req.body.orderId }}},{
     "$set": {
@@ -264,7 +281,7 @@ router.post('/updateorderstate', (req, res) => {
       }},{ new: true },
         (err, changedInfo) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true, changedInfo })
+            res.status(200).json(changedInfo.order)
         }
   );
 })

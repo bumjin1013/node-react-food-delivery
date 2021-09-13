@@ -1,32 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar, Rate, Input, Button } from 'antd';
-import axios from 'axios';
-import moment from 'moment';
 import Comments from './Section/Comments';
+import { getReview } from '../../../_actions/store_actions';
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
-const { TextArea } = Input;
-
+const { Content, Sider } = Layout;
 
 function OwnerReviewPage(props) {
 
-
-  useEffect(() => {
-    axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
-      .then((response) => {
-        setStore(response.data[0]);
-        setCommentLists(response.data[0].review);
-        console.log(response.data[0])
-      })
-      .catch((err) => alert(err));
-
-     
-  }, []);
-
+  const dispatch = useDispatch();
   const storeId = props.match.params.storeId;
 
-  const [Store, setStore] = useState({});
-  const [CommentLists, setCommentLists] = useState([]);
+  useEffect(() => {
+    dispatch(getReview(storeId));
+  }, []);
+
+  const review = useSelector(state => state.store.review)
 
     return (
       <div>
@@ -79,10 +68,8 @@ function OwnerReviewPage(props) {
           }}
         >
 
-
-          <Comments CommentLists={CommentLists} storeId={storeId}/>
-
-
+          {review && review.length > 0 ? <Comments review={review} storeId={storeId}/> : null}
+          
         </Content>
       </Layout>
     </Layout>

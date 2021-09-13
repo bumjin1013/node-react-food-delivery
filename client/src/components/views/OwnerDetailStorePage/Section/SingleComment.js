@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { Comment, Avatar, Button, Input, Tooltip, Rate,  } from 'antd';
-import axios from 'axios';
+import { Comment, Avatar, Button, Input, Tooltip, Rate, message } from 'antd';
+import { addcomments } from '../../../../_actions/store_actions';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 const { TextArea } = Input;
 
 function SingleComment(props) {
 
-    
+    const dispatch = useDispatch();
     const [CommentValue, setCommentValue] = useState("")
     const [OpenReply, setOpenReply] = useState(false)
 
@@ -28,16 +28,9 @@ function SingleComment(props) {
             comments: CommentValue
         }
 
-
-        axios.post('/api/store/addcomments', body)
-        .then(response => {
-          if (response.data.success) {
-            alert('댓글을 등록했습니다.')
-            window.location.reload()
-          } else {
-            alert('댓글 등록에 실패하였습니다.')
-          }
-      })
+        dispatch(addcomments(body));
+        setOpenReply(false);
+        message.success('댓글을 등록했습니다.');
     }
     
 

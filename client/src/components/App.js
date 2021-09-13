@@ -16,7 +16,6 @@ import OwnerOrderProceedingPage from './views/OwnerDetailStorePage/OwnerOrderPro
 import OwnerOrderCompletedPage from './views/OwnerDetailStorePage/OwnerOrderCompletedPage';
 import OwnerMenuPage from './views/OwnerDetailStorePage/OwnerMenuPage';
 import OwnerReviewPage from './views/OwnerDetailStorePage/OwnerReviewPage';
-import AddMenuPage from './views/OwnerDetailStorePage/Section/AddMenuPage';
 import StoreListPage from './views/StorePage/StoreListPage/StoreListPage';
 import UserStorePage from './views/UserStorePage/UserStorePage';
 import OrderPage from './views/OrderPage/OrderPage';
@@ -48,7 +47,7 @@ function App() {
           <Route exact path="/store/:storeId/menu" component={AuthOwner(OwnerMenuPage, true)} />
           <Route exact path="/store/:storeId/review" component={AuthOwner(OwnerReviewPage, true)} />
           <Route exact path="/store/:storeId/setting" component={AuthOwner(OwnerStoreSettingPage, true)} />
-          <Route exact path="/store/:storeId/menu/add" component={AuthOwner(AddMenuPage, true)} />
+
           
           <Route exact path="/store/:category" component={Auth(StoreListPage, null)} />
 
