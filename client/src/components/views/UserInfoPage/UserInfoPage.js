@@ -93,7 +93,7 @@ function UserInfoPage() {
           <br />   
           <h2><Icon type="smile"/> 쿠폰 </h2>
           <Card style={{ width: 'auto' }}>
-            {renderCoupon}
+            {renderCoupon.length > 0 ? renderCoupon : <Empty/>}
           </Card>
            
         </div>

@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar, Rate, Input, Button } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Comment, Tooltip, Avatar, Rate, Input, Button, Collapse } from 'antd';
 import Comments from './Section/Comments';
 import { getReview } from '../../../_actions/store_actions';
+import { DatePicker } from 'antd';
+
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { Panel } = Collapse;
+
 
 function OwnerReviewPage(props) {
 
@@ -14,6 +19,21 @@ function OwnerReviewPage(props) {
   useEffect(() => {
     dispatch(getReview(storeId));
   }, []);
+
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
+
+  const callback = (key) => {
+    console.log(key);
+  }
+
+  const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
+
 
   const review = useSelector(state => state.store.review)
 
@@ -67,7 +87,8 @@ function OwnerReviewPage(props) {
             minHeight: 280,
           }}
         >
-
+          <DatePicker onChange={onChange} />
+          <Button>별점 낮은 순</Button>
           {review && review.length > 0 ? <Comments review={review} storeId={storeId}/> : null}
           
         </Content>

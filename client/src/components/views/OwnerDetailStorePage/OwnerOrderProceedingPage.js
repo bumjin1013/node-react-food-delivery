@@ -21,10 +21,10 @@ function OwnerOrderProceedingPage(props) {
 
   const order = useSelector(state => state.store.order);
 
-  
 
   //주문 렌더링
-  const renderOrder = order && order.map((item, index) => {
+  // array.slice(0).reverse() 를 통해 원본 배열을 건드리지 않고 배열의 사본을 만들어 map 실행 
+  const renderOrder = order && order.slice(0).reverse().map((item, index) => {
 
     //주문확인
     const orderConfirm = () => {

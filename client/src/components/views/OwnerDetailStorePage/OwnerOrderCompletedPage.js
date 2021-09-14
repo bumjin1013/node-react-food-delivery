@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
+import { getOrder } from '../../../_actions/store_actions';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -9,22 +11,17 @@ const { Title } = Typography;
 
 function OwnerOrderCompletedPage(props) {
 
+  const dispatch = useDispatch();
+  const storeId = props.match.params.storeId;
 
   useEffect(() => {
-    axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
-      .then((response) => {
-        setStore(response.data[0]);
-        setOrder(response.data[0].order);
-      })
-      .catch((err) => alert(err));
-
-     
+    dispatch(getOrder(storeId))
   }, []);
 
-  const [Order, setOrder] = useState([]);
+  const order = useSelector(state => state.store.order);
 
   //이전주문 렌더링
-  const renderOrder = Order.map((order, index) => {
+  const renderOrder = order && order.slice(0).reverse().map((order, index) => {
     
     let menuList = "";
   
@@ -53,9 +50,7 @@ function OwnerOrderCompletedPage(props) {
     </Card>
     )
   })
-
-  const storeId = props.match.params.storeId;
-  const [Store, setStore] = useState({});
+ 
     return (
       <div>
        
