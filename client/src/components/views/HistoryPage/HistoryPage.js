@@ -27,7 +27,7 @@ function HistoryPage(props) {
     
     <div style={{ width: '60%', margin: '3rem auto' }}>
       <h2> <Icon type="read"/> 주문내역 </h2>      
-        {HistoryList && HistoryList.map((history, index) => (
+        {HistoryList && HistoryList.slice(0).reverse().map((history, index) => (
         (!history.responseTo &&
         <React.Fragment>
             <History history={history} writer={props.user.userData.nickname}/>
