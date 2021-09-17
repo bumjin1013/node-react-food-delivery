@@ -16,8 +16,6 @@ const io = require("socket.io")(server, {
 
 const config = require("./config/key");
 
-const { Chat } = require("./models/Chat");
-
 // const mongoose = require("mongoose");
 // mongoose
 //   .connect(config.mongoURI, { useNewUrlParser: true })
@@ -25,6 +23,7 @@ const { Chat } = require("./models/Chat");
 //   .catch(err => console.error(err));
 
 const mongoose = require("mongoose");
+const { SocketAddress } = require("net");
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
@@ -66,6 +65,19 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
   });
 }
+
+
+//주문을 완료하면 유저와 사장님을 소켓으로 연결시켜줌
+io.on("connection", (socket) => {
+  socket.on("order", data => {                       
+    socket.join(data.orderId);
+  })
+
+  socket.on("userToOwner", data => {
+  
+  })
+})
+
 
 const port = process.env.PORT || 5000
 

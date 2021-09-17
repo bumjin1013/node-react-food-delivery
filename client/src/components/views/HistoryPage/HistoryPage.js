@@ -29,8 +29,8 @@ function HistoryPage(props) {
       <h2> <Icon type="read"/> 주문내역 </h2>      
         {HistoryList && HistoryList.slice(0).reverse().map((history, index) => (
         (!history.responseTo &&
-        <React.Fragment>
-            <History history={history} writer={props.user.userData.nickname}/>
+        <React.Fragment key={index}>
+            <History history={history} writer={props.user.userData.nickname} />
         </React.Fragment>
       )))}
     </div>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Icon, Card, Button, Input, Empty } from 'antd';
-
-
+import GetAddress from './Section/GetAddress';
 
 function UserInfoPage() {
     useEffect(() => {
@@ -23,6 +22,8 @@ function UserInfoPage() {
     const [IsEdit, setIsEdit] = useState(false);
     const [EditedNickname, setEditedNickname] = useState(UserInfo.nickname);
     const [Coupon, setCoupon] = useState([]);
+    const [Latitude, setLatitude] = useState(); //위도
+    const [Longitude, setLongitude] = useState(); //경도
 
     const editClick = () => {
       setIsEdit(true);
@@ -64,6 +65,20 @@ function UserInfoPage() {
       )}
     })
 
+    //현재 디바이스의 위도 경도 가져오기
+    navigator.geolocation.getCurrentPosition(function(position) {
+      setLatitude(position.coords.latitude); // 위도
+      setLongitude(position.coords.longitude); // 경도
+    })
+    
+    const getAddress = () => {
+      
+      return(
+        <GetAddress latitude={Latitude} longitude={Longitude} />
+      )
+    }
+        
+          
     return (
         <div style={{ width: '60%', margin: '3rem auto' }}>
             <h2> <Icon type="user"/> 사용자 정보 </h2> 
@@ -73,6 +88,9 @@ function UserInfoPage() {
                 <br/>
                 <br/>
                 이름 : {UserInfo.name}
+                <br />
+                <br />
+                나의 위치 : { Latitude&&Longitude ? getAddress() : <Icon type="loading" />}
                 <br/>
                 <br/>
                 닉네임 :
@@ -95,7 +113,8 @@ function UserInfoPage() {
           <Card style={{ width: 'auto' }}>
             {renderCoupon.length > 0 ? renderCoupon : <Empty/>}
           </Card>
-           
+          
+          
         </div>
     )
 }

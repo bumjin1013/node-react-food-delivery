@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Input, Divider, Button, Modal, Card, Radio, Typography } from 'antd';
 import axios from 'axios';
+import { io } from 'socket.io-client';
+
 const { Title } = Typography;
 
 var IMP = window.IMP; // 생략 가능
@@ -32,6 +34,8 @@ function OrderPage(props) {
     const [TotalPrice, setTotalPrice] = useState();
     const [DiscountedPrice, setDiscountedPrice] = useState();
     const [IsCouponUsed, setIsCouponUsed] = useState(false);
+
+    const socket = io("http://localhost:5000"); //connet client-to-server
 
     const addressChangeHandler = (event) => {
         setAddress(event.currentTarget.value);
@@ -155,9 +159,13 @@ function OrderPage(props) {
                 axios.post('/api/users/order', body) && axios.post('/api/store/order', body)
                 .then(response => {
                     if (response.data.success) {
-                        alert('주문에 성공했습니다.')
+                        alert('주문에 성공했습니다.');
+                        //소켓 연결
+                        socket.emit("order", orderId);
+
+                        props.history.push('/history');
                     } else {
-                        alert('주문에 실패하였습니다.')
+                        alert('주문에 실패하였습니다.');
                     }
                 })
             } else {

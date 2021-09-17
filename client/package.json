@@ -15,6 +15,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.8.6",
     "react-dropzone": "^11.3.4",
+    "react-geocode": "^0.2.3",
     "react-icons": "^3.7.0",
     "react-image-gallery": "^1.2.5",
     "react-kakao-maps": "Musma/react-kakao-maps#0.0.1",

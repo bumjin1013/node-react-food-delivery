@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LeftMenu from './Sections/LeftMenu';
 import RightMenu from './Sections/RightMenu';
+import Location from './Sections/Location';
 import { Drawer, Button, Icon } from 'antd';
 import './Sections/Navbar.css';
 
@@ -14,6 +15,8 @@ function NavBar() {
   const onClose = () => {
     setVisible(false)
   };
+
+  
 
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
@@ -43,6 +46,7 @@ function NavBar() {
           visible={visible}
         >
           <LeftMenu mode="inline" />
+          <Location />
           <RightMenu mode="inline" />
         </Drawer>
       </div>
