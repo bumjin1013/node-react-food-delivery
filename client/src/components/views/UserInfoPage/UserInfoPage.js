@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Icon, Card, Button, Input, Empty, Modal } from 'antd';
+import { Icon, Card, Button, Input, Empty, message } from 'antd';
 import GetAddress from './Section/GetAddress';
 import Post from '../../utils/Post';
 import Address from './Section/Address';
@@ -11,7 +11,6 @@ function UserInfoPage() {
     useEffect(() => {
         axios.get("/api/users/userinfo").then((response) => {
           if (response.data.success) {
-            console.log(response.data);
               setUserInfo(response.data.userInfo);
               setNickname(response.data.userInfo.nickname);
               setCoupon(response.data.userInfo.coupon)
@@ -29,27 +28,33 @@ function UserInfoPage() {
     const [Latitude, setLatitude] = useState(); //위도
     const [Longitude, setLongitude] = useState(); //경도
 
-    
+    console.log(EditedNickname);
     const editClick = () => {
       setIsEdit(true);
     }
     const editSuccess = () => {
-      setIsEdit(false);
-      setNickname(EditedNickname);
-      
 
-      const body = {
-        nickname: EditedNickname
-      }
-  
-      axios.post('/api/users/edituserinfo', body)
-        .then(response => {
-          if (response.data.success) {
-            alert('닉네임을 수정하였습니다.')
-          } else {
-            alert('닉네임 수정에 실패하였습니다.')
-          }
-      })
+        if(EditedNickname == '') {
+            message.error('변경할 닉네임을 입력해주세요.');
+        } else {
+            setIsEdit(false);
+            setNickname(EditedNickname);
+            
+      
+            const body = {
+              nickname: EditedNickname
+            }
+        
+            axios.post('/api/users/edituserinfo', body)
+              .then(response => {
+                if (response.data.success) {
+                  message.success('닉네임을 수정하였습니다.')
+                } else {
+                  message.error('닉네임 수정에 실패하였습니다.')
+                }
+            })
+        }
+      
     }
 
     const nicknameChangeHandler = (event) => {

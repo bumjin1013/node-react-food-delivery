@@ -1,7 +1,7 @@
 import React , { useState }from 'react'
 import { useDispatch } from 'react-redux';
 import Post from '../../../utils/Post';
-import { Button, Modal, Input } from 'antd';
+import { Button, Modal, Input, message } from 'antd';
 import { updateAddress } from '../../../../_actions/user_actions';
 const { Search } = Input;
 
@@ -14,21 +14,24 @@ function Address(props) {
     const [DetailAddress, setDetailAddress] = useState();
     const [CurrentAddress, setCurrentAddress] = useState(props.address);
 
-    console.log('Current Address', CurrentAddress);
-
     const addAddress = () => { 
         setVisible(true);
     }
 
     const handleOk = () => {
         
-        let body = {
-            address: Address + ' ' + DetailAddress
+        if(Address == null){
+            message.error('주소를 입력해주세요.')
+        } else {
+            let body = {
+                address: Address + ' ' + DetailAddress
+            }
+            console.log(body);
+            dispatch(updateAddress(body))
+            setCurrentAddress(body.address);
+            setVisible(false);
         }
-        console.log(body);
-        dispatch(updateAddress(body))
-        setCurrentAddress(body.address);
-        setVisible(false);
+        
     }
     
     const handleCancel = () => {
