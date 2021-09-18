@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Icon, Card, Button, Input, Empty } from 'antd';
+import { Icon, Card, Button, Input, Empty, Modal } from 'antd';
 import GetAddress from './Section/GetAddress';
+import Post from '../../utils/Post';
+import Address from './Section/Address';
+
+const { Search } = Input;
 
 function UserInfoPage() {
     useEffect(() => {
@@ -25,6 +29,7 @@ function UserInfoPage() {
     const [Latitude, setLatitude] = useState(); //위도
     const [Longitude, setLongitude] = useState(); //경도
 
+    
     const editClick = () => {
       setIsEdit(true);
     }
@@ -77,6 +82,15 @@ function UserInfoPage() {
         <GetAddress latitude={Latitude} longitude={Longitude} />
       )
     }
+
+    const renderAddress = () => {
+        
+        return(
+            <Address address={UserInfo.address}/>
+        )
+    }
+
+    
         
           
     return (
@@ -90,7 +104,11 @@ function UserInfoPage() {
                 이름 : {UserInfo.name}
                 <br />
                 <br />
+                주소 : { UserInfo.address ? renderAddress() : <Icon type="loading" />}
+                <br/>
+                <br/>
                 나의 위치 : { Latitude&&Longitude ? getAddress() : <Icon type="loading" />}
+                
                 <br/>
                 <br/>
                 닉네임 :

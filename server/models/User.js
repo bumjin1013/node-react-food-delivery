@@ -41,6 +41,10 @@ const userSchema = mongoose.Schema({
     coupon: {
         type: Array
     },
+    address: {
+        type: String,
+        default: null
+    },
     image: String,
     token : {
         type: String,

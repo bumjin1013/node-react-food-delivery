@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Menu, Icon, Badge, Modal, Card, Button,Tooltip, Empty } from 'antd';
+import { Icon, Card, Button, message } from 'antd';
 import { useSelector } from "react-redux";
 import { removeCartItem, getCartItems } from '../../../_actions/user_actions';
 
@@ -51,8 +51,8 @@ function CartPage(props) {
         if(user.cartDetail && user.cartDetail.length > 0){
             props.history.push('/order');
             } else {
-              alert('장바구니에 메뉴를 추가해주세요.');
-            }
+            message.error('장바구니에 메뉴를 추가해주세요.');
+        }
     }
 
     return (

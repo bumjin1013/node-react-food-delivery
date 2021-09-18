@@ -6,7 +6,8 @@ import {
     LOGOUT_USER,
     ADD_TO_CART,
     GET_CART_ITEMS,
-    REMOVE_CART_ITEM
+    REMOVE_CART_ITEM,
+    UPDATE_ADDRESS
 } from './types';
 import { USER_SERVER } from '../components/Config.js';
 
@@ -79,6 +80,16 @@ export function removeCartItem(body) {
 
     return {
         type: REMOVE_CART_ITEM,
+        payload: request
+    }
+}
+
+export function updateAddress(body) {
+    const request = axios.post(`${USER_SERVER}/updateaddress`, body)
+    .then(response => response.data);
+
+    return {
+        type: UPDATE_ADDRESS,
         payload: request
     }
 }

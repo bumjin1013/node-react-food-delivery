@@ -21,6 +21,7 @@ router.get("/auth", auth, (req, res) => {
         lastname: req.user.lastname,
         nickname: req.user.nickname,
         role: req.user.role,
+        address: req.user.address,
         image: req.user.image,
         cart: req.user.cart,
         history: req.user.history,
@@ -266,6 +267,19 @@ router.post('/edituserinfo', auth, (req, res) => {
 
     User.findOneAndUpdate({ _id: req.user._id },{
         $set:{nickname: req.body.nickname}  
+        },{ new: true },
+        (err, userInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, userInfo })
+        }
+    )
+})
+
+//주소 추가
+router.post('/updateaddress', auth, (req, res) => {
+
+    User.findOneAndUpdate({ _id: req.user._id },{
+        $set:{address: req.body.address}  
         },{ new: true },
         (err, userInfo) => {
             if (err) return res.status(400).json({ success: false, err })

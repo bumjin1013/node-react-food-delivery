@@ -49,8 +49,8 @@ function RegisterPage(props) {
       validationSchema={Yup.object().shape({
         name: Yup.string()
           .required('Name is required'),
-        lastName: Yup.string()
-          .required('Last Name is required'),
+        nickName: Yup.string()
+          .required('nickname is required'),
         email: Yup.string()
           .email('Email is invalid')
           .required('Email is required'),
@@ -98,10 +98,10 @@ function RegisterPage(props) {
         } = props;
         return (
           <div className="app">
-            <h2>Sign up</h2>
+            <h2>회원가입</h2>
             <Form style={{ minWidth: '375px' }} {...formItemLayout} onSubmit={handleSubmit} >
 
-              <Form.Item required label="Name">
+              <Form.Item required label="이름">
                 <Input
                   id="name"
                   placeholder="Enter your name"

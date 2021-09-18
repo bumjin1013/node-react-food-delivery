@@ -5,7 +5,8 @@ import {
     LOGOUT_USER,
     ADD_TO_CART,
     GET_CART_ITEMS,
-    REMOVE_CART_ITEM
+    REMOVE_CART_ITEM,
+    UPDATE_ADDRESS
 } from '../_actions/types';
  
 
@@ -19,6 +20,8 @@ export default function(state={},action){
             return {...state, userData: action.payload }
         case LOGOUT_USER:
             return {...state, cartDetail: null}
+        case UPDATE_ADDRESS:
+            return{...state, userData: action.payload}
         case ADD_TO_CART:
             return {
                 ...state, 
