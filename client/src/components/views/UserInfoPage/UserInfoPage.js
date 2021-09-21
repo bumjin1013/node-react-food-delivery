@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Icon, Card, Button, Input, Empty, message } from 'antd';
 import GetAddress from './Section/GetAddress';
-import Post from '../../utils/Post';
 import Address from './Section/Address';
 
 const { Search } = Input;
@@ -28,7 +27,6 @@ function UserInfoPage() {
     const [Latitude, setLatitude] = useState(); //위도
     const [Longitude, setLongitude] = useState(); //경도
 
-    console.log(EditedNickname);
     const editClick = () => {
       setIsEdit(true);
     }
@@ -99,7 +97,7 @@ function UserInfoPage() {
         
           
     return (
-        <div style={{ width: '60%', margin: '3rem auto' }}>
+        <div style={{ width: '1000px', margin: '3rem auto' }}>
             <h2> <Icon type="user"/> 사용자 정보 </h2> 
 
             <Card style={{ width: 'auto' }}>

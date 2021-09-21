@@ -13,6 +13,7 @@ const io = require("socket.io")(server, {
     credentials: true
   }
 });
+const { Store } = require("./models/Store");
 
 const config = require("./config/key");
 
@@ -70,12 +71,26 @@ if (process.env.NODE_ENV === "production") {
 //주문을 완료하면 유저와 사장님을 소켓으로 연결시켜줌
 io.on("connection", (socket) => {
   socket.on("order", data => {                       
-    socket.join(data.orderId);
+    socket.join(data);
+    console.log(data);
   })
 
-  socket.on("userToOwner", data => {
-  
-  })
+  //주문정보를 DB에서 저장되어 있는지 확인 후 검색해 사장에게 보냄.
+  socket.on("Input Order", data => {
+    User.findOne({_id: data.storeId, order: {$elemMatch: {orderId: data.orderId}}},{
+      "_id": false,
+      "order": {
+          $elemMatch:{
+              "orderId": data.orderId
+          }
+        }
+      })
+  }).exec((err, order) => {
+        
+      if (err) console.log(err);
+      return io.emit("Output Order", order)
+      
+  });
 })
 
 

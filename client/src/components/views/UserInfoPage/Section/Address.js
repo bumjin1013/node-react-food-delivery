@@ -1,6 +1,6 @@
 import React , { useState }from 'react'
 import { useDispatch } from 'react-redux';
-import Post from '../../../utils/Post';
+import Post from './Post';
 import { Button, Modal, Input, message } from 'antd';
 import { updateAddress } from '../../../../_actions/user_actions';
 const { Search } = Input;

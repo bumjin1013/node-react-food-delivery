@@ -35,7 +35,7 @@ function LandingPage(props) {
     }
     
     return (
-        <div style={{ width: '75%', margin: '3rem auto' }}>
+        <div style={{ width: '1000px', margin: '3rem auto' }}>
             <div style={{ textAlign: 'center' }}>
                 <img src={Banner} style={{width: '75%'}} onClick={() => getCoupon()}/>
             </div>

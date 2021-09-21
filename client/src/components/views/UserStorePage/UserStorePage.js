@@ -144,7 +144,7 @@ function UserStorePage(props) {
   
 
     return (
-        <div style={{ width: '75%', margin: '3rem auto' }}>
+        <div style={{ width: '1000px', margin: '3rem auto' }}>
           <PageHeader
             style={{
               border: '1px solid rgb(235, 237, 240)',
