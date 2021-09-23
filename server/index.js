@@ -70,29 +70,39 @@ if (process.env.NODE_ENV === "production") {
 
 //주문을 완료하면 유저와 사장님을 소켓으로 연결시켜줌
 io.on("connection", (socket) => {
-  socket.on("order", data => {                       
-    socket.join(data);
-    console.log(data);
+  console.log('connected');
+  //룸에 입장
+  socket.on("Join Room", storeId => {      
+    //주문번호를 가지고와서 room name = orderId                 
+    socket.join(storeId);
+    console.log('storeId에 연결됨.');
+    
+  socket.on("Order Complete", data => {
+    socket.join(data.storeId);
+    console.log("주문에 성공하고" + data.storeId + "에 들어감");
   })
 
-  //주문정보를 DB에서 저장되어 있는지 확인 후 검색해 사장에게 보냄.
-  socket.on("Input Order", data => {
-    User.findOne({_id: data.storeId, order: {$elemMatch: {orderId: data.orderId}}},{
+})
+
+socket.on("Input Order", data => {
+  
+  console.log('Input order');
+  setTimeout(() => {
+    Store.findOne({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
       "_id": false,
       "order": {
           $elemMatch:{
               "orderId": data.orderId
           }
         }
-      })
-  }).exec((err, order) => {
-        
+      }).exec((err, order) => {
       if (err) console.log(err);
-      return io.emit("Output Order", order)
-      
-  });
+      return io.to(data.storeId).emit("Output Order", order)
+    });
+  }, 50);
+  
+  })
 })
-
 
 const port = process.env.PORT || 5000
 

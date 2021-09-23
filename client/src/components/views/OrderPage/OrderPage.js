@@ -35,7 +35,7 @@ function OrderPage(props) {
     const [DiscountedPrice, setDiscountedPrice] = useState();
     const [IsCouponUsed, setIsCouponUsed] = useState(false);
 
-    const socket = io("http://localhost:5000"); //connet client-to-server
+    
 
     const addressChangeHandler = (event) => {
         setAddress(event.currentTarget.value);
@@ -92,7 +92,7 @@ function OrderPage(props) {
     //10000000 ~ 99999999 까지의 난수 생성
     let ranNum = Math.floor(Math.random() * 99999999 + 10000000);
     //Date.now에 난수를 더하여 중복 방지
-    let orderId = Date.now() + '-' + ranNum;
+    let newOrderId = Date.now() + '-' + ranNum;
     
     const requestPay = () => {
 
@@ -109,7 +109,7 @@ function OrderPage(props) {
         IMP.request_pay({ // param
           pg: "html5_inicis",
           pay_method: "card",
-          merchant_uid: orderId,
+          merchant_uid: newOrderId,
           name: Cart[0].name,
           amount: IsCouponUsed ? DiscountedPrice : TotalPrice,
           buyer_email: props.user.userData.email,
@@ -152,7 +152,7 @@ function OrderPage(props) {
                     storeId: Cart[0].storeId,
                     storeName: Cart[0].storeName,
                     orderTime: Date(),
-                    orderId: Date.now(),
+                    orderId: newOrderId,
                     coupon: SelectedCoupon
                 }
               //DB에 저장
@@ -161,7 +161,14 @@ function OrderPage(props) {
                     if (response.data.success) {
                         alert('주문에 성공했습니다.');
                         //소켓 연결
-                        socket.emit("order", orderId);
+                        const socket = io(`http://localhost:5000`); //connet client-to-server
+                        let data = {
+                            orderId: body.orderId,
+                            storeId: body.storeId
+                        }
+                        
+                        socket.emit("Order Complete", data);
+                        
 
                         props.history.push('/history');
                     } else {

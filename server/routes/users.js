@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
-const async = require('async');
-const { Store } = require('../models/Store');
-const { set } = require('mongoose');
 
 //=================================
 //             User
