@@ -70,23 +70,16 @@ if (process.env.NODE_ENV === "production") {
 
 //주문을 완료하면 유저와 사장님을 소켓으로 연결시켜줌
 io.on("connection", (socket) => {
-  console.log('connected');
-  //룸에 입장
-  socket.on("Join Room", storeId => {      
-    //주문번호를 가지고와서 room name = orderId                 
-    socket.join(storeId);
-    console.log('storeId에 연결됨.');
-    
-  socket.on("Order Complete", data => {
+  
+ //StoreId로 Room을 생성, 유저가 order success 시에 Join Room을 통해 상점과 소켓으로 연결됨  
+  socket.on("Join Room", data => {      
     socket.join(data.storeId);
-    console.log("주문에 성공하고" + data.storeId + "에 들어감");
   })
 
-})
-
+//주문정보를 StoreId로 보냄
 socket.on("Input Order", data => {
   
-  console.log('Input order');
+  // Store 컬렉션에 저장된 주문정보를 소켓으로 연결된 상점에 전송
   setTimeout(() => {
     Store.findOne({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
       "_id": false,

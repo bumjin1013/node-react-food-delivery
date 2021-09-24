@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography} from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography } from 'antd';
 import { getOrder, updateOrderState } from '../../../_actions/store_actions';
 import axios from 'axios';
 import moment from 'moment';
 import { io } from 'socket.io-client';
+import NewOrder from './Section/NewOrder';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -17,13 +18,22 @@ function OwnerOrderProceedingPage(props) {
   const storeId = props.match.params.storeId;
   const socket = io(`http://localhost:5000`);
   
-  socket.emit("Join Room", storeId);
+  let data = { storeId: storeId }
+  socket.emit("Join Room", data);
 
+  const alertNewOrder = () => {
+    console.log('alertNewOrder')
+    return(
+      <NewOrder/>
+    )
+  }
+    
   useEffect(() => {
 
     socket.on("Output Order", dataFromBackEnd => { 
-
       console.log('backend', dataFromBackEnd);
+      alertNewOrder();
+
     })
     dispatch(getOrder(storeId))
   }, []);
@@ -166,7 +176,10 @@ function OwnerOrderProceedingPage(props) {
             minHeight: 280,
           }}
         >
+
+          
           {renderOrder}
+          
         </Content>
       </Layout>
     </Layout>

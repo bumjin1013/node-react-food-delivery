@@ -167,8 +167,9 @@ function OrderPage(props) {
                             storeId: body.storeId
                         }
                         
-                        socket.emit("Order Complete", data);
-                        
+                        //
+                        socket.emit("JoinRoom", data);
+                        socket.emit("Input Order", data);
 
                         props.history.push('/history');
                     } else {
