@@ -7,7 +7,8 @@ import {
     ADD_TO_CART,
     GET_CART_ITEMS,
     REMOVE_CART_ITEM,
-    UPDATE_ADDRESS
+    UPDATE_ADDRESS,
+    UPDATE_HISTORY_STATE
 } from './types';
 import { USER_SERVER } from '../components/Config.js';
 
@@ -90,6 +91,16 @@ export function updateAddress(body) {
 
     return {
         type: UPDATE_ADDRESS,
+        payload: request
+    }
+}
+
+export function updatehistoryState(body) {
+    const request = axios.post(`${USER_SERVER}/updateHistoryState`, body)
+    .then(response => response.data);
+
+    return {
+        type: UPDATE_HISTORY_STATE,
         payload: request
     }
 }

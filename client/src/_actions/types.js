@@ -6,6 +6,7 @@ export const ADD_TO_CART = 'add_to_cart';
 export const GET_CART_ITEMS = 'get_cart_items';
 export const REMOVE_CART_ITEM = 'remove_cart_item';
 export const UPDATE_ADDRESS = 'update_address';
+export const UPDATE_HISTORY_STATE = 'update_history_state';
 
 export const LOGIN_OWNER = 'login_owner';
 export const REGISTER_OWNER = 'register_owner';

@@ -164,7 +164,8 @@ function OrderPage(props) {
                         const socket = io(`http://localhost:5000`); //connet client-to-server
                         let data = {
                             orderId: body.orderId,
-                            storeId: body.storeId
+                            storeId: body.storeId,
+                            userId: props.user.userData._id
                         }
                         
                         //

@@ -224,9 +224,9 @@ router.post("/order", auth, (req, res) => {
               orderTime: req.body.orderTime,
               orderId: req.body.orderId,
               reviewAuth: true,
-              review: [{
-                  
-              }]
+              socketId: null,
+              review: [{}],
+              state: '가게에서 주문을 확인하고 있습니다.'
             }},
               $set:{cart: []} //주문 성공후 장바구니를 비워줌
             },{ new: true },
@@ -348,6 +348,8 @@ router.get('/payments', auth, (req, res) => {
         res.status(200).json({ success: true, paymentsInfo })
     });
 })
+
+
 
 
 module.exports = router;

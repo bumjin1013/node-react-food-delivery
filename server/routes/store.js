@@ -173,6 +173,7 @@ router.post('/order', (req, res) => {
           toRider: req.body.toRider,
           orderId: req.body.orderId,
           orderTime: req.body.orderTime,
+          socketId: null,
           state: "확인중"
         }}},{ new: true },
         (err, orderInfo) => {

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography, notification, message, Popconfirm } from 'antd';
 import { getOrder, updateOrderState } from '../../../_actions/store_actions';
-import axios from 'axios';
 import moment from 'moment';
 import { io } from 'socket.io-client';
-import NewOrder from './Section/NewOrder';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -17,28 +15,102 @@ function OwnerOrderProceedingPage(props) {
   const dispatch = useDispatch();
   const storeId = props.match.params.storeId;
   const socket = io(`http://localhost:5000`);
-  
-  let data = { storeId: storeId }
-  socket.emit("Join Room", data);
+  const order = useSelector(state => state.store.order);
 
-  const alertNewOrder = () => {
-    console.log('alertNewOrder')
-    return(
-      <NewOrder/>
-    )
-  }
+  let data = { storeId: storeId }
+  //본인 상점의 storeId로 만들어진 room에 입장.
+  socket.emit("Join Room", data);
+  
+  //새로운 주문 도착시 알림
+  const alertNewOrder = (data) => {
+
+    //닫기
+    const close = () => {
+      console.log(
+        'Notification was closed. Either the close button was clicked or duration time elapsed.',
+      );
+    }
+    
+    //주문 수락 버튼
+    const newOrderConfirm = () => {
+      //새로운 주문 주문내역에 추가
+      dispatch(getOrder(storeId))
+      message.success('주문을 수락하였습니다.');
+
+      //알림 닫기
+      notification.close(key)
+      
+      const body ={
+        storeId: storeId,
+        orderId: data.orderId,
+        state: "조리중"
+      }
+      
+      socket.emit('Update State', body)
+      //주문상태 update
+      dispatch(updateOrderState(body));
+    }
+
+    //주문 취소 버튼
+    const newOrderCancel = () => {
+      //알림 닫기
+      notification.close(key)
+
+      const body ={
+        storeId: storeId,
+        orderId: data.orderId,
+        state: "주문취소"
+      }
+
+      //주문상태 update
+      dispatch(updateOrderState(body));
+    }
+
+    //새로운 주문 알림 key값
+    const key = `open${Date.now()}`;
+
+    //새로 들어온 주문 내역 랜더링
+    const renderNewOrder = () => {
+      return(
+        <div>
+          주문번호 : {data.orderId}
+          <br/>        
+          주소 : {data.addresss}
+          <br/>
+          사장님께 : {data.toOwner}
+          <br/>
+          배달기사에게 : {data.toRider}
+          <br/>
+          결제금액 : {data.price}
+          <br/>
+          <Button type="primary" onClick={newOrderConfirm}>주문수락</Button>
+          <Button type="danger" onClick={newOrderCancel}>주문취소</Button>
+        </div>
+      )
+    }
+
+    //주문 알림 창
+    notification.open({
+      message: '주문이 들어왔습니다.',
+      description: renderNewOrder(),
+      duration: null,
+      key,
+      onClose: close,
+      icon: <Icon type="alert" style={{ color: '#108ee9' }}  />,
+    });
+  };
     
   useEffect(() => {
 
+    dispatch(getOrder(storeId))
+
     socket.on("Output Order", dataFromBackEnd => { 
       console.log('backend', dataFromBackEnd);
-      alertNewOrder();
-
+      alertNewOrder(dataFromBackEnd.order[0]);
     })
-    dispatch(getOrder(storeId))
   }, []);
 
-  const order = useSelector(state => state.store.order);
+  
 
 
   //주문 렌더링
@@ -64,7 +136,7 @@ function OwnerOrderProceedingPage(props) {
         orderId: item.orderId,
         state: "주문취소"
       }
-  
+      message.success('주문을 취소하였습니다.');
       dispatch(updateOrderState(body));
     }
 
@@ -86,7 +158,7 @@ function OwnerOrderProceedingPage(props) {
         orderId: item.orderId,
         state: "배달완료"
       }
-  
+      
       dispatch(updateOrderState(body));
     }
     let menuList = "";
@@ -100,7 +172,9 @@ function OwnerOrderProceedingPage(props) {
       <Card size="small" title={<Title level={4}>주문번호: {item.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{item.state}</Title>}
       actions={[
         <Button type="primary" onClick={orderConfirm}>주문 확인</Button>,
-        <Button type="danger" onClick={orderCancel}>주문 취소</Button>,
+        <Popconfirm placement="bottom" title={'주문취소를 누르면 다시 되돌릴 수 없습니다. 주문을 취소하시겠습니까?'} onConfirm={orderCancel} okText="확인" cancelText="취소">
+          <Button type="danger">주문 취소</Button>
+        </Popconfirm>,
         <Button type="primary" onClick={deliveryStart}>배달 출발</Button>,
         <Button type="primary" onClick={deliveryFinish}>배달 완료</Button>
       ]}
