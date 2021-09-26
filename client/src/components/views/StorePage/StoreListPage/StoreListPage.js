@@ -73,7 +73,7 @@ function StoreListPage(props) {
           <Meta 
             title={
               <h4>
-                <Rate value={Star} disabled={true} key={index}/>
+                <Rate allowHalf value={Star} disabled={true} key={index}/>
                 <br/>
                 {store.title}({Star})
                 

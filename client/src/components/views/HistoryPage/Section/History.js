@@ -117,9 +117,9 @@ function History(props) {
                     <h4>작성한 리뷰</h4>
                     작성일자: {moment(props.history.review[0].orderTime).format('YY년MM월DD일 HH시mm분')}
                     <br/>
-                    <Rate value={props.history.review[0].star} disabled={true}/>
+                    <Rate allowHalf value={props.history.review[0].star} disabled={true}/>
                     <br/>
-                    {props.history.review[0].image.length > 0 ?
+                    {props.history && props.history.review[0].image ?
                     <div>
                         <img src={`http://localhost:5000/${props.history.review[0].image[0]}`} style={{width: "50%", maxHeight: "150px"}} />
                         <br />

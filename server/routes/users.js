@@ -225,7 +225,7 @@ router.post("/order", auth, (req, res) => {
               orderId: req.body.orderId,
               reviewAuth: true,
               socketId: null,
-              review: [{}],
+              review: [],
               state: '가게에서 주문을 확인하고 있습니다.'
             }},
               $set:{cart: []} //주문 성공후 장바구니를 비워줌

@@ -51,7 +51,7 @@ function SingleComment(props) {
         }
         content={
           <div>
-            <Rate value={props.comment.star} />
+            <Rate allowHalf value={props.comment.star} />
             <br/>
             <img src={`http://localhost:5000/${props.comment.image[0]}`} style={{width: "15%", maxHeight: "150px"}} />
             <br/>
