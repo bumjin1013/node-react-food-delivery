@@ -25,6 +25,7 @@ const config = require("./config/key");
 
 const mongoose = require("mongoose");
 const { SocketAddress } = require("net");
+const { User } = require("./models/User");
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
@@ -79,6 +80,18 @@ io.on("connection", (socket) => {
 //주문정보를 StoreId로 보냄
 socket.on("Input Order", data => {
   
+  console.log(socket.id);
+  //User 컬렉션의 주문정보에 socketId 저장
+  Store.findOneAndUpdate({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
+    "$set": {
+      "order.$.socketId": socket.id
+    }
+  },{ new: true },
+  (err) => {
+      if (err) return console.log(err);
+      console.log('success');
+  })
+
   // Store 컬렉션에 저장된 주문정보를 소켓으로 연결된 상점에 전송
   setTimeout(() => {
     Store.findOne({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
@@ -90,10 +103,13 @@ socket.on("Input Order", data => {
         }
       }).exec((err, order) => {
       if (err) console.log(err);
-      return io.to(data.storeId).emit("Output Order", order)
+      return io.to(data.storeId).emit("Output Order", order);
     });
   }, 50);
-  
+  })
+
+  socket.on("Update State", data => {
+    return io.to(data.socketId).emit("Output Update State", data.state);
   })
 })
 

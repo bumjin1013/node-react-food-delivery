@@ -13,7 +13,7 @@ function HistoryPage(props) {
         setHistoryList(response.data.history.history); 
   
       } else {
-        alert(" 상점을 로드하는데 실패하였습니다. ");
+        alert("주문내역을 로드하는데 실패하였습니다. ");
       }
     });
   }, []);

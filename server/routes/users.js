@@ -349,7 +349,18 @@ router.get('/payments', auth, (req, res) => {
     });
 })
 
-
+router.post('/updateHistoryState', (req, res) => {
+    User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
+        "$set": {
+            "history.$.state": req.body.state
+            }
+        },{ new: true },
+        (err, doc) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json({ success: true })
+        }
+    );
+})
 
 
 module.exports = router;

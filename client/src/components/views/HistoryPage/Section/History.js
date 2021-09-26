@@ -4,9 +4,19 @@ import axios from 'axios';
 import moment from 'moment';
 import FileUpload from '../../../utils/FileUpload';
 import Dropzone from 'react-dropzone';
+import { io } from 'socket.io-client';
 
 function History(props) {
 
+    const socket = io(`http://localhost:5000`);
+
+    useEffect(() => {
+
+        socket.on("Output Update State", dataFromBackEnd => { 
+            console.log('backend', dataFromBackEnd.state);
+          })
+
+    })
     //리뷰 모달창 초기 flase
     const [IsModalVisible, setIsModalVisible] = useState(false);
     const [Contents, setContents] = useState("");
@@ -69,8 +79,10 @@ function History(props) {
  
     return(
         <div>
-            <Card title={props.history.storeName}  style={{ width: 'auto' }} extra={"주문일시: "+moment(props.history.orderTime).format('YY년MM월DD일 HH시mm분')}>
+            <Card title={props.history.storeName}  style={{ width: 'auto' }} extra={props.history.state}>
                 <div>
+                    주문일시 : {moment(props.history.orderTime).format('YY년MM월DD일 HH시mm분')}
+                    <br/>
                     주소 : {props.history.address}
                     <br/>
                     메뉴 : {menuList}

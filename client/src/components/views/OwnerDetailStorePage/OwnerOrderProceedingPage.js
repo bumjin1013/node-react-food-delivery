@@ -4,6 +4,7 @@ import { Layout, Menu, Breadcrumb, Icon, Card, Button, Typography, notification,
 import { getOrder, updateOrderState } from '../../../_actions/store_actions';
 import moment from 'moment';
 import { io } from 'socket.io-client';
+import Axios from 'axios';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -41,19 +42,31 @@ function OwnerOrderProceedingPage(props) {
       notification.close(key)
       
       const body ={
+        userId: data.userId,
         storeId: storeId,
         orderId: data.orderId,
         state: "조리중"
       }
       
-      socket.emit('Update State', body)
+      socket.emit("Update State", body)
       //주문상태 update
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log('success');
+        } else {
+            alert('오류');
+        }
+      })
     }
 
     //주문 취소 버튼
     const newOrderCancel = () => {
       //알림 닫기
+      message.success('주문을 취소하였습니다.');
+
       notification.close(key)
 
       const body ={
@@ -64,6 +77,15 @@ function OwnerOrderProceedingPage(props) {
 
       //주문상태 update
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log('success');
+        } else {
+            alert('오류');
+        }
+      })
     }
 
     //새로운 주문 알림 key값
@@ -114,52 +136,92 @@ function OwnerOrderProceedingPage(props) {
 
 
   //주문 렌더링
-  // array.slice(0).reverse() 를 통해 원본 배열을 건드리지 않고 배열의 사본을 만들어 map 실행 
+  // array.slice(0).reverse() 를 통해 원본 배열을 건드리지 않고 배열의 사본을 만들어 map 실행 - 시간 역순 표시 
   const renderOrder = order && order.slice(0).reverse().map((item, index) => {
 
     //주문확인
     const orderConfirm = () => {
     
       const body ={
+        userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
         state: "조리중"
       }
 
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log('success');
+        } else {
+            alert('오류');
+        }
+      })
     }
 
     //주문취소
     const orderCancel = () => {
       const body ={
+        userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
         state: "주문취소"
       }
       message.success('주문을 취소하였습니다.');
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log('success');
+        } else {
+            alert('오류');
+        }
+      })
     }
 
     //배달중
     const deliveryStart = () => {
       const body ={
+        userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
         state: "배달중"
       }
   
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log(response.data);
+        } else {
+            alert('오류');
+        }
+      })
     }
 
     //배달완료
     const deliveryFinish = () => {
       const body ={
+        userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
         state: "배달완료"
       }
       
       dispatch(updateOrderState(body));
+
+      Axios.post('/api/users/updateHistoryState', body)
+      .then(response => {
+        if (response.data) {
+          console.log('success');
+        } else {
+            alert('오류');
+        }
+      })
     }
     let menuList = "";
 
@@ -167,7 +229,7 @@ function OwnerOrderProceedingPage(props) {
         menuList += item.menu[i].name + "-" + item.menu[i].quantity + "개 ";
     }
 
-    if(item.state !== ("주문취소" || "배달완료")) 
+    if(item.state !== ("주문취소" || "배달완료")){ 
     return(
       <Card size="small" title={<Title level={4}>주문번호: {item.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{item.state}</Title>}
       actions={[
@@ -194,7 +256,7 @@ function OwnerOrderProceedingPage(props) {
 
         
       </Card>
-    )
+    )}
   })
 
   
