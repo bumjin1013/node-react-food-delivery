@@ -81,6 +81,8 @@ function History(props) {
         <div>
             <Card title={props.history.storeName}  style={{ width: 'auto' }} extra={props.history.state}>
                 <div>
+                    주문번호 : {props.history.orderId}
+                    <br/>
                     주문일시 : {moment(props.history.orderTime).format('YY년MM월DD일 HH시mm분')}
                     <br/>
                     주소 : {props.history.address}
