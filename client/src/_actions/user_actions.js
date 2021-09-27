@@ -8,7 +8,8 @@ import {
     GET_CART_ITEMS,
     REMOVE_CART_ITEM,
     UPDATE_ADDRESS,
-    UPDATE_HISTORY_STATE
+    UPDATE_HISTORY_STATE,
+    GET_HISTORY
 } from './types';
 import { USER_SERVER } from '../components/Config.js';
 
@@ -101,6 +102,17 @@ export function updatehistoryState(body) {
 
     return {
         type: UPDATE_HISTORY_STATE,
+        payload: request
+    }
+}
+
+//소켓 통신을 위함
+export function getHistory() {
+    const request = axios.get(`${USER_SERVER}/history`)
+    .then(response => response.data);
+
+    return {
+        type: GET_HISTORY,
         payload: request
     }
 }

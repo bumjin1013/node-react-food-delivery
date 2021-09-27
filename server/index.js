@@ -77,41 +77,41 @@ io.on("connection", (socket) => {
     socket.join(data.storeId);
   })
 
-//주문정보를 StoreId로 보냄
-socket.on("Input Order", data => {
+  //주문정보를 StoreId로 보냄
+  socket.on("Input Order", data => {
   
-  console.log(socket.id);
-  //User 컬렉션의 주문정보에 socketId 저장
-  Store.findOneAndUpdate({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
-    "$set": {
-      "order.$.socketId": socket.id
-    }
-  },{ new: true },
-  (err) => {
-      if (err) return console.log(err);
-      console.log('success');
-  })
+    //주문자를 orderId로 생성한 room에 입장시킴
+    socket.join(data.orderId);
 
-  // Store 컬렉션에 저장된 주문정보를 소켓으로 연결된 상점에 전송
-  setTimeout(() => {
-    Store.findOne({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
-      "_id": false,
-      "order": {
-          $elemMatch:{
+    // Store 컬렉션에 저장된 주문정보를 소켓으로 연결된 상점에 전송
+    setTimeout(() => {
+      Store.findOne({ _id: data.storeId, order: { $elemMatch: { orderId: data.orderId }}},{
+        "_id": false,
+        "order": {
+            $elemMatch:{
               "orderId": data.orderId
+            }
           }
-        }
-      }).exec((err, order) => {
-      if (err) console.log(err);
-      return io.to(data.storeId).emit("Output Order", order);
-    });
-  }, 50);
+        }).exec((err, order) => {
+        if (err) console.log(err);
+        return io.to(data.storeId).emit("Output Order", order);
+      });
+    }, 50);
   })
 
-  socket.on("Update State", data => {
-    return io.to(data.socketId).emit("Output Update State", data.state);
+  //상점에서 주문 state 변경 시 orderId의 room(사장과 주문한 손님 둘만 있는 방)을 통해 주문 상태 변경 내역 전송
+  socket.on("Input Order State", data => {
+    console.log('Input Order State',data);
+    return io.to(data.orderId).emit("Output Order State", data);
+  })
+
+  socket.on("Join OrderId Room", data => {      
+    console.log(data.orderId+'에 입장하였습니다.');
+    socket.join(data.orderId);
   })
 })
+
+
 
 const port = process.env.PORT || 5000
 

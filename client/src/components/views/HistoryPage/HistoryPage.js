@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Icon, Form, Input, Modal, Rate, Button, Tooltip, Divider } from 'antd';
+import { Icon } from 'antd';
 import axios from 'axios';
-import moment from 'moment';
-import FileUpload from '../../utils/FileUpload';
 import History from './Section/History';
 
 function HistoryPage(props) {

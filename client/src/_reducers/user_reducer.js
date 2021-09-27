@@ -7,7 +7,8 @@ import {
     GET_CART_ITEMS,
     REMOVE_CART_ITEM,
     UPDATE_ADDRESS,
-    UPDATE_HISTORY_STATE
+    UPDATE_HISTORY_STATE,
+    GET_HISTORY
 } from '../_actions/types';
  
 
@@ -42,6 +43,10 @@ export default function(state={},action){
                     ...state.userData,
                     cart: action.payload      
                 }
+            }
+        case GET_HISTORY:
+            return{
+                ...state, userData: action.payload
             }
         default:
             return state;

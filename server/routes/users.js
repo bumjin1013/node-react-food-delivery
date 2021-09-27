@@ -247,6 +247,14 @@ router.get('/history', auth, (req, res) => {
     });
 });
 
+router.get('/getHistory', auth, (req, res) => {
+   
+    User.findOne({ _id: req.user._id })
+    .exec((err, history) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json( history.history )
+    });
+});
 
 
 //유저 정보 출력 (마이페이지)

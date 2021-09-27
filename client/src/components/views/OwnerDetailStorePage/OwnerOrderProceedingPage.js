@@ -48,7 +48,7 @@ function OwnerOrderProceedingPage(props) {
         state: "조리중"
       }
       
-      socket.emit("Update State", body)
+      socket.emit("Input Order State", body)
       //주문상태 update
       dispatch(updateOrderState(body));
 
@@ -75,6 +75,7 @@ function OwnerOrderProceedingPage(props) {
         state: "주문취소"
       }
 
+      socket.emit("Input Order State", body)
       //주문상태 update
       dispatch(updateOrderState(body));
 
@@ -148,6 +149,8 @@ function OwnerOrderProceedingPage(props) {
         orderId: item.orderId,
         state: "조리중"
       }
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body)
 
       dispatch(updateOrderState(body));
 
@@ -170,6 +173,9 @@ function OwnerOrderProceedingPage(props) {
         state: "주문취소"
       }
       message.success('주문을 취소하였습니다.');
+
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body);
       dispatch(updateOrderState(body));
 
       Axios.post('/api/users/updateHistoryState', body)
@@ -191,6 +197,8 @@ function OwnerOrderProceedingPage(props) {
         state: "배달중"
       }
   
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body)
       dispatch(updateOrderState(body));
 
       Axios.post('/api/users/updateHistoryState', body)
@@ -212,6 +220,8 @@ function OwnerOrderProceedingPage(props) {
         state: "배달완료"
       }
       
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body)
       dispatch(updateOrderState(body));
 
       Axios.post('/api/users/updateHistoryState', body)
