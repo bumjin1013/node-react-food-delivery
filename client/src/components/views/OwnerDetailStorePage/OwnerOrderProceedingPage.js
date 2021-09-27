@@ -229,7 +229,7 @@ function OwnerOrderProceedingPage(props) {
         menuList += item.menu[i].name + "-" + item.menu[i].quantity + "개 ";
     }
 
-    if(item.state !== ("주문취소" || "배달완료")){ 
+    if(item.state !== "주문취소" && item.state !== "배달완료"){ 
     return(
       <Card size="small" title={<Title level={4}>주문번호: {item.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{item.state}</Title>}
       actions={[

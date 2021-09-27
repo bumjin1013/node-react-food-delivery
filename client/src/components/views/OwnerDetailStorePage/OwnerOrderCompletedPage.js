@@ -29,26 +29,26 @@ function OwnerOrderCompletedPage(props) {
         menuList += order.menu[i].name + "-" + order.menu[i].quantity + "개 ";
     }
   
-    if(order.state !== ("확인중" || "배달중")) 
-    return(
-      <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
-      actions={[
-      ]}
-      >
-          
-        <h3>메뉴 : {menuList}</h3>
-        주문일시 : {moment(order.orderTime).format('YY년MM월DD일 HH시mm분')}
-        <br/>
-        주소 : {order.address}
-        <br/>
-        전화번호 : {order.phoneNumber}
-        <br/>
-        사장님에게 : {order.toOwner}
-        <br/>
-        배달기사에게 : {order.toRider}
-         <br />
-    </Card>
-    )
+    if(order.state != "조리중" && order.state != "배달중" && order.state != "확인중"){ 
+      return(
+        <Card size="small" title={<Title level={4}>주문번호: {order.orderId}</Title>}  style={{ width: 'auto'}} extra={<Title level={4}>{order.state}</Title>}
+        actions={[
+        ]}
+        >
+          <h3>메뉴 : {menuList}</h3>
+          주문일시 : {moment(order.orderTime).format('YY년MM월DD일 HH시mm분')}
+          <br/>
+          주소 : {order.address}
+          <br/>
+          전화번호 : {order.phoneNumber}
+          <br/>
+          사장님에게 : {order.toOwner}
+          <br/>
+          배달기사에게 : {order.toRider}
+          <br />
+      </Card>
+      )
+    }
   })
  
     return (
