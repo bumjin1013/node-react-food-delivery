@@ -79,6 +79,34 @@ function History(props) {
         //완료후 모달창 종료
         setIsModalVisible(false);
     }
+
+    const renderReview = () => {
+        if(props.history.reviewAuth){
+            return(
+                <Button type="primary" onClick={showModal}>
+                    리뷰 작성하기
+                </Button>
+            )
+        } else if(!props.history.reviewAuth && props.history.review.length > 0) {
+            return (
+                <div>
+                    <Divider />
+                    <h4>작성한 리뷰</h4>
+                    작성일자: {moment(props.history.review[0].orderTime).format('YY년MM월DD일 HH시mm분')}
+                    <br/>
+                    <Rate allowHalf value={props.history.review[0].star} disabled={true}/>
+                    <br/>
+                    {props.history && props.history.review[0].image ?
+                        <div>
+                            <img src={`http://localhost:5000/${props.history.review[0].image[0]}`} style={{width: "50%", maxHeight: "150px"}} />
+                            <br />
+                        </div>
+                    : null } 
+                {props.history.review[0].contents}
+            </div> 
+            )
+        }
+    }
  
     return(
         <div>
@@ -110,30 +138,8 @@ function History(props) {
                     <Input.TextArea onChange={contentsChangeHandler} value={Contents} />
                 </Form.Item>
             </Modal>
-  
-            {/* 리뷰를 작성한 경우에는 리뷰작성 버튼 보이지 않음 reviewAuth = false */}
-            {props.history.reviewAuth ? 
-                <Button type="primary" onClick={showModal}>
-                    리뷰 작성하기
-                </Button>
-                : 
-                <div>
-                    <Divider />
-                    <h4>작성한 리뷰</h4>
-                    작성일자: {moment(props.history.review[0].orderTime).format('YY년MM월DD일 HH시mm분')}
-                    <br/>
-                    <Rate allowHalf value={props.history.review[0].star} disabled={true}/>
-                    <br/>
-                    {props.history && props.history.review[0].image ?
-                    <div>
-                        <img src={`http://localhost:5000/${props.history.review[0].image[0]}`} style={{width: "50%", maxHeight: "150px"}} />
-                        <br />
-                    </div>
-                    : null }
-                    
-                    {props.history.review[0].contents}
-                </div> 
-            }
+
+            {renderReview()}
             </Card>
             <br/>
         </div>

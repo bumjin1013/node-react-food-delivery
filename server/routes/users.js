@@ -223,7 +223,7 @@ router.post("/order", auth, (req, res) => {
               toRider: req.body.toRider,
               orderTime: req.body.orderTime,
               orderId: req.body.orderId,
-              reviewAuth: true,
+              reviewAuth: false,
               socketId: null,
               review: [],
               state: '가게에서 주문을 확인하고 있습니다.'
@@ -315,7 +315,7 @@ router.post("/addreview", auth, (req, res) => {
             res.status(200).send({ success: true, reviewInfo })
         }
       )
-  });0.
+  });
 
 //10000원 쿠폰 받기
 router.post('/getcoupon', auth, (req, res) => {
@@ -357,17 +357,33 @@ router.get('/payments', auth, (req, res) => {
     });
 })
 
+//주문 상태 변경
 router.post('/updateHistoryState', (req, res) => {
-    User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
-        "$set": {
-            "history.$.state": req.body.state
+    //배달 완료시 리뷰 권한 true
+    if(req.body.state == "배달완료"){
+        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
+            "$set": {
+                "history.$.state": req.body.state,
+                "history.$.reviewAuth": true
+                }
+            },{ new: true },
+            (err, doc) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).json({ success: true })
             }
-        },{ new: true },
-        (err, doc) => {
-            if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ success: true })
-        }
-    );
+        );
+    } else {
+        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
+            "$set": {
+                "history.$.state": req.body.state
+                }
+            },{ new: true },
+            (err, doc) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).json({ success: true })
+            }
+        );
+    }
 })
 
 
