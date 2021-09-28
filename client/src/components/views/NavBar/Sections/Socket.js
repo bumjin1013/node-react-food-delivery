@@ -4,11 +4,14 @@ import { notification, mesasge, Icon } from 'antd';
 
 function Socket(props) {
 
-    console.log(props.history);
     //소켓 연결
     const socket = io(`http://localhost:5000`);
-    let data = { orderId: props.history.orderId }
-    socket.emit("Join OrderId Room", data)
+
+    //주문이 진행중인 상태일 때만 소켓으로 연결시켜 상점과 통신 가능
+    if(props.history.orderId.state !== "배달완료" || props.history.orderId.state !== "주문취소"){
+        let data = { orderId: props.history.orderId }
+        socket.emit("Join OrderId Room", data)
+    }
 
     const alert = (data) => {
 

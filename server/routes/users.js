@@ -360,7 +360,7 @@ router.get('/payments', auth, (req, res) => {
 //주문 상태 변경
 router.post('/updateHistoryState', (req, res) => {
     //배달 완료시 리뷰 권한 true
-    if(req.body.state == "배달완료"){
+    if(req.body.state === "배달완료"){
         User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
             "$set": {
                 "history.$.state": req.body.state,

@@ -36,9 +36,10 @@ function NavBar() {
       {/* 로그인 한 상태일 시 로그인 한 유저의 주문정보를 Socket 컴포넌트로 전달 */}
       {user.userData && user.userData.history ? user.userData && user.userData.history.map((history, index) => (
         (!history.responseTo &&
+          (history.state !== "배달완료" && history.state !== "주문취소" ?
           <React.Fragment key={index}>
               <Socket history={history} />
-          </React.Fragment>
+          </React.Fragment> : null)
       ))) : null}
       <div className="menu__logo">
         <a href="/">오늘 뭐먹지?</a>

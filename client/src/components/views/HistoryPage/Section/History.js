@@ -3,22 +3,9 @@ import { Card, Form, Input, Modal, Rate, Button, Divider } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import FileUpload from '../../../utils/FileUpload';
-import { io } from 'socket.io-client';
+
 
 function History(props) {
-
-    //소켓 연결
-    const socket = io(`http://localhost:5000`);
-
-    console.log(props.history.orderId);
-    let data = { orderId: props.history.orderId }
-    socket.emit("Join OrderId Room", data)
-
-    useEffect(() => {
-        socket.on("Output Order State", dataFromBackend => {
-            console.log(dataFromBackend);
-        })
-    }, [])
 
     //리뷰 모달창 초기 flase
     const [IsModalVisible, setIsModalVisible] = useState(false);
