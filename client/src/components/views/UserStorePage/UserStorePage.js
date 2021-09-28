@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Modal, Rate, Form, Input, Avatar, Comment, Tooltip, Empty } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Rate, notification, Avatar, Comment, Tooltip, Empty, message } from 'antd';
 import axios from 'axios';
 import Meta from "antd/lib/card/Meta";
 import { addToCart } from '../../../_actions/user_actions';
@@ -14,6 +14,7 @@ const { TabPane } = Tabs;
 function UserStorePage(props) {
 
   const dispatch = useDispatch();
+  const cart = useSelector(state => state.user.userData && state.user.userData.cart); 
 
   useEffect(() => {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
@@ -38,16 +39,47 @@ function UserStorePage(props) {
   const renderMenu = ListMenu.map((menu, index) => {
 
     const addCart = () => {
-        let body = {
-          menuId: menu._id,
-          name: menu.name,
-          price: menu.price,
-          image: menu.image,
-          storeId: Store._id,
-          storeName: Store.title
+
+      let body = {
+        menuId: menu._id,
+        name: menu.name,
+        price: menu.price,
+        image: menu.image,
+        storeId: Store._id,
+        storeName: Store.title
+      }
+
+      //현재 장바구니에 담겨있는 상점과 다른 상점의 메뉴를 담을 경우
+      if(cart.length > 0 && cart[0].storeId !== Store._id){
+
+        const close = () => {
+          dispatch(addToCart(body));
+        };
+
+        const addCart = () => {
+          message.success('장바구니에 추가했습니다.');
+          dispatch(addToCart(body));
+          notification.close(key);
         }
+        const key = `open${Date.now()}`;
+        //확인버튼을 누를 경우
+        const btn = (
+          <Button type="primary" size="small" onClick={addCart}>
+            장바구니 담기
+          </Button>
+        );
+      
+        notification.open({
+          message: '장바구니에 다른 상점의 메뉴가 담겨 있습니다. 선택하신 메뉴를 담으시겠습니까?',
+          btn,
+          key,
+          onClose: close,
+        });
+      } else {
          //필요한 정보를 Cart 필드에다가 넣어 준다.
-        dispatch(addToCart(body))
+        message.success('장바구니에 추가했습니다.');
+        dispatch(addToCart(body));
+      }
   }
 
     return (

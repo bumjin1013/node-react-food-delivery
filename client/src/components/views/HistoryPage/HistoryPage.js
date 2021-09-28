@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from 'antd';
 import axios from 'axios';
 import History from './Section/History';
+import { io } from 'socket.io-client';
 
 function HistoryPage(props) {
 
+  
   useEffect(() => {
     axios.get("/api/users/history").then((response) => {
       if (response.data.success) {
@@ -14,6 +16,7 @@ function HistoryPage(props) {
         alert("주문내역을 로드하는데 실패하였습니다. ");
       }
     });
+
   }, []);
   
   const [HistoryList, setHistoryList] = useState([]);
