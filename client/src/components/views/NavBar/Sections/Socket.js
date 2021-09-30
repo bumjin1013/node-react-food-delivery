@@ -13,6 +13,7 @@ function Socket(props) {
         socket.emit("Join OrderId Room", data)
     }
 
+
     const alert = (data) => {
 
         const key = `open${Date.now()}`;
@@ -46,9 +47,7 @@ function Socket(props) {
 
     useEffect(() => {
         socket.on("Output Order State", dataFromBackend => {
-            console.log(dataFromBackend);
             alert(dataFromBackend);
-
         })
     }, [])
 

@@ -6,7 +6,7 @@ import Meta from "antd/lib/card/Meta";
 import { addToCart } from '../../../_actions/user_actions';
 import moment from 'moment';
 import MapContainer from '../../utils/MapContainer';
-
+import Distance from '../../utils/Distance';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
@@ -26,7 +26,6 @@ function UserStorePage(props) {
         setAddress(response.data[0].address)
       })
       .catch((err) => alert(err));
-
      
   }, []);
 
@@ -121,6 +120,7 @@ function UserStorePage(props) {
     return (
       
       <div key={index}>
+       
         <Comment
           author={<a>{review.writer}</a>}
           avatar={
@@ -177,6 +177,8 @@ function UserStorePage(props) {
 
     return (
         <div style={{ width: '1000px', margin: '3rem auto' }}>
+           <Distance />
+
           <PageHeader
             style={{
               border: '1px solid rgb(235, 237, 240)',

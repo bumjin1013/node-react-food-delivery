@@ -4,7 +4,6 @@ import axios from 'axios';
 import moment from 'moment';
 import FileUpload from '../../../utils/FileUpload';
 
-
 function History(props) {
 
     //리뷰 모달창 초기 flase

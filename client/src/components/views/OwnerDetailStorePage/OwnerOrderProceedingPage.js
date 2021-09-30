@@ -25,13 +25,6 @@ function OwnerOrderProceedingPage(props) {
   //새로운 주문 도착시 알림
   const alertNewOrder = (data) => {
 
-    //닫기
-    const close = () => {
-      console.log(
-        'Notification was closed. Either the close button was clicked or duration time elapsed.',
-      );
-    }
-    
     //주문 수락 버튼
     const newOrderConfirm = () => {
       //새로운 주문 주문내역에 추가
@@ -92,6 +85,9 @@ function OwnerOrderProceedingPage(props) {
     //새로운 주문 알림 key값
     const key = `open${Date.now()}`;
 
+    const close = () => {
+      
+    };
     //새로 들어온 주문 내역 랜더링
     const renderNewOrder = () => {
       return(
