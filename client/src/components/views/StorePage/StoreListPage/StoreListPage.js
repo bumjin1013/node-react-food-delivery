@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Col, Card, Row, PageHeader, Rate } from "antd";
 import Meta from "antd/lib/card/Meta";
-
+import Distance from '../../../utils/Distance';
 function StoreListPage(props) {
 
   useEffect(() => {
@@ -14,6 +15,7 @@ function StoreListPage(props) {
 
   const [StoreList, setStoreList] = useState([]);
   const category = props.match.params.category;
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
 
   //DB카테고리 한글로 변경
   let Category;
@@ -38,6 +40,8 @@ function StoreListPage(props) {
       Category = "햄버거";
       break;  
   } 
+  
+  
 
   const renderStore = StoreList.map((store, index) => {
     
@@ -55,7 +59,18 @@ function StoreListPage(props) {
     //리뷰가 1개 이상이면 더한 총 별점 / 리뷰 갯수 = Star , 리뷰가 없으면 0
     store.review.length > 0 ? Star = (totalStar/store.review.length).toFixed(1) : Star = 0
 
- 
+    //유저와 상점 직선거리 
+    const distance = () => {
+      if(store && userAddress){
+        return (
+          <Distance storeAddress={store.address} myAddress={userAddress} style={{float: 'right'}} />
+        )
+      } else {
+        return (
+        null
+        )
+      }
+    }
   
     return (
       <Col lg={6} md={8} xs={24} key={index}>
@@ -72,13 +87,13 @@ function StoreListPage(props) {
         >
           <Meta 
             title={
-              <h4>
+              <div>
                 <Rate allowHalf value={Star} disabled={true} key={index}/>
                 <br/>
-                {store.title}({Star})
-                
-              </h4> 
-            } 
+                <h4>{store.title}({Star}) </h4>
+                {distance()}m
+              </div> 
+            }
           />
         </Card>
       </Col>

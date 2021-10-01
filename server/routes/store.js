@@ -41,7 +41,7 @@ router.post("/",  (req, res) => {
     description: req.body.description,
     image: req.body.image,
     category: req.body.category,
-    location: { address: req.body.address },
+    address: req.body.address ,
     image: req.body.image,
   });
 

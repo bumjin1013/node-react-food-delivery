@@ -1,32 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const { kakao } = window;
 
 function Distance(props) {
-    
-    console.log('Distance실행');
-    
-    let mlon = 36.36312534027716; 
-    let mlat = 127.34761826956469;
-    let vlon = 36.36158769651651;
-    let vlat = 127.34974254072932;
+
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    const [Origin, setOrigin] = useState();
+    const [Destination, setDestination] = useState();
+
+
+    useEffect(() => {
+        // 상점 주소를 좌표로 변경
+        geocoder.addressSearch(props.storeAddress, function(result, status) {
+            // 정상적으로 검색이 완료됐으면 
+            if (status === kakao.maps.services.Status.OK) {
+                setOrigin(new kakao.maps.LatLng(result[0].y, result[0].x));
+            } 
+        });    
+
+        // 유저의 주소를 좌표로 변경
+        geocoder.addressSearch(props.myAddress, function(result, status) {
+            // 정상적으로 검색이 완료됐으면 
+            if (status === kakao.maps.services.Status.OK) {
+                setDestination(new kakao.maps.LatLng(result[0].y, result[0].x));
+            } 
+        });    
+
+        
+    }, [])
 
     const polyline = new kakao.maps.Polyline({
         /* map:map, */
         path : [
-        new kakao.maps.LatLng(mlon,mlat),
-        new kakao.maps.LatLng(vlon,vlat)
+        new kakao.maps.LatLng(Origin && Origin.Ma, Origin && Origin.La),
+        new kakao.maps.LatLng(Destination && Destination.Ma, Destination && Destination.La)
         ],
-     strokeWeight: 2,
-     strokeColor: '#FF00FF',
-     strokeOpacity: 0.8,
-     strokeStyle: 'dashed'
-    });
+    strokeWeight: 2,
+    strokeColor: '#FF00FF',
+    strokeOpacity: 0.8,
+    strokeStyle: 'dashed'
+    });    
+   
+   
+    console.log(polyline.getLength())
+    return (
+        
+            polyline.getLength().toFixed(0)
     
-    //return getTimeHTML(polyline.getLength());//미터단위로 길이 반환;
-    console.log("길이"+polyline.getLength());
-    return polyline.getLength();
-    
+    );
+
 }
     
 

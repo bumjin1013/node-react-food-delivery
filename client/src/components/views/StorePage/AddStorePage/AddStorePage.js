@@ -18,7 +18,7 @@ function AddStorePage(props) {
     const [Title, setTitle] = useState("")
     const [Description, setDescription] = useState("")
     const [Address, setAddress] = useState("")
-    const [Category, setCategory] = useState(1);
+    const [Category, setCategory] = useState('korean');
     const [Image, setImage] = useState([])
 
     const titleChangeHandler = (event) => {

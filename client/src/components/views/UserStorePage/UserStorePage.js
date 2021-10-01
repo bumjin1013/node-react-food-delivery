@@ -15,7 +15,8 @@ function UserStorePage(props) {
 
   const dispatch = useDispatch();
   const cart = useSelector(state => state.user.userData && state.user.userData.cart); 
-
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.address)
+  
   useEffect(() => {
     axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
@@ -172,12 +173,12 @@ function UserStorePage(props) {
 
 
   
-
+ 
   
 
     return (
         <div style={{ width: '1000px', margin: '3rem auto' }}>
-           <Distance />
+           
 
           <PageHeader
             style={{
@@ -199,9 +200,10 @@ function UserStorePage(props) {
 
             {/* 정보 탭 */}
             <TabPane tab="정보" key="2">
-              <div style={{whiteSpace: 'pre-wrap', float:'center'}} >
+              <div style={{whiteSpace: 'pre-wrap'}} >
                 {Store.description}
-                <MapContainer address={Address} title={Store.title}/>
+                <MapContainer address={Address} title={Store.title} />
+                거리 : <Distance storeAddress={Address} myAddress={userAddress}/>미터
               </div>
               
             </TabPane>

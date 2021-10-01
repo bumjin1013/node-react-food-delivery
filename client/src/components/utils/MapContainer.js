@@ -58,7 +58,7 @@ const MapContainer = (props) => {
         <div id='map' style={{
             width: '300px', 
             height: '300px',
-            textAlign: 'center'
+            float: 'center'
         }}></div>
     );
     }

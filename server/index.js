@@ -105,8 +105,7 @@ io.on("connection", (socket) => {
     return io.to(data.orderId).emit("Output Order State", data);
   })
 
-  socket.on("Join OrderId Room", data => {      
-    console.log(data.orderId+'에 입장하였습니다.');
+  socket.on("Join OrderId Room", data => {     
     socket.join(data.orderId);
   })
 })
