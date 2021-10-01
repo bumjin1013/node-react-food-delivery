@@ -9,7 +9,6 @@ function Store(props) {
 
     const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
     const store = props.store;
-    const []
     //별점 계산
     let totalStar = 0;
     
