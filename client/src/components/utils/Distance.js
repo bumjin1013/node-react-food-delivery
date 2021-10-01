@@ -45,9 +45,7 @@ function Distance(props) {
    
     console.log(polyline.getLength())
     return (
-        
-            polyline.getLength().toFixed(0)
-    
+        polyline.getLength().toFixed(0)
     );
 
 }
