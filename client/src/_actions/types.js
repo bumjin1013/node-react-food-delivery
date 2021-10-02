@@ -19,6 +19,9 @@ export const ADD_MENU = 'add_menu';
 export const CHANGE_STATE = 'change_state';
 export const CHANGE_MENU = 'change_menu';
 export const DELETE_MENU = 'delete_menu';
+export const GET_DELIVERY_AREA = 'get_delivery_area';
+export const ADD_DELIVERY_AREA = 'add_delivery_area';
+
 
 export const GET_ORDER = 'get_order';
 export const UPDATE_ORDER_STATE = 'update_order_state';

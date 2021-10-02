@@ -287,5 +287,33 @@ router.post('/updateorderstate', (req, res) => {
   );
 })
 
+//배달 지역 정보 가져오기
+router.get('/getDeliveryArea', (req, res) => {
+  Store.findOne({ _id: req.query.storeId },{
+    "_id": false,
+    "deliveryArea": true
+  })
+  .exec((err, doc) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json(doc.deliveryArea);
+  });
+})
+
+//배달 지역 추가
+router.post('/addDeliveryArea', (req, res) => {
+  Store.findOneAndUpdate({ _id: req.body.storeId },{
+    "$push": {
+      "deliveryArea": {
+        "si": req.body.si,
+        "gu": req.body.gu,
+        "dong": req.body.dong
+      }}},{ new: true },
+        (err, store) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json(store.deliveryArea)
+        }
+  );
+})
+
 
 module.exports = router;

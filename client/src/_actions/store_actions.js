@@ -8,7 +8,9 @@ import {
     GET_ORDER,
     UPDATE_ORDER_STATE,
     GET_REVIEW,
-    ADD_COMMENTS
+    ADD_COMMENTS,
+    ADD_DELIVERY_AREA,
+    GET_DELIVERY_AREA
 } from './types';
 import { STORE_SERVER } from '../components/Config.js';
 
@@ -98,6 +100,26 @@ export function addcomments(body){
     
     return {
         type: ADD_COMMENTS,
+        payload: request
+    }
+}
+
+export function getDeliveryArea(storeId){
+    const request = axios.get(`${STORE_SERVER}/getDeliveryArea?storeId=${storeId}&type=single`)
+        .then(response => response.data);
+    
+    return {
+        type: GET_DELIVERY_AREA,
+        payload: request
+    }
+}
+
+export function addDeliveryArea(body){
+    const request = axios.post(`${STORE_SERVER}/addDeliveryArea`, body)
+        .then(response => response.data);
+    
+    return {
+        type: ADD_DELIVERY_AREA,
         payload: request
     }
 }

@@ -41,9 +41,7 @@ function Distance(props) {
     strokeOpacity: 0.8,
     strokeStyle: 'dashed'
     });    
-   
-   
-    console.log(polyline.getLength())
+
     return (
         polyline.getLength().toFixed(0)
     );

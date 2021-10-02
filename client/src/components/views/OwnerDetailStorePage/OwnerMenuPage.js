@@ -216,11 +216,11 @@ function OwnerMenuPage(props) {
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-        setSelected(selectedRows); 
+            setSelected(selectedRows); 
         },
         getCheckboxProps: record => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name
+            disabled: record.name === 'Disabled User', // Column configuration not to be checked
+            name: record.name
         }),
         type: 'radio'
     }

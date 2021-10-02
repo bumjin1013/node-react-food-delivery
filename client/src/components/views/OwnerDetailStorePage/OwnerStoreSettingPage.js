@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, Breadcrumb, Icon, Table, Input, InputNumber, Button, Form } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Table, Input, InputNumber, Button, Form, Divider } from 'antd';
 import axios from 'axios';
 import MapContainer from '../../utils/MapContainer';
+import Delivery from './Section/Delivery';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
@@ -40,6 +42,12 @@ function OwnerStoreSettingPage(props) {
 
     return (
       <MapContainer address={Address} title={Store.title} />
+    )
+  }
+
+  const renderDeliveryArea = () => {
+    return (
+      <Delivery storeId={storeId} />
     )
   }
   
@@ -122,10 +130,11 @@ function OwnerStoreSettingPage(props) {
           }}
         >
 
+        <h2>상점 정보 설정</h2>  
         <Button shape="circle" icon="edit" onClick={editClickHandler}/>
         <br />
         <br />
-
+        
         {Edit ? 
           <div>
             <Form.Item>
@@ -144,6 +153,8 @@ function OwnerStoreSettingPage(props) {
   
         {Address ? renderMap() : <Icon type="loading" />}
 
+        <h2>배달 가능 지역 설정</h2>
+        {storeId ?  renderDeliveryArea() : <Icon type="loading" /> }
         </Content>
       </Layout>
     </Layout>

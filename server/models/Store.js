@@ -47,6 +47,13 @@ const storeSchema = mongoose.Schema({
     order: {
         type: Array,
         default: []
+    },
+    deliveryArea: {
+        type: [{
+            si: { type: String },
+            gu: { type: String },
+            dong: { type: String }
+        }]
     }
 }, { timestamps: true})
 
