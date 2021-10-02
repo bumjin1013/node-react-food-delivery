@@ -315,5 +315,22 @@ router.post('/addDeliveryArea', (req, res) => {
   );
 })
 
+//배달 지역 삭제
+router.post('/deleteDeliveryArea', (req, res) => {
+  
+  console.log(req.body);
+
+  Store.findOneAndUpdate({ _id: req.body.storeId }, {
+    "$pull": {
+      "deliveryArea": { 
+        _id: req.body._id 
+      }}},{ new: true },
+  (err, doc) => {
+      if (err) return res.status(400).json({ success: false, err })
+      res.status(200).json(doc.deliveryArea)
+  })
+
+})
+
 
 module.exports = router;

@@ -9,7 +9,8 @@ import {
    GET_REVIEW,
    ADD_COMMENTS,
    ADD_DELIVERY_AREA,
-   GET_DELIVERY_AREA
+   GET_DELIVERY_AREA,
+   DELETE_DELIVERY_AREA
 } from '../_actions/types';
  
 
@@ -36,6 +37,8 @@ export default function(state={},action){
         case GET_DELIVERY_AREA:
             return {...state, area: action.payload}
         case ADD_DELIVERY_AREA:
+            return {...state, area: action.payload}
+        case DELETE_DELIVERY_AREA:
             return {...state, area: action.payload}
         default:
             return state;

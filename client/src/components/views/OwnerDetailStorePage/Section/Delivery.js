@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Cascader, Button, message, Popconfirm } from 'antd';
-import { addDeliveryArea, getDeliveryArea } from '../../../../_actions/store_actions';
+import { addDeliveryArea, deleteDeliveryArea, getDeliveryArea } from '../../../../_actions/store_actions';
 
 function Delivery(props) {
 
@@ -696,8 +696,7 @@ function Delivery(props) {
     const onChangeArea = (value) => {
         area = value;
     }   
-
-    console.log('storeId', props.storeId);
+ 
 
     const addDeliveryAreaButton = () => {
         
@@ -714,16 +713,26 @@ function Delivery(props) {
             message.success('배달 지역을 추가하였습니다.');
             dispatch(getDeliveryArea(props.storeId));
         }
+    }
 
-        
-
+    console.log('Selected', Selected && Selected[0]._id);
+    const deleteDeliveryAreaButton = () => {
+        let body = {
+            _id: Selected[0]._id,
+            storeId: props.storeId
+        }
+        dispatch(deleteDeliveryArea(body));
+        message.success('배달 지역을 삭제하였습니다.');
     }
 
     return (
         <div>
-            <Cascader options={options} onChange={onChangeArea} placeholder="Please select" />
+            <Cascader options={options} onChange={onChangeArea} placeholder="배달지역을 선택해주세요" />
             <Popconfirm placement="topLeft" title='배달 지역을 추가하시겠습니까?' onConfirm={addDeliveryAreaButton} okText="예" cancelText="취소">
                 <Button icon="plus" />
+            </Popconfirm>
+            <Popconfirm placement="topLeft" title='배달 지역을 삭제하시겠습니까?' onConfirm={deleteDeliveryAreaButton} okText="예" cancelText="취소">
+                <Button icon="minus" />
             </Popconfirm>
             
             <Table rowSelection={rowSelection} columns={columns} dataSource={deliveryArea} />

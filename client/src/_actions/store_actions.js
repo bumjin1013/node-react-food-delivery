@@ -10,7 +10,8 @@ import {
     GET_REVIEW,
     ADD_COMMENTS,
     ADD_DELIVERY_AREA,
-    GET_DELIVERY_AREA
+    GET_DELIVERY_AREA,
+    DELETE_DELIVERY_AREA
 } from './types';
 import { STORE_SERVER } from '../components/Config.js';
 
@@ -120,6 +121,17 @@ export function addDeliveryArea(body){
     
     return {
         type: ADD_DELIVERY_AREA,
+        payload: request
+    }
+}
+
+export function deleteDeliveryArea(body){
+
+    const request = axios.post(`${STORE_SERVER}/deleteDeliveryArea`, body)
+        .then(response => response.data);
+    
+    return {
+        type: DELETE_DELIVERY_AREA,
         payload: request
     }
 }

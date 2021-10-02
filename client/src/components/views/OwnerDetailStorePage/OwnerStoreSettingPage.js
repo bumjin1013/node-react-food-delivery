@@ -152,7 +152,7 @@ function OwnerStoreSettingPage(props) {
         주소 : {Address} 
   
         {Address ? renderMap() : <Icon type="loading" />}
-
+        <Divider />
         <h2>배달 가능 지역 설정</h2>
         {storeId ?  renderDeliveryArea() : <Icon type="loading" /> }
         </Content>

@@ -21,6 +21,7 @@ export const CHANGE_MENU = 'change_menu';
 export const DELETE_MENU = 'delete_menu';
 export const GET_DELIVERY_AREA = 'get_delivery_area';
 export const ADD_DELIVERY_AREA = 'add_delivery_area';
+export const DELETE_DELIVERY_AREA = 'delete_delivery_area';
 
 
 export const GET_ORDER = 'get_order';
