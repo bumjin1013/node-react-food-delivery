@@ -81,7 +81,7 @@ function OwnerLoginPage(props) {
         return (
           <div className="app">
 
-            <Title level={2}>Owner Log In</Title>
+            <Title level={2}>사장님 로그인</Title>
             <form onSubmit={handleSubmit} style={{ width: '350px' }}>
 
               <Form.Item required>
@@ -125,17 +125,17 @@ function OwnerLoginPage(props) {
               )}
 
               <Form.Item>
-                <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} >Remember me</Checkbox>
+                <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} >아이디 저장</Checkbox>
                 <a className="login-form-forgot" href="/reset_owner" style={{ float: 'right' }}>
-                  forgot password
+                  비밀번호 찾기
                   </a>
                 <div>
                   <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
-                    Log in
+                    로그인
                 </Button>
                 </div>
                 Or <a href="/register/owner">사장님 회원가입</a>
-                <a href="/login" style={{ float: 'right' }}>login user</a>
+                <a href="/login" style={{ float: 'right' }}>사용자 로그인</a>
               </Form.Item>
             </form>
           </div>
