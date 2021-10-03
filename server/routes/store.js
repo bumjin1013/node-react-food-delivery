@@ -115,12 +115,16 @@ router.post("/addMenu", (req, res) => {
     )
 });
 
-//치킨 카테고리
+//카테고리
 router.get("/category", (req, res) => {
 
-  let category = req.query.category;
+  let si = req.query.address.split(' ')[0];
+  let gu = req.query.address.split(' ')[1];
+  let ro = req.query.address.split(' ')[2];
 
-  Store.find({ "category" : category })
+  console.log(si, gu, ro);
+
+  Store.find({ "category" : req.query.category, "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} })
     .exec((err, store) => {
       if (err) return res.status(400).send({ success: false, err });
       return res.status(200).send({ success: true, store });
@@ -306,7 +310,7 @@ router.post('/addDeliveryArea', (req, res) => {
       "deliveryArea": {
         "si": req.body.si,
         "gu": req.body.gu,
-        "dong": req.body.dong
+        "ro": req.body.ro
       }}},{ new: true },
         (err, store) => {
             if (err) return res.status(400).json({ success: false, err })

@@ -52,7 +52,7 @@ const storeSchema = mongoose.Schema({
         type: [{
             si: { type: String },
             gu: { type: String },
-            dong: { type: String }
+            ro: { type: String }
         }]
     }
 }, { timestamps: true})

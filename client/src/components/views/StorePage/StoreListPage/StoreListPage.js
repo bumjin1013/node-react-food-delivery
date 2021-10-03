@@ -7,16 +7,23 @@ import Distance from '../../../utils/Distance';
 import Store from './Section/Store';
 function StoreListPage(props) {
 
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
+  
+  console.log(userAddress);
+  
   useEffect(() => {
-      axios.get(`/api/store/category?category=${category}`).then((response) => {
+
+    if(userAddress){
+      axios.get(`/api/store/category?category=${category}&address=${userAddress}`).then((response) => {
           setStoreList(response.data.store);   
         })
       .catch((err) => alert(err));
-  }, []);
+    }
+  }, [userAddress]);
 
   const [StoreList, setStoreList] = useState([]);
   const category = props.match.params.category;
-  const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
+  
 
   //DB카테고리 한글로 변경
   let Category;
