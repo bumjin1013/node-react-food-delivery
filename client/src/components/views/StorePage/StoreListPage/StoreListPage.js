@@ -7,7 +7,7 @@ import Distance from '../../../utils/Distance';
 import Store from './Section/Store';
 function StoreListPage(props) {
 
-  const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.address.address);
   
   console.log(userAddress);
   

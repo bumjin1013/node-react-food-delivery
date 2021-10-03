@@ -12,7 +12,8 @@ function Address(props) {
     const [SearchVisible, setSearchVisible] = useState(false);
     const [Address, setAddress] = useState(null);
     const [DetailAddress, setDetailAddress] = useState();
-    const [CurrentAddress, setCurrentAddress] = useState(props.address);
+    const [CurrentAddress, setCurrentAddress] = useState(props.address.address);
+    const [CurrentDetailAddress, setCurrentDetailAddress] = useState(props.address.detail)
 
     const addAddress = () => { 
         setVisible(true);
@@ -24,7 +25,8 @@ function Address(props) {
             message.error('주소를 입력해주세요.')
         } else {
             let body = {
-                address: Address + ' ' + DetailAddress
+                address: Address,
+                detail: DetailAddress
             }
             console.log(body);
             dispatch(updateAddress(body))
@@ -88,7 +90,7 @@ function Address(props) {
         return (
             
             <div>
-            {CurrentAddress ? CurrentAddress : null}
+            {CurrentAddress && CurrentDetailAddress ? CurrentAddress + ' ' + CurrentDetailAddress : null}
             <Button icon='edit' onClick={addAddress}>주소 변경하기</Button>
             <Modal
                 title="주소 변경하기"

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Menu, Tabs, Button, PageHeader, Col, Card, Rate, notification, Avatar, Comment, Tooltip, Empty, message } from 'antd';
+import { Layout, Menu, Tabs, Button, PageHeader, Col,Divider , Card, Rate, notification, Avatar, Comment, Tooltip, Empty, message } from 'antd';
 import axios from 'axios';
 import Meta from "antd/lib/card/Meta";
 import { addToCart } from '../../../_actions/user_actions';
 import moment from 'moment';
 import MapContainer from '../../utils/MapContainer';
 import Distance from '../../utils/Distance';
+import Delivery from '../OwnerDetailStorePage/Section/Delivery';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
@@ -24,7 +25,8 @@ function UserStorePage(props) {
         console.log(response.data[0])
         setListMenu(response.data[0].menu);
         setReview(response.data[0].review);
-        setAddress(response.data[0].address)
+        setAddress(response.data[0].address);
+        setDeliveryArea(response.data[0].deliveryArea);
       })
       .catch((err) => alert(err));
      
@@ -35,6 +37,7 @@ function UserStorePage(props) {
   const [ListMenu, setListMenu] = useState([]);
   const [Review, setReview] = useState([]);
   const [Address, setAddress] = useState([]);
+  const [DeliveryArea, setDeliveryArea] = useState();
  
   const renderMenu = ListMenu.map((menu, index) => {
 
@@ -171,10 +174,16 @@ function UserStorePage(props) {
     );
   });
 
+  //배달 가능 지역 출력
+  const renderDeliveryArea = DeliveryArea && DeliveryArea.map((area, index) => {
+    return (
+      <div>
+        {area.si + ' ' + area.gu + ' ' + area.ro}
+      </div>
+    )
+  })
 
-  
- 
-  
+
 
     return (
         <div style={{ width: '1000px', margin: '3rem auto' }}>
@@ -201,9 +210,16 @@ function UserStorePage(props) {
             {/* 정보 탭 */}
             <TabPane tab="정보" key="2">
               <div style={{whiteSpace: 'pre-wrap'}} >
+                <h3>가게 소개</h3>
                 {Store.description}
+                <Divider />
+                <h3>가게 위치</h3>
+                {Address}
                 <MapContainer address={Address} title={Store.title} />
                 거리 : <Distance storeAddress={Address} myAddress={userAddress}/>미터
+                <Divider />
+                <h3>배달 가능 지역</h3>
+                {renderDeliveryArea}
               </div>
               
             </TabPane>

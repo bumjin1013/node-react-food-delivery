@@ -42,8 +42,8 @@ const userSchema = mongoose.Schema({
         type: Array
     },
     address: {
-        type: String,
-        default: null
+        address: { type: String },
+        detail: { type: String}
     },
     image: String,
     token : {

@@ -8,7 +8,7 @@ function Address() {
 
     return (
         <div>
-            {address}
+            {address.address + ' ' + address.detail}
             <Popover placement="bottom" title='주소' content='바꾸기' trigger="click">
                 <Icon type="caret-down" />
             </Popover>

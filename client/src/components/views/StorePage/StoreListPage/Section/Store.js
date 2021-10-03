@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { Col, Card, Rate } from 'antd';
+import { Col, Card, Rate, Icon } from 'antd';
 import Distance from '../../../../utils/Distance';
 import Meta from "antd/lib/card/Meta";
 
 function Store(props) {
 
-    const userAddress = useSelector(state => state.user.userData && state.user.userData.address);
+    const userAddress = useSelector(state => state.user.userData && state.user.userData.address.address);
     const store = props.store;
     const [Dis, setDis] = useState();
     //별점 계산
@@ -30,20 +29,7 @@ function Store(props) {
             )
         } else {
             return (
-                null
-            )
-        }
-    }
-
-    //직선 거리 계산값이 배달 불가능 지역일 경우
-    const renderStore = () => {
-        if(distance() < 3000) {
-            return (
-                <Distance storeAddress={store.address} myAddress={userAddress} style={{float: 'right'}} />
-            )
-        } else {
-            return (
-                null
+                <Icon type="loading" />
             )
         }
     }

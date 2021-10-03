@@ -45,9 +45,13 @@ function NavBar() {
       <div className="menu__logo">
         <a href="/">오늘 뭐먹지?</a>
       </div>
-      <div className="address">
-        <Address mode="horizontal"/>
-      </div>
+
+      {user.userData && user.userData.isAuth ? 
+        <div className="address">
+          <Address mode="horizontal"/>
+        </div>:
+        null}
+      
       
       <div className="menu__container">
         <div className="menu_left">
@@ -72,8 +76,6 @@ function NavBar() {
           visible={visible}
         >
           <LeftMenu mode="inline" />
-          <Location />
-          
           <RightMenu mode="inline" />
         </Drawer>
       </div>

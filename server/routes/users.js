@@ -283,8 +283,14 @@ router.post('/edituserinfo', auth, (req, res) => {
 //주소 추가
 router.post('/updateaddress', auth, (req, res) => {
 
+    console.log(req.body);
     User.findOneAndUpdate({ _id: req.user._id },{
-        $set:{address: req.body.address}  
+        $set:{
+            address: {
+                address: req.body.address,
+                detail: req.body.detail
+            }
+        }  
         },{ new: true },
         (err, userInfo) => {
             if (err) return res.status(400).json({ success: false, err })
