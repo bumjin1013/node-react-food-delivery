@@ -19,6 +19,20 @@
   padding: 19px 20px;
 }
 
+.address {
+  width: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%)
+}
+
+.address a {
+  display: inline-block;
+  font-size: 20px;
+}
+
+
 .menu__container .ant-menu-item {
   padding: 0px 5px;
 }

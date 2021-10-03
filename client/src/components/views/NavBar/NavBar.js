@@ -7,6 +7,7 @@ import './Sections/Navbar.css';
 import { useDispatch, useSelector } from "react-redux";
 import { getHistory } from "../../../_actions/user_actions";
 import Socket from './Sections/Socket';
+import Address from './Sections/Address';
 
 function NavBar() {
 
@@ -44,6 +45,10 @@ function NavBar() {
       <div className="menu__logo">
         <a href="/">오늘 뭐먹지?</a>
       </div>
+      <div className="address">
+        <Address mode="horizontal"/>
+      </div>
+      
       <div className="menu__container">
         <div className="menu_left">
           <LeftMenu mode="horizontal" />
@@ -68,6 +73,7 @@ function NavBar() {
         >
           <LeftMenu mode="inline" />
           <Location />
+          
           <RightMenu mode="inline" />
         </Drawer>
       </div>
