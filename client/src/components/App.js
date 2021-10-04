@@ -23,6 +23,7 @@ import HistoryPage from './views/HistoryPage/HistoryPage';
 import OwnerStoreSettingPage from './views/OwnerDetailStorePage/OwnerStoreSettingPage';
 import UserInfoPage from './views/UserInfoPage/UserInfoPage';
 import CartPage from './views/CartPage/CartPage';
+
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -36,7 +37,7 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null) || AuthOwner(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false) || AuthOwner(OwnerRegisterPage, false)} />
-          
+
           <Route exact path="/register/owner" component={Auth(OwnerRegisterPage, false) || AuthOwner(OwnerRegisterPage, false)} />
           <Route exact path="/login/owner" component={AuthOwner(OwnerLoginPage, null)} />
 

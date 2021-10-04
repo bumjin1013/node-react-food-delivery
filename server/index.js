@@ -48,7 +48,6 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/owners', require('./routes/owners'));
 app.use('/api/store', require('./routes/store'));
 app.use('/api/payments', require('./routes/payments'));
-app.use('/api/chat', require('./routes/chat'));
 
 
 //use this to show the image you have in node js server to client (react js)
