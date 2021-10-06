@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Col, Card, Row, PageHeader, Rate } from "antd";
-import Meta from "antd/lib/card/Meta";
-import Distance from '../../../utils/Distance';
 import Store from './Section/Store';
 function StoreListPage(props) {
 
-  const userAddress = useSelector(state => state.user.userData && state.user.userData.address.address);
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.isAuth ? state.user.userData.address.address : null);
   
   console.log(userAddress);
   
