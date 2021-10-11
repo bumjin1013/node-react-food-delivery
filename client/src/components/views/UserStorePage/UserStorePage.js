@@ -7,7 +7,7 @@ import { addToCart } from '../../../_actions/user_actions';
 import moment from 'moment';
 import MapContainer from '../../utils/MapContainer';
 import Distance from '../../utils/Distance';
-import Delivery from '../OwnerDetailStorePage/Section/Delivery';
+
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
@@ -216,7 +216,7 @@ function UserStorePage(props) {
                 <h3>가게 위치</h3>
                 {Address}
                 <MapContainer address={Address} title={Store.title} />
-                거리 : <Distance storeAddress={Address} myAddress={userAddress}/>미터
+                거리 : <Distance storeAddress={Address && Address} myAddress={userAddress && userAddress}/>미터
                 <Divider />
                 <h3>배달 가능 지역</h3>
                 {renderDeliveryArea}

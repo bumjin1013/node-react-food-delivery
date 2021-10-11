@@ -9,7 +9,8 @@ function Distance(props) {
     const [Origin, setOrigin] = useState();
     const [Destination, setDestination] = useState();
 
-    console.log(props.myAddress)
+    console.log('store', props.storeAddress )
+    console.log('my', props.myAddress)
     useEffect(() => {
         if(props.storeAddress && props.myAddress){
             // 상점 주소를 좌표로 변경
@@ -21,7 +22,7 @@ function Distance(props) {
             });    
 
             // 유저의 주소를 좌표로 변경
-            geocoder.addressSearch(props.myAddress, function(result, status) {
+            geocoder.addressSearch(props.myAddress.address, function(result, status) {
                 // 정상적으로 검색이 완료됐으면 
                 if (status === kakao.maps.services.Status.OK) {
                     setDestination(new kakao.maps.LatLng(result[0].y, result[0].x));
@@ -36,10 +37,6 @@ function Distance(props) {
         new kakao.maps.LatLng(Origin && Origin.Ma, Origin && Origin.La),
         new kakao.maps.LatLng(Destination && Destination.Ma, Destination && Destination.La)
         ],
-    strokeWeight: 2,
-    strokeColor: '#FF00FF',
-    strokeOpacity: 0.8,
-    strokeStyle: 'dashed'
     });    
 
     return (
