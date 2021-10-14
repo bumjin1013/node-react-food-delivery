@@ -22,7 +22,7 @@ function LandingPage(props) {
             if(props.user.userData.coupon){
                 alert('이미 쿠폰을 발급 받으셨습니다.');
             } else {
-                axios.post('/api/users/getcoupon', body)
+                axios.post('/api/users/coupon', body)
                 .then(response => {
                     if (response.data.success) {
                         alert('쿠폰이 발급되었습니다.');

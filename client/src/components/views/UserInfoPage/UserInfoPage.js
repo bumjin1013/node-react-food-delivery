@@ -8,7 +8,7 @@ const { Search } = Input;
 
 function UserInfoPage() {
     useEffect(() => {
-        axios.get("/api/users/userinfo").then((response) => {
+        axios.get("/api/users/info").then((response) => {
           if (response.data.success) {
               setUserInfo(response.data.userInfo);
               setNickname(response.data.userInfo.nickname);
@@ -43,7 +43,7 @@ function UserInfoPage() {
               nickname: EditedNickname
             }
         
-            axios.post('/api/users/edituserinfo', body)
+            axios.post('/api/users/info', body)
               .then(response => {
                 if (response.data.success) {
                   message.success('닉네임을 수정하였습니다.')

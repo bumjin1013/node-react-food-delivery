@@ -81,12 +81,10 @@ router.get("/stores_by_id",  (req, res) => {
       if (err) return res.status(400).send(err);
       return res.status(200).json(store);
     });
-
-    
 });
 
-//getMenu
-router.get("/menu/storeId", (req, res) => {
+//get menu
+router.get("/menu", (req, res) => {
   
   Store.findOne({ _id : req.query.id})
   .exec((err, store) => {
@@ -94,12 +92,10 @@ router.get("/menu/storeId", (req, res) => {
     return res.status(200).json(store.menu);
     
   });
-    
 })
 
-
-//메뉴 추가
-router.post("/addMenu", (req, res) => {
+//add menu
+router.post("/menu", (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
     '$push': {
@@ -114,6 +110,36 @@ router.post("/addMenu", (req, res) => {
       }
     )
 });
+
+//edit menu
+router.put('/menu', (req, res) => {
+
+  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
+    "$set": {
+      "menu.$.name": req.body.name,
+      "menu.$.price": req.body.price
+        }},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json( changedInfo.menu )
+        }
+  );
+})
+
+//delete menu
+router.delete('/menu', (req, res) => {
+
+  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
+    "$pull": {
+      "menu": {
+        _id: req.body.menuId
+      }}},{ new: true },
+        (err, changedInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json(changedInfo.menu)
+        }
+  );
+})
 
 //카테고리
 router.get("/category", (req, res) => {
@@ -133,7 +159,7 @@ router.get("/category", (req, res) => {
 });
 
 //Store 스키마의 review에 유저의 리뷰 추가
-router.post("/addreview", (req, res) => {
+router.post("/review", (req, res) => {
 
   Store.findOneAndUpdate({ _id : req.body.id},{
     "$push": {
@@ -151,8 +177,34 @@ router.post("/addreview", (req, res) => {
     )
 });
 
-//getOrder
-router.get("/order/storeId", (req, res) => {
+//get Review
+router.get("/review", (req, res) => {
+  
+  Store.findOne({ _id : req.query.id})
+  .exec((err, store) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json(store.review);
+    
+  });
+})
+
+//add comments
+router.post('/comments', (req, res) => {
+
+  Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: {_id: req.body.reviewId }}},{
+    "$push": {
+      "review.$.comments": req.body.comments
+        }},{ new: true },
+        (err, store) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).json(store.review)
+        }
+  );
+})
+
+
+//get order
+router.get("/order", (req, res) => {
   
   Store.findOne({ _id : req.query.id})
   .exec((err, store) => {
@@ -160,7 +212,6 @@ router.get("/order/storeId", (req, res) => {
     return res.status(200).json(store.order);
     
   });
-  
 })
 
 //상점의 order에 주문내역 넣기
@@ -187,35 +238,8 @@ router.post('/order', (req, res) => {
   );
 })
 
-
-//getReview
-router.get("/review/storeId", (req, res) => {
-  
-  Store.findOne({ _id : req.query.id})
-  .exec((err, store) => {
-    if (err) return res.status(400).send(err);
-    return res.status(200).json(store.review);
-    
-  });
-})
-
-//사장님 댓글 추가
-router.post('/addcomments', (req, res) => {
-
-  Store.findOneAndUpdate({_id: req.body.storeId, review: { $elemMatch: {_id: req.body.reviewId }}},{
-    "$push": {
-      "review.$.comments": req.body.comments
-        }},{ new: true },
-        (err, store) => {
-            if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json(store.review)
-        }
-  );
-})
-
-
-//상점 정보 수정
-router.post('/editstoreinfo', (req, res) => {
+//edit info
+router.put('/info', (req, res) => {
 
   Store.findOneAndUpdate({_id: req.body.storeId},{
     $set: {
@@ -228,38 +252,8 @@ router.post('/editstoreinfo', (req, res) => {
     );
 })
 
-//메뉴 수정
-router.post('/changemenu', (req, res) => {
-
-  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
-    "$set": {
-      "menu.$.name": req.body.name,
-      "menu.$.price": req.body.price
-        }},{ new: true },
-        (err, changedInfo) => {
-            if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json( changedInfo.menu )
-        }
-  );
-})
-
-//메뉴 삭제
-router.post('/deletemenu', (req, res) => {
-
-  Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
-    "$pull": {
-      "menu": {
-        _id: req.body.menuId
-      }}},{ new: true },
-        (err, changedInfo) => {
-            if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json(changedInfo.menu)
-        }
-  );
-})
-
 // 판매중 <-> 품절 상태 변경
-router.post('/changestate', (req, res) => {
+router.put('/state', (req, res) => {
 
   Store.findOneAndUpdate({_id: req.body.storeId, menu: { $elemMatch: {_id: req.body.menuId }}},{
     "$set": {
@@ -277,7 +271,7 @@ router.post('/changestate', (req, res) => {
 // 주문취소 -> 주문취소 
 // 배달출발 -> 배달중 
 // 배달완료 -> 배달완료 
-router.post('/updateorderstate', (req, res) => {
+router.put('/order-state', (req, res) => {
 
   //body로 받은 storeId, orderId를 이용하여 찾고 state를 body.state로 변경
   Store.findOneAndUpdate({_id: req.body.storeId, order: { $elemMatch: {orderId: req.body.orderId }}},{
@@ -292,7 +286,7 @@ router.post('/updateorderstate', (req, res) => {
 })
 
 //배달 지역 정보 가져오기
-router.get('/getDeliveryArea', (req, res) => {
+router.get('/area', (req, res) => {
   Store.findOne({ _id: req.query.storeId },{
     "_id": false,
     "deliveryArea": true
@@ -304,7 +298,7 @@ router.get('/getDeliveryArea', (req, res) => {
 })
 
 //배달 지역 추가
-router.post('/addDeliveryArea', (req, res) => {
+router.post('/area', (req, res) => {
   Store.findOneAndUpdate({ _id: req.body.storeId },{
     "$push": {
       "deliveryArea": {
@@ -320,7 +314,7 @@ router.post('/addDeliveryArea', (req, res) => {
 })
 
 //배달 지역 삭제
-router.post('/deleteDeliveryArea', (req, res) => {
+router.delete('/area', (req, res) => {
   
   console.log(req.body);
 

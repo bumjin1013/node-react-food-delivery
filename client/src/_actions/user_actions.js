@@ -55,7 +55,7 @@ export function logoutUser(){
 
 export function addToCart(body){
    
-    const request = axios.post(`${USER_SERVER}/addToCart`, body)
+    const request = axios.post(`${USER_SERVER}/cart`, body)
     .then(response => response.data);
 
     return {
@@ -66,7 +66,7 @@ export function addToCart(body){
 
 export function getCartItems() {
 
-    const request = axios.get(`${USER_SERVER}/getCartItems`)
+    const request = axios.get(`${USER_SERVER}/cart`)
     .then(response => response.data);
 
     return {
@@ -77,7 +77,9 @@ export function getCartItems() {
 
 export function removeCartItem(body) {
 
-    const request = axios.post(`${USER_SERVER}/removeFromCart`, body)
+    const request = axios.delete(`${USER_SERVER}/cart`, {
+        data : body 
+    })
     .then(response => response.data);
 
     return {
@@ -87,7 +89,7 @@ export function removeCartItem(body) {
 }
 
 export function updateAddress(body) {
-    const request = axios.post(`${USER_SERVER}/updateaddress`, body)
+    const request = axios.post(`${USER_SERVER}/address`, body)
     .then(response => response.data);
 
     return {
@@ -97,7 +99,7 @@ export function updateAddress(body) {
 }
 
 export function updatehistoryState(body) {
-    const request = axios.post(`${USER_SERVER}/updateHistoryState`, body)
+    const request = axios.post(`${USER_SERVER}/history`, body)
     .then(response => response.data);
 
     return {

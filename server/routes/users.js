@@ -77,7 +77,7 @@ router.get("/logout", auth, (req, res) => {
 });
 
 //장바구니 추가
-router.post("/addToCart", auth, (req, res) => {
+router.post("/cart", auth, (req, res) => {
 
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
     User.findOne({ _id: req.user._id },
@@ -165,7 +165,7 @@ router.post("/addToCart", auth, (req, res) => {
 });
 
 //장바구니에서 상품 삭제
-router.post('/removeFromCart', auth, (req, res) => {
+router.delete('/cart', auth, (req, res) => {
 
     console.log(req.body);
     //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
@@ -184,7 +184,7 @@ router.post('/removeFromCart', auth, (req, res) => {
 })
 
 //장바구니 상품 조회
-router.get('/getCartItems', auth, (req, res) => {
+router.get('/cart', auth, (req, res) => {
 
     User.findOne({ _id: req.user._id })
     .exec((err, doc) => {
@@ -194,7 +194,7 @@ router.get('/getCartItems', auth, (req, res) => {
     });
 })
 
-//주문
+//주문 
 router.post("/order", auth, (req, res) => {
 
     //사용한 쿠폰이 존재하면 쿠폰 삭제
@@ -243,22 +243,42 @@ router.get('/history', auth, (req, res) => {
     User.findOne({ _id: req.user._id })
     .exec((err, history) => {
         if (err) return res.status(400).json({ success: false, err })
-        res.status(200).json({ success: true, history })
-    });
-});
-
-router.get('/getHistory', auth, (req, res) => {
-   
-    User.findOne({ _id: req.user._id })
-    .exec((err, history) => {
-        if (err) return res.status(400).json({ success: false, err })
         res.status(200).json( history.history )
     });
 });
 
+//주문 상태 변경
+router.post('/history', (req, res) => {
+    //배달 완료시 리뷰 권한 true
+    if(req.body.state === "배달완료"){
+        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
+            "$set": {
+                "history.$.state": req.body.state,
+                "history.$.reviewAuth": true
+                }
+            },{ new: true },
+            (err, doc) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).json({ success: true })
+            }
+        );
+    } else {
+        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
+            "$set": {
+                "history.$.state": req.body.state
+                }
+            },{ new: true },
+            (err, doc) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).json({ success: true })
+            }
+        );
+    }
+})
+
 
 //유저 정보 출력 (마이페이지)
-router.get('/userinfo', auth, (req, res) => {
+router.get('/info', auth, (req, res) => {
 
     User.findOne({ _id: req.user._id })
     .exec((err, userInfo) => {
@@ -268,7 +288,7 @@ router.get('/userinfo', auth, (req, res) => {
 })
 
 //닉네임 수정
-router.post('/edituserinfo', auth, (req, res) => {
+router.post('/info', auth, (req, res) => {
 
     User.findOneAndUpdate({ _id: req.user._id },{
         $set:{nickname: req.body.nickname}  
@@ -281,7 +301,7 @@ router.post('/edituserinfo', auth, (req, res) => {
 })
 
 //주소 추가
-router.post('/updateaddress', auth, (req, res) => {
+router.post('/address', auth, (req, res) => {
 
     console.log(req.body);
     User.findOneAndUpdate({ _id: req.user._id },{
@@ -300,7 +320,7 @@ router.post('/updateaddress', auth, (req, res) => {
 })
 
 //리뷰 추가
-router.post("/addreview", auth, (req, res) => {
+router.post("/review", auth, (req, res) => {
     console.log(req.body);
     //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
     User.findOneAndUpdate({ _id : req.user._id, history: {$elemMatch: {orderId: req.body.orderId }}},{
@@ -324,7 +344,7 @@ router.post("/addreview", auth, (req, res) => {
   });
 
 //10000원 쿠폰 받기
-router.post('/getcoupon', auth, (req, res) => {
+router.post('/coupon', auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id },{
         "$push": {
             "coupon": {
@@ -363,34 +383,7 @@ router.get('/payments', auth, (req, res) => {
     });
 })
 
-//주문 상태 변경
-router.post('/updateHistoryState', (req, res) => {
-    //배달 완료시 리뷰 권한 true
-    if(req.body.state === "배달완료"){
-        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
-            "$set": {
-                "history.$.state": req.body.state,
-                "history.$.reviewAuth": true
-                }
-            },{ new: true },
-            (err, doc) => {
-                if (err) return res.status(400).json({ success: false, err })
-                res.status(200).json({ success: true })
-            }
-        );
-    } else {
-        User.findOneAndUpdate({_id: req.body.userId, history: { $elemMatch: {orderId: req.body.orderId }}},{
-            "$set": {
-                "history.$.state": req.body.state
-                }
-            },{ new: true },
-            (err, doc) => {
-                if (err) return res.status(400).json({ success: false, err })
-                res.status(200).json({ success: true })
-            }
-        );
-    }
-})
+
 
 
 module.exports = router;

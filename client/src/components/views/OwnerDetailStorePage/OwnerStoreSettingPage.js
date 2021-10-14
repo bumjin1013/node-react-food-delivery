@@ -70,7 +70,7 @@ function OwnerStoreSettingPage(props) {
 
     console.log(body);
 
-    axios.post('/api/store/editstoreinfo', body)
+    axios.put('/api/store/info', body)
       .then(response => {
         if (response.data.success) {
           alert('상점 정보를 수정하였습니다.')

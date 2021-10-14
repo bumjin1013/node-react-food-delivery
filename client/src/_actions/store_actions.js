@@ -16,7 +16,7 @@ import {
 import { STORE_SERVER } from '../components/Config.js';
 
 export function addMenu(body){
-    const request = axios.post(`${STORE_SERVER}/addMenu`, body)
+    const request = axios.post(`${STORE_SERVER}/menu`, body)
         .then(response => response.data);
     
     return {
@@ -26,7 +26,7 @@ export function addMenu(body){
 }
 
 export function getMenu(storeId){
-    const request = axios.get(`${STORE_SERVER}/menu/storeId?id=${storeId}&type=single`)
+    const request = axios.get(`${STORE_SERVER}/menu?id=${storeId}&type=single`)
         .then(response => response.data);
     
     return {
@@ -36,7 +36,7 @@ export function getMenu(storeId){
 }
 
 export function changeState(body){
-    const request = axios.post(`${STORE_SERVER}/changestate`, body)
+    const request = axios.put(`${STORE_SERVER}/state`, body)
         .then(response => response.data);
     
     return {
@@ -46,7 +46,7 @@ export function changeState(body){
 }
 
 export function changeMenu(body) {
-    const request = axios.post(`${STORE_SERVER}/changemenu`, body)
+    const request = axios.put(`${STORE_SERVER}/menu`, body)
         .then(response => response.data);
     
     return {
@@ -56,7 +56,9 @@ export function changeMenu(body) {
 }
 
 export function deleteMenu(body){
-    const request = axios.post(`${STORE_SERVER}/deletemenu`, body)
+    const request = axios.delete(`${STORE_SERVER}/menu`, {
+        data : body
+    })
         .then(response => response.data);
     
     return {
@@ -66,7 +68,7 @@ export function deleteMenu(body){
 }
 
 export function getOrder(storeId){
-    const request = axios.get(`${STORE_SERVER}/order/storeId?id=${storeId}&type=single`)
+    const request = axios.get(`${STORE_SERVER}/order?id=${storeId}&type=single`)
         .then(response => response.data);
     
     return {
@@ -76,7 +78,7 @@ export function getOrder(storeId){
 }
 
 export function updateOrderState(body){
-    const request = axios.post(`${STORE_SERVER}/updateorderstate`, body)
+    const request = axios.put(`${STORE_SERVER}/order-state`, body)
         .then(response => response.data);
     
     return {
@@ -86,7 +88,7 @@ export function updateOrderState(body){
 }
 
 export function getReview(storeId){
-    const request = axios.get(`${STORE_SERVER}/review/storeId?id=${storeId}&type=single`)
+    const request = axios.get(`${STORE_SERVER}/review?id=${storeId}&type=single`)
         .then(response => response.data);
     
     return {
@@ -96,7 +98,7 @@ export function getReview(storeId){
 }
 
 export function addcomments(body){
-    const request = axios.post(`${STORE_SERVER}/addcomments`, body)
+    const request = axios.post(`${STORE_SERVER}/comments`, body)
         .then(response => response.data);
     
     return {
@@ -106,7 +108,7 @@ export function addcomments(body){
 }
 
 export function getDeliveryArea(storeId){
-    const request = axios.get(`${STORE_SERVER}/getDeliveryArea?storeId=${storeId}&type=single`)
+    const request = axios.get(`${STORE_SERVER}/area?storeId=${storeId}&type=single`)
         .then(response => response.data);
     
     return {
@@ -116,7 +118,7 @@ export function getDeliveryArea(storeId){
 }
 
 export function addDeliveryArea(body){
-    const request = axios.post(`${STORE_SERVER}/addDeliveryArea`, body)
+    const request = axios.post(`${STORE_SERVER}/area`, body)
         .then(response => response.data);
     
     return {
@@ -127,7 +129,9 @@ export function addDeliveryArea(body){
 
 export function deleteDeliveryArea(body){
 
-    const request = axios.post(`${STORE_SERVER}/deleteDeliveryArea`, body)
+    const request = axios.delete(`${STORE_SERVER}/area`, {
+        data : body
+    })
         .then(response => response.data);
     
     return {
