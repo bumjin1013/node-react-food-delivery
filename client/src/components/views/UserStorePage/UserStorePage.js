@@ -19,7 +19,7 @@ function UserStorePage(props) {
   const userAddress = useSelector(state => state.user.userData && state.user.userData.address)
   
   useEffect(() => {
-    axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
+    axios.get(`/api/stores/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         setStore(response.data[0]);
         console.log(response.data[0])

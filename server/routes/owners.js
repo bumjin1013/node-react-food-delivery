@@ -8,7 +8,7 @@ const { auth } = require("../middleware/authOwner");
 //             Owner
 //=================================
 
-router.get("/auth/owner", auth, (req, res) => {
+router.get("/auth", auth, (req, res) => {
     res.status(200).json({
         _id: req.owner._id,
         isAdmin: req.owner.role === 0 ? false : true,
@@ -21,7 +21,7 @@ router.get("/auth/owner", auth, (req, res) => {
     });
 });
 
-router.post("/register/owner", (req, res) => {
+router.post("/register", (req, res) => {
 
     const owner = new Owner(req.body);
 
@@ -33,7 +33,7 @@ router.post("/register/owner", (req, res) => {
     });
 });
 
-router.post("/login/owner", (req, res) => {
+router.post("/login", (req, res) => {
     Owner.findOne({ email: req.body.email }, (err, owner) => {
         if (!owner)
             return res.json({

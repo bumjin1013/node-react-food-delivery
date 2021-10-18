@@ -8,7 +8,7 @@ import {
 import { OWNER_SERVER } from '../components/Config.js';
 
 export function registerOwner(dataToSubmit){
-    const request = axios.post(`${OWNER_SERVER}/register/owner`,dataToSubmit)
+    const request = axios.post(`${OWNER_SERVER}/register`,dataToSubmit)
         .then(response => response.data);
     
     return {
@@ -18,7 +18,7 @@ export function registerOwner(dataToSubmit){
 }
 
 export function loginOwner(dataToSubmit){
-    const request = axios.post(`${OWNER_SERVER}/login/owner`,dataToSubmit)
+    const request = axios.post(`${OWNER_SERVER}/login`,dataToSubmit)
                 .then(response => response.data);
 
     return {
@@ -28,7 +28,7 @@ export function loginOwner(dataToSubmit){
 }
 
 export function auth(){
-    const request = axios.get(`${OWNER_SERVER}/auth/owner`)
+    const request = axios.get(`${OWNER_SERVER}/auth`)
     .then(response => response.data);
 
     return {

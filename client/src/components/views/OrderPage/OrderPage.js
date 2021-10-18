@@ -156,7 +156,7 @@ function OrderPage(props) {
                     coupon: SelectedCoupon
                 }
               //DB에 저장
-                axios.post('/api/users/order', body) && axios.post('/api/store/order', body)
+                axios.post('/api/users/order', body) && axios.post('/api/stores/order', body)
                 .then(response => {
                     if (response.data.success) {
                         alert('주문에 성공했습니다.');

@@ -12,7 +12,7 @@ function OwnerStoreSettingPage(props) {
 
 
   useEffect(() => {
-    axios.get(`/api/store/stores_by_id?id=${storeId}&type=single`)
+    axios.get(`/api/stores/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         //상점 정보를 Store state에 넣어줌
         setStore(response.data[0]);
@@ -70,7 +70,7 @@ function OwnerStoreSettingPage(props) {
 
     console.log(body);
 
-    axios.put('/api/store/info', body)
+    axios.put('/api/stores/info', body)
       .then(response => {
         if (response.data.success) {
           alert('상점 정보를 수정하였습니다.')

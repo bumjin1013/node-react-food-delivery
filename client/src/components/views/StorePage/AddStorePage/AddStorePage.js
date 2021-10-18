@@ -61,7 +61,7 @@ function AddStorePage(props) {
             address: Address
         }
 
-        Axios.post('/api/store', body)
+        Axios.post('/api/stores', body)
             .then(response => {
                 if (response.data.success) {
                     alert('상품 업로드에 성공 했습니다.')

@@ -239,7 +239,7 @@ router.post("/order", auth, (req, res) => {
   
 //주문내역
 router.get('/history', auth, (req, res) => {
-   
+   console.log('history');
     User.findOne({ _id: req.user._id })
     .exec((err, history) => {
         if (err) return res.status(400).json({ success: false, err })

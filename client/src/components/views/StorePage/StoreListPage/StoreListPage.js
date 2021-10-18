@@ -12,7 +12,7 @@ function StoreListPage(props) {
   useEffect(() => {
 
     if(userAddress){
-      axios.get(`/api/store/category?category=${category}&address=${userAddress}`).then((response) => {
+      axios.get(`/api/stores/category?category=${category}&address=${userAddress}`).then((response) => {
           setStoreList(response.data.store);   
         })
       .catch((err) => alert(err));

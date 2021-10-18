@@ -9,9 +9,8 @@ function HistoryPage(props) {
   
   useEffect(() => {
     axios.get("/api/users/history").then((response) => {
-      if (response.data.success) {
-        setHistoryList(response.data.history.history); 
-  
+      if (response.data) {
+        setHistoryList(response.data); 
       } else {
         alert("주문내역을 로드하는데 실패하였습니다. ");
       }

@@ -53,7 +53,7 @@ function History(props) {
         }
 
         //저장한 정보들을 addreview 라우터로 전송
-        axios.post('/api/store/review', body) && axios.post('/api/users/review', body)
+        axios.post('/api/stores/review', body) && axios.post('/api/users/review', body)
             .then(response => {
                 if(response.data.success) {
                     alert('리뷰를 성공적으로 등록하였습니다.')

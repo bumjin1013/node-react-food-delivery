@@ -46,7 +46,7 @@ app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
 app.use('/api/owners', require('./routes/owners'));
-app.use('/api/store', require('./routes/store'));
+app.use('/api/stores', require('./routes/stores'));
 app.use('/api/payments', require('./routes/payments'));
 
 

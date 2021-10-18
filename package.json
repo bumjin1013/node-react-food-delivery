@@ -11,7 +11,8 @@
     "start": "node server/index.js",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
-    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
+    "react-native": "npm run start --prefix react-native",
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\" \"npm run start --prefix react-native\""
   },
   "author": "John ahn",
   "license": "ISC",

@@ -7,7 +7,7 @@ import Meta from "antd/lib/card/Meta";
 
 function StorePage() {
   useEffect(() => {
-    axios.get("/api/store/stores").then((response) => {
+    axios.get("/api/stores/stores").then((response) => {
       if (response.data.success) {
         setStores(response.data.storeInfo);
       } else {

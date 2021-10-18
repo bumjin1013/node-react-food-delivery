@@ -16,7 +16,7 @@ function FileUpload(props) {
         }
         formData.append("file", files[0])
 
-        axios.post('/api/store/image', formData, config)
+        axios.post('/api/stores/image', formData, config)
             .then(response => {
                 if (response.data.success) {
                     setImages([...Images, response.data.filePath])
