@@ -64,16 +64,12 @@ router.get("/stores_by_id",  (req, res) => {
   let storeIds = req.query.id;
 
   if (type === "array") {
-    //id=123123123,324234234,324234234 이거를
-    //productIds = ['123123123', '324234234', '324234234'] 이런식으로 바꿔주기
     let ids = req.query.id.split(",");
     storeIds = ids.map((item) => {
       return item;
     });
   } 
-
-  //productId를 이용해서 DB에서  productId와 같은 상품의 정보를 가져온다.
-
+  
   Store.find({ _id: { $in: storeIds } })
     .populate("id")
     .exec((err, store) => {
