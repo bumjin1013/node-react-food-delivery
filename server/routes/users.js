@@ -241,9 +241,9 @@ router.post("/order", auth, (req, res) => {
 router.get('/history', auth, (req, res) => {
    console.log('history');
     User.findOne({ _id: req.user._id })
-    .exec((err, history) => {
+    .exec((err, doc) => {
         if (err) return res.status(400).json({ success: false, err })
-        res.status(200).json( history.history )
+        res.status(200).json( doc.history )
     });
 });
 
