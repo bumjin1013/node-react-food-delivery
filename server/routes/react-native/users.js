@@ -1,31 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require("../models/User");
-const { auth } = require("../middleware/auth");
-
-//=================================
-//             User
-//=================================
-
-//인증
-router.get("/auth", auth, (req, res) => {
-    res.status(200).json({
-        _id: req.user._id,
-        isAdmin: req.user.role === 0 ? false : true,
-        isAuth: true,
-        email: req.user.email,
-        name: req.user.name,
-        lastname: req.user.lastname,
-        nickname: req.user.nickname,
-        role: req.user.role,
-        address: req.user.address,
-        image: req.user.image,
-        cart: req.user.cart,
-        history: req.user.history,
-        review: req.user.review,
-        coupon: req.user.coupon
-    });
-});
+const { User } = require("../../models/User");
 
 router.post("/register", (req, res) => {
 
@@ -67,7 +42,7 @@ router.post("/login", (req, res) => {
 });
 
 //로그아웃
-router.get("/logout", auth, (req, res) => {
+router.get("/logout",  (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).send({
@@ -77,7 +52,7 @@ router.get("/logout", auth, (req, res) => {
 });
 
 //장바구니 추가
-router.post("/cart", auth, (req, res) => {
+router.post("/cart",  (req, res) => {
 
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
     User.findOne({ _id: req.user._id },
@@ -165,7 +140,7 @@ router.post("/cart", auth, (req, res) => {
 });
 
 //장바구니에서 상품 삭제
-router.delete('/cart', auth, (req, res) => {
+router.delete('/cart',  (req, res) => {
 
     console.log(req.body);
     //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
@@ -184,7 +159,7 @@ router.delete('/cart', auth, (req, res) => {
 })
 
 //장바구니 상품 조회
-router.get('/cart', auth, (req, res) => {
+router.get('/cart',  (req, res) => {
 
     User.findOne({ _id: req.user._id })
     .exec((err, doc) => {
@@ -195,7 +170,7 @@ router.get('/cart', auth, (req, res) => {
 })
 
 //주문 
-router.post("/order", auth, (req, res) => {
+router.post("/order",  (req, res) => {
 
     //사용한 쿠폰이 존재하면 쿠폰 삭제
     if(req.body.coupon != null) {
@@ -238,7 +213,7 @@ router.post("/order", auth, (req, res) => {
 });
   
 //주문내역
-router.get('/history', auth, (req, res) => {
+router.get('/history',  (req, res) => {
    console.log('history');
     User.findOne({ _id: req.user._id })
     .exec((err, doc) => {
@@ -278,7 +253,7 @@ router.post('/history', (req, res) => {
 
 
 //유저 정보 출력 (마이페이지)
-router.get('/info', auth, (req, res) => {
+router.get('/info',  (req, res) => {
 
     User.findOne({ _id: req.user._id })
     .exec((err, userInfo) => {
@@ -288,7 +263,7 @@ router.get('/info', auth, (req, res) => {
 })
 
 //닉네임 수정
-router.post('/info', auth, (req, res) => {
+router.post('/info',  (req, res) => {
 
     User.findOneAndUpdate({ _id: req.user._id },{
         $set:{nickname: req.body.nickname}  
@@ -301,7 +276,7 @@ router.post('/info', auth, (req, res) => {
 })
 
 //주소 추가
-router.post('/address', auth, (req, res) => {
+router.post('/address',  (req, res) => {
 
     console.log(req.body);
     User.findOneAndUpdate({ _id: req.user._id },{
@@ -320,7 +295,7 @@ router.post('/address', auth, (req, res) => {
 })
 
 //리뷰 추가
-router.post("/review", auth, (req, res) => {
+router.post("/review",  (req, res) => {
     console.log(req.body);
     //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
     User.findOneAndUpdate({ _id : req.user._id, history: {$elemMatch: {orderId: req.body.orderId }}},{
@@ -344,7 +319,7 @@ router.post("/review", auth, (req, res) => {
   });
 
 //10000원 쿠폰 받기
-router.post('/coupon', auth, (req, res) => {
+router.post('/coupon',  (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id },{
         "$push": {
             "coupon": {
@@ -363,7 +338,7 @@ router.post('/coupon', auth, (req, res) => {
 })
 
 //결제 페이지 - 상품의 토탈 가격을 백엔드 에서 계산에서 json으로 추가해 넘겨줌
-router.get('/payments', auth, (req, res) => {
+router.get('/payments',  (req, res) => {
 
     let totalPrice = 0;
 

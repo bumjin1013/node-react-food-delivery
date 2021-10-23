@@ -12,7 +12,9 @@
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
     "react-native": "npm run start --prefix react-native",
+    "postinstall": "rndebugger-open",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\" \"npm run start --prefix react-native\""
+
   },
   "author": "John ahn",
   "license": "ISC",
