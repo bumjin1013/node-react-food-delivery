@@ -146,7 +146,33 @@ router.get("/category", (req, res) => {
 
   console.log(si, gu, ro);
 
-  Store.find({ "category" : req.query.category, "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} })
+  Store.find({ "category" : req.query.category, "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} },{
+    "_id": true,
+    "image": true,
+    "title": true,
+    "review": true
+  })
+    .exec((err, store) => {
+      if (err) return res.status(400).send({ success: false, err });
+      return res.status(200).send({ success: true, store });
+      
+    });
+});
+
+router.get("/store/area", (req, res) => {
+
+  let si = req.query.address.split(' ')[0];
+  let gu = req.query.address.split(' ')[1];
+  let ro = req.query.address.split(' ')[2];
+
+  console.log(si, gu, ro);
+
+  Store.find({ "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} },{
+    "_id": true,
+    "image": true,
+    "title": true,
+    "review": true
+  })
     .exec((err, store) => {
       if (err) return res.status(400).send({ success: false, err });
       return res.status(200).send({ success: true, store });
