@@ -60,22 +60,34 @@ router.get("/stores",  auth, (req, res) => {
 });
 
 router.get("/stores_by_id",  (req, res) => {
-  let type = req.query.type;
-  let storeIds = req.query.id;
 
-  if (type === "array") {
-    let ids = req.query.id.split(",");
-    storeIds = ids.map((item) => {
-      return item;
-    });
-  } 
+  let storeId = req.query.id;
   
-  Store.find({ _id: { $in: storeIds } })
+  Store.find({ _id: { $in: storeId } }, {
+    "order": false
+  })
     .populate("id")
-    .exec((err, store) => {
+    .exec((err, doc) => {
+      
+      
+      //별점 계산
+      let totalStar = 0;
+    
+      for(let i=0; i<doc[0].review.length; i++){
+        totalStar += doc[0].review[i].star
+      }
+    
+      // 평균 별점
+      let star;
+      //리뷰가 1개 이상이면 더한 총 별점 / 리뷰 갯수 = Star , 리뷰가 없으면 0
+      doc[0].review.length > 0 ? star = (totalStar/doc[0].review.length).toFixed(1) : star = 0
 
-      if (err) return res.status(400).send(err);
-      return res.status(200).json(store);
+      //계산한 별점 store object에 추가하여 response
+      store = JSON.parse(JSON.stringify(doc)); 
+      store["star"] = star;
+
+      if (err) return res.status(400).send({ sucess: false, err});
+      return res.status(200).json({ success: true, store, star });
     });
 });
 
@@ -144,8 +156,6 @@ router.get("/category", (req, res) => {
   let gu = req.query.address.split(' ')[1];
   let ro = req.query.address.split(' ')[2];
 
-  console.log(si, gu, ro);
-
   Store.find({ "category" : req.query.category, "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} },{
     "_id": true,
     "image": true,
@@ -159,18 +169,18 @@ router.get("/category", (req, res) => {
     });
 });
 
-router.get("/store/area", (req, res) => {
-
+//리액트 네이티브 상점 호출 
+router.get("/list", (req, res) => {
+  
   let si = req.query.address.split(' ')[0];
   let gu = req.query.address.split(' ')[1];
   let ro = req.query.address.split(' ')[2];
-
-  console.log(si, gu, ro);
 
   Store.find({ "deliveryArea" : { $elemMatch : { "si": si, "gu": gu, "ro": ro}} },{
     "_id": true,
     "image": true,
     "title": true,
+    "category": true,
     "review": true
   })
     .exec((err, store) => {
