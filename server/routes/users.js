@@ -164,10 +164,9 @@ router.post("/cart", auth, (req, res) => {
         })
 });
 
-//장바구니에서 상품 삭제
+//장바구니에서 상품 전체 삭제
 router.delete('/cart', auth, (req, res) => {
 
-    console.log(req.body);
     //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
     User.findOneAndUpdate(
         { _id: req.user._id },
@@ -192,6 +191,34 @@ router.get('/cart', auth, (req, res) => {
         if (err) return res.status(400).json({ success: false, err })
         res.status(200).send(doc.cart)
     });
+})
+
+//장바구니 상품 수량 변경
+router.put('/cart', auth, (req, res) => {
+    
+    //+ 버튼을 눌렀을 경우
+    if(req.body.quantity == true) {
+        User.findOneAndUpdate({ _id: req.user._id, cart: { $elemMatch: { id: req.body.menuId }} },
+            {
+                $inc: { "cart.$.quantity": 1 }
+            },
+            { new: true },
+            (err, userInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).send(userInfo.cart)
+            })
+    //- 버튼을 눌렀을 경우
+    } else {
+        User.findOneAndUpdate({ _id: req.user._id, cart: { $elemMatch: { id: req.body.menuId }} },
+            {
+                $inc: { "cart.$.quantity": -1 }
+            },
+            { new: true },
+            (err, userInfo) => {
+                if (err) return res.status(400).json({ success: false, err })
+                res.status(200).send(userInfo.cart)
+            })
+    }
 })
 
 //주문 
