@@ -59,7 +59,7 @@ router.post("/login", (req, res) => {
                     .cookie("w_auth", user.token)
                     .status(200)
                     .json({
-                        loginSuccess: true, userId: user._id
+                        loginSuccess: true, userId: user._id, token: user.token
                     });
             });
         });
@@ -79,6 +79,7 @@ router.get("/logout", auth, (req, res) => {
 //장바구니 추가
 router.post("/cart", auth, (req, res) => {
 
+    console.log(req.body);
     //먼저  User Collection에 해당 유저의 정보를 가져오기 
     User.findOne({ _id: req.user._id },
         (err, userInfo) => {
@@ -111,7 +112,8 @@ router.post("/cart", auth, (req, res) => {
                                 price: req.body.price,
                                 image: req.body.image,
                                 storeId: req.body.storeId,
-                                storeName: req.body.storeName
+                                storeName: req.body.storeName,
+                                storeImage: req.body.storeImage
                             }
                         }
                     },
@@ -149,7 +151,8 @@ router.post("/cart", auth, (req, res) => {
                                     price: req.body.price,
                                     image: req.body.image,
                                     storeId: req.body.storeId,
-                                    storeName: req.body.storeName
+                                    storeName: req.body.storeName,
+                                    storeImage: req.body.storeImage
                                 }
                             }
                         },
@@ -164,10 +167,9 @@ router.post("/cart", auth, (req, res) => {
         })
 });
 
-//장바구니에서 상품 전체 삭제
+//장바구니에서 선택 상품 삭제
 router.delete('/cart', auth, (req, res) => {
 
-    //먼저 cart안에 내가 지우려고 한 상품을 지워주기 
     User.findOneAndUpdate(
         { _id: req.user._id },
         {
@@ -348,7 +350,6 @@ router.post('/address', auth, (req, res) => {
 
 //리뷰 추가
 router.post("/review", auth, (req, res) => {
-    console.log(req.body);
     //주문번호로 history에서 주문내역을 찾은후 리뷰 추가, reviewAuth를 false로 변경
     User.findOneAndUpdate({ _id : req.user._id, history: {$elemMatch: {orderId: req.body.orderId }}},{
         "$push": {
@@ -410,7 +411,18 @@ router.get('/payments', auth, (req, res) => {
     });
 })
 
+router.post('/heart', auth, (req, res) => {
 
+    User.findOneAndUpdate({ _id : req.user._id },{
+        "$push": {
+            "storeId": req.body.storeId,
+        }},{ new: true },
+        (err, reviewInfo) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, reviewInfo })
+        }
+      )
+})
 
 
 module.exports = router;

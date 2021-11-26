@@ -15,7 +15,7 @@ function OwnerOrderProceedingPage(props) {
 
   const dispatch = useDispatch();
   const storeId = props.match.params.storeId;
-  const socket = io(`http://localhost:5000`);
+  const socket = io(`http://192.168.0.9:5000`);
   const order = useSelector(state => state.store.order);
 
   let data = { storeId: storeId }

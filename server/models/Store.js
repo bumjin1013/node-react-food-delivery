@@ -54,6 +54,10 @@ const storeSchema = mongoose.Schema({
             gu: { type: String },
             ro: { type: String }
         }]
+    },
+    heart: {
+        type: Array,
+        default: []
     }
 }, { timestamps: true})
 

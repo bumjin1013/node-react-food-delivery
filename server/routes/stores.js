@@ -306,7 +306,7 @@ router.put('/state', (req, res) => {
 router.put('/order-state', (req, res) => {
 
   //body로 받은 storeId, orderId를 이용하여 찾고 state를 body.state로 변경
-  Store.findOneAndUpdate({_id: req.body.storeId, order: { $elemMatch: {orderId: req.body.orderId }}},{
+  Store.findOneAndUpdate({ _id: req.body.storeId, order: { $elemMatch: { orderId: req.body.orderId }}},{
     "$set": {
       "order.$.state": req.body.state
       }},{ new: true },
@@ -347,8 +347,6 @@ router.post('/area', (req, res) => {
 
 //배달 지역 삭제
 router.delete('/area', (req, res) => {
-  
-  console.log(req.body);
 
   Store.findOneAndUpdate({ _id: req.body.storeId }, {
     "$pull": {

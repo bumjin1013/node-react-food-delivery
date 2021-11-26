@@ -73,13 +73,12 @@ if (process.env.NODE_ENV === "production") {
 io.on("connection", (socket) => {
   
  //StoreId로 Room을 생성, 유저가 order success 시에 Join Room을 통해 상점과 소켓으로 연결됨  
-  socket.on("Join Room", data => {      
+  socket.on("Join Room", data => {  
     socket.join(data.storeId);
   })
 
   //주문정보를 StoreId로 보냄
   socket.on("Input Order", data => {
-  
     //주문자를 orderId로 생성한 room에 입장시킴
     socket.join(data.orderId);
 
@@ -95,13 +94,13 @@ io.on("connection", (socket) => {
         }).exec((err, order) => {
         if (err) console.log(err);
         return io.to(data.storeId).emit("Output Order", order);
+        
       });
     }, 50);
   })
 
   //상점에서 주문 state 변경 시 orderId의 room(사장과 주문한 손님 둘만 있는 방)을 통해 주문 상태 변경 내역 전송
   socket.on("Input Order State", data => {
-    console.log('Input Order State',data);
     return io.to(data.orderId).emit("Output Order State", data);
   })
 

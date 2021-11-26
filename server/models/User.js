@@ -53,7 +53,11 @@ const userSchema = mongoose.Schema({
         email: { type: String },
         id: { type: String },
         chats: []
-    }]
+    }],
+    heart: {
+        type: Array,
+        default: []
+    }
 })
 
 
