@@ -23,7 +23,8 @@ router.get("/auth", auth, (req, res) => {
         cart: req.user.cart,
         history: req.user.history,
         review: req.user.review,
-        coupon: req.user.coupon
+        coupon: req.user.coupon,
+        heart: req.user.heart
     });
 });
 
@@ -411,18 +412,36 @@ router.get('/payments', auth, (req, res) => {
     });
 })
 
+//찜 목록에 추가
 router.post('/heart', auth, (req, res) => {
 
     User.findOneAndUpdate({ _id : req.user._id },{
         "$push": {
-            "storeId": req.body.storeId,
+            "heart": {
+                "storeId": req.body.storeId,
+            }
         }},{ new: true },
-        (err, reviewInfo) => {
+        (err, result) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).send({ success: true, reviewInfo })
+            res.status(200).send({ success: true, heart: result.heart })
         }
       )
 })
 
+//찜 목록에서 제거
+router.delete('/heart', auth, (req, res) => {
+
+    User.findOneAndUpdate({ _id : req.user._id },{
+        "$pull": {
+            "heart": {
+                "storeId": req.body.storeId,
+            }
+        }},{ new: true },
+        (err, result) => {
+            if (err) return res.status(400).json({ success: false, err })
+            res.status(200).send({ success: true, heart: result.heart })
+        }
+      )
+})
 
 module.exports = router;

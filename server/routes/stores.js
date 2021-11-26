@@ -360,5 +360,38 @@ router.delete('/area', (req, res) => {
 
 })
 
+//본인 상점을 찜한 유저의 _id 추가
+router.post('/heart', (req, res) => {
+
+  Store.findOneAndUpdate({ _id : req.body.storeId },{
+      "$push": {
+        "heart":{
+          "userId": req.body.userId,
+        }
+      }},{ new: true },
+      (err, result) => {
+          if (err) return res.status(400).json({ success: false, err })
+          res.status(200).send({ success: true })
+      }
+    )
+})
+
+//찜 목록에서 user._id 삭제
+router.delete('/heart', (req, res) => {
+
+  console.log(req.body);
+
+  Store.findOneAndUpdate({ _id : req.body.storeId },{
+      "$pull": {
+        "heart":{
+          "userId": req.body.userId,
+        }
+      }},{ new: true },
+      (err, result) => {
+          if (err) return res.status(400).json({ success: false, err })
+          res.status(200).send({ success: true })
+      }
+    )
+})
 
 module.exports = router;
