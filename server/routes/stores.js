@@ -181,7 +181,10 @@ router.get("/list", (req, res) => {
     "image": true,
     "title": true,
     "category": true,
-    "review": true
+    "review": {
+      "star":true
+    },
+    "menu": true
   })
     .exec((err, store) => {
       if (err) return res.status(400).send({ success: false, err });

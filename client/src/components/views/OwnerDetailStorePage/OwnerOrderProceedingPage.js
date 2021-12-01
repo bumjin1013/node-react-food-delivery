@@ -15,7 +15,7 @@ function OwnerOrderProceedingPage(props) {
 
   const dispatch = useDispatch();
   const storeId = props.match.params.storeId;
-  const socket = io(`http://192.168.0.9:5000`);
+  const socket = io(`http://192.168.0.8:5000`);
   const order = useSelector(state => state.store.order);
 
   let data = { storeId: storeId }
@@ -45,7 +45,7 @@ function OwnerOrderProceedingPage(props) {
       //주문상태 update
       dispatch(updateOrderState(body));
 
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log('success');
@@ -72,7 +72,7 @@ function OwnerOrderProceedingPage(props) {
       //주문상태 update
       dispatch(updateOrderState(body));
 
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log('success');
@@ -150,7 +150,7 @@ function OwnerOrderProceedingPage(props) {
 
       dispatch(updateOrderState(body));
 
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log('success');
@@ -170,11 +170,7 @@ function OwnerOrderProceedingPage(props) {
       }
       message.success('주문을 취소하였습니다.');
 
-      socket.emit("Join OrderId Room", body);
-      socket.emit("Input Order State", body);
-      dispatch(updateOrderState(body));
-
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log('success');
@@ -182,6 +178,12 @@ function OwnerOrderProceedingPage(props) {
             alert('오류');
         }
       })
+
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body);
+      dispatch(updateOrderState(body));
+
+      
     }
 
     //배달중
@@ -192,12 +194,8 @@ function OwnerOrderProceedingPage(props) {
         orderId: item.orderId,
         state: "배달중"
       }
-  
-      socket.emit("Join OrderId Room", body);
-      socket.emit("Input Order State", body)
-      dispatch(updateOrderState(body));
 
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log(response.data);
@@ -205,6 +203,12 @@ function OwnerOrderProceedingPage(props) {
             alert('오류');
         }
       })
+  
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body)
+      dispatch(updateOrderState(body));
+
+      
     }
 
     //배달완료
@@ -215,12 +219,8 @@ function OwnerOrderProceedingPage(props) {
         orderId: item.orderId,
         state: "배달완료"
       }
-      
-      socket.emit("Join OrderId Room", body);
-      socket.emit("Input Order State", body)
-      dispatch(updateOrderState(body));
 
-      Axios.post('/api/users/updateHistoryState', body)
+      Axios.post('/api/users/history', body)
       .then(response => {
         if (response.data) {
           console.log('success');
@@ -228,6 +228,12 @@ function OwnerOrderProceedingPage(props) {
             alert('오류');
         }
       })
+
+      socket.emit("Join OrderId Room", body);
+      socket.emit("Input Order State", body)
+      dispatch(updateOrderState(body));
+
+      
     }
     let menuList = "";
 

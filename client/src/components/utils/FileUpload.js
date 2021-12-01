@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import Dropzone from 'react-dropzone'
+import React, { useState } from 'react';
+import Dropzone from 'react-dropzone';
 import { Icon } from 'antd';
 import axios from 'axios';
 

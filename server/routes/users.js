@@ -28,6 +28,15 @@ router.get("/auth", auth, (req, res) => {
     });
 });
 
+//이메일 중복확인
+router.get("/duplicate", (req, res) => {
+    User.find({ email: req.body.email })
+    .exec((err, result) => {
+        if (err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, result })
+    });
+});
+
 router.post("/register", (req, res) => {
 
     const user = new User(req.body);
@@ -66,6 +75,31 @@ router.post("/login", (req, res) => {
         });
     });
 });
+
+//자동 로그인
+router.post("/login/token", (req, res) => {
+
+    console.log('body', req.body);
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (user.token != req.body.token)
+            return res.json({
+                loginSuccess: false,
+                message: "token has expired"
+            });
+
+        user.generateToken((err, user) => {
+            if (err) return res.status(400).send(err);
+            res.cookie("w_authExp", user.tokenExp);
+            res
+                .cookie("w_auth", user.token)
+                .status(200)
+                .json({
+                    loginSuccess: true, userId: user._id, token: user.token
+                });
+            });
+        });
+    });
+
 
 //로그아웃
 router.get("/logout", auth, (req, res) => {
@@ -256,7 +290,7 @@ router.post("/order", auth, (req, res) => {
               reviewAuth: false,
               socketId: null,
               review: [],
-              state: '가게에서 주문을 확인하고 있습니다.'
+              state: '주문 확인중'
             }},
               $set:{cart: []} //주문 성공후 장바구니를 비워줌
             },{ new: true },
@@ -365,9 +399,9 @@ router.post("/review", auth, (req, res) => {
             "history.$.reviewAuth": false
         }
         },{ new: true },
-        (err, reviewInfo) => {
+        (err, result) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).send({ success: true, reviewInfo })
+            res.status(200).send({ success: true, history: result.history })
         }
       )
   });
