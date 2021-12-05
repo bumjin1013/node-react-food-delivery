@@ -77,8 +77,6 @@ router.post("/login", (req, res) => {
 
 //자동 로그인
 router.post("/login/token", (req, res) => {
-
-    console.log('body', req.body);
     User.findOne({ email: req.body.email }, (err, user) => {
         if (user.token != req.body.token)
             return res.json({

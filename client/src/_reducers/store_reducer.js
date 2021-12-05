@@ -29,7 +29,7 @@ export default function(state={},action){
         case GET_ORDER:
             return {...state, order: action.payload}
         case UPDATE_ORDER_STATE:
-            return {...state, order: action.payload}
+            return {...state, order: action.payload.order}
         case GET_REVIEW:
             return {...state, review: action.payload}
         case ADD_COMMENTS:

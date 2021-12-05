@@ -294,9 +294,9 @@ router.put('/state', (req, res) => {
     "$set": {
       "menu.$.state": req.body.state
       }},{ new: true },
-        (err, store) => {
+        (err, result) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json(store.menu)
+            res.status(200).json({success: true, order: result.order})
         }
   );
 })
@@ -313,9 +313,9 @@ router.put('/order-state', (req, res) => {
     "$set": {
       "order.$.state": req.body.state
       }},{ new: true },
-        (err, changedInfo) => {
+        (err, result) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json(changedInfo.order)
+            res.status(200).json({ success: true, order: result.order})
         }
   );
 })

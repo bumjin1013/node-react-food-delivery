@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require('cors')
+const { Expo } = require('expo-server-sdk');
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -33,6 +34,18 @@ const connect = mongoose.connect(config.mongoURI,
   })
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
+
+// Create a new Expo SDK client
+// optionally providing an access token if you have enabled push security
+
+// Create a new Expo SDK client
+// optionally providing an access token if you have enabled push security
+let expo = new Expo({ accessToken: 'gR47dvs83M7osTZYes9Tjy16IsEhn9hNq3iD33Md' });
+
+// Create the messages that you want to send to clients
+let messages = [];
+let somePushTokens = 'ExponentPushToken[NKJmVuFtIol0zCrvDS3z1z]'
+
 
 app.use(cors())
 
@@ -101,6 +114,50 @@ io.on("connection", (socket) => {
 
   //상점에서 주문 state 변경 시 orderId의 room(사장과 주문한 손님 둘만 있는 방)을 통해 주문 상태 변경 내역 전송
   socket.on("Input Order State", data => {
+    let messages = []
+    const message = (state) => {
+      console.log(state);
+      switch(state){
+        case '조리중':
+          return '주문하신 음식의 조리를 시작하였습니다.'
+          break;
+        case '주문취소':
+          return '주문하신 음식의 주문이 취소되었습니다.'
+          break;
+        case '배달중':
+          return '라이더가 음식을 픽업하였습니다.'
+          break;
+        case '배달완료':
+          return '주문하신 음식의 배달이 완료되었습니다.'
+          break;
+      }
+    }
+    // Check that all your push tokens appear to be valid Expo push tokens
+    if (!Expo.isExpoPushToken('ExponentPushToken[NKJmVuFtIol0zCrvDS3z1z]')) {
+      console.error(`Push token ${somePushTokens} is not a valid Expo push token`);
+    } else {
+      // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+      messages.push({
+        to: 'ExponentPushToken[NKJmVuFtIol0zCrvDS3z1z]',
+        sound: 'default',
+        body: message(data.state),
+      })
+
+      let chunks = expo.chunkPushNotifications(messages);
+      let tickets = [];
+      (async () => {
+        for (let chunk of chunks) {
+          try {
+            let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+            console.log(ticketChunk);
+            tickets.push(...ticketChunk);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      })();
+    }
+
     return io.to(data.orderId).emit("Output Order State", data);
   })
 
