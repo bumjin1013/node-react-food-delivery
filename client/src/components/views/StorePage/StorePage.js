@@ -23,6 +23,7 @@ function StorePage() {
     console.log(store);
 
     return (
+
       <Col lg={6} md={8} xs={24} key={index}>
         <Card
           hoverable
@@ -34,15 +35,17 @@ function StorePage() {
               />
             </a>
           }
+          style={{width: 200}}
         >
           <Meta title={store.title} />
         </Card>
       </Col>
+
     );
   });
 
   return (
-    <div style={{ width: "75%", margin: "3rem auto" }}>
+    <div style={{ width: "1000px", margin: "3rem auto" }}>
 
       {Stores.length>0 ?
       <Row gutter={[16, 16]}>{renderCards}</Row>

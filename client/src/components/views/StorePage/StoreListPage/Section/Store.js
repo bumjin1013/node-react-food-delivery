@@ -17,7 +17,8 @@ function Store(props) {
     let Star;
     //리뷰가 1개 이상이면 더한 총 별점 / 리뷰 갯수 = Star , 리뷰가 없으면 0
     store.review.length > 0 ? Star = (totalStar/store.review.length).toFixed(1) : Star = 0
-      
+    
+    if(store.category == props.category){
     return (
         <Col lg={6} md={8} xs={24} key={store.storeId}>
             <Card
@@ -43,6 +44,9 @@ function Store(props) {
             </Card>
         </Col>
     );
+    } else { 
+        return null;
+    }
 
 }
 

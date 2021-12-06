@@ -133,12 +133,12 @@ io.on("connection", (socket) => {
       }
     }
     // Check that all your push tokens appear to be valid Expo push tokens
-    if (!Expo.isExpoPushToken('ExponentPushToken[NKJmVuFtIol0zCrvDS3z1z]')) {
-      console.error(`Push token ${somePushTokens} is not a valid Expo push token`);
+    if (!Expo.isExpoPushToken(data.token)) {
+      console.error(`Push token ${data.token} is not a valid Expo push token`);
     } else {
       // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
       messages.push({
-        to: 'ExponentPushToken[NKJmVuFtIol0zCrvDS3z1z]',
+        to: data.token,
         sound: 'default',
         body: message(data.state),
       })

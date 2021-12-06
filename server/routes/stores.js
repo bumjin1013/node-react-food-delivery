@@ -69,7 +69,6 @@ router.get("/stores_by_id",  (req, res) => {
     .populate("id")
     .exec((err, doc) => {
       
-      
       //별점 계산
       let totalStar = 0;
     
@@ -85,7 +84,7 @@ router.get("/stores_by_id",  (req, res) => {
       //계산한 별점 store object에 추가하여 response
       store = JSON.parse(JSON.stringify(doc)); 
       store["star"] = star;
-
+     
       if (err) return res.status(400).send({ sucess: false, err});
       return res.status(200).json({ success: true, store, star });
     });
@@ -264,7 +263,8 @@ router.post('/order', (req, res) => {
           orderId: req.body.orderId,
           orderTime: req.body.orderTime,
           socketId: null,
-          state: "확인중"
+          state: "확인중",
+          token: req.body.token
         }}},{ new: true },
         (err, orderInfo) => {
             if (err) return res.status(400).json({ success: false, err })
@@ -328,7 +328,7 @@ router.get('/area', (req, res) => {
   })
   .exec((err, doc) => {
     if (err) return res.status(400).send(err);
-    return res.status(200).json(doc.deliveryArea);
+    return res.status(200).json({ sucess: true, deliveryArea: doc.deliveryArea});
   });
 })
 
@@ -343,7 +343,7 @@ router.post('/area', (req, res) => {
       }}},{ new: true },
         (err, store) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json(store.deliveryArea)
+            res.status(200).json({ sucess: true, deliveryArea: doc.deliveryArea})
         }
   );
 })
@@ -358,7 +358,7 @@ router.delete('/area', (req, res) => {
       }}},{ new: true },
   (err, doc) => {
       if (err) return res.status(400).json({ success: false, err })
-      res.status(200).json(doc.deliveryArea)
+      res.status(200).json({ sucess: true, deliveryArea: doc.deliveryArea})
   })
 
 })

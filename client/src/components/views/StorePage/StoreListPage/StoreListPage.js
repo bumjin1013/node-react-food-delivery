@@ -8,11 +8,11 @@ function StoreListPage(props) {
   const userAddress = useSelector(state => state.user.userData && state.user.userData.isAuth ? state.user.userData.address.address : null);
   
   console.log(userAddress);
-  
+  console.log('아빢쳐');
   useEffect(() => {
-
+    
     if(userAddress){
-      axios.get(`/api/stores/category?category=${category}&address=${userAddress}`).then((response) => {
+      axios.get(`http://localhost:5000/api/stores/list?address=${userAddress}`).then((response) => {
           setStoreList(response.data.store);   
         })
       .catch((err) => alert(err));
@@ -59,7 +59,7 @@ function StoreListPage(props) {
       <br />
       <Row gutter={[16, 16]}>
         {StoreList && StoreList.map((store, index) => (
-          <Store store={store}/>
+          <Store store={store} category={category}/>
         ))}
       </Row>
         

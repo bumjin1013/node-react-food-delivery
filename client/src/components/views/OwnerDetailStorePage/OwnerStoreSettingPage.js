@@ -15,12 +15,12 @@ function OwnerStoreSettingPage(props) {
     axios.get(`/api/stores/stores_by_id?id=${storeId}&type=single`)
       .then((response) => {
         //상점 정보를 Store state에 넣어줌
-        setStore(response.data[0]);
+        setStore(response.data.store[0]);
 
         //현재 DB에 있는 상점 Description을 Description state에 넣어줌.
-        setDescription(response.data[0].description);
+        setDescription(response.data.store[0].description);
         //주소 
-        setAddress(response.data[0].address);
+        setAddress(response.data.store[0].address);
         
       })
       .catch((err) => alert(err));

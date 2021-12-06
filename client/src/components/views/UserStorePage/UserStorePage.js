@@ -13,33 +13,40 @@ const { Header, Content, Sider } = Layout;
 const { TabPane } = Tabs;
 
 function UserStorePage(props) {
-
-  const dispatch = useDispatch();
-  const cart = useSelector(state => state.user.userData && state.user.userData.cart); 
-  const userAddress = useSelector(state => state.user.userData && state.user.userData.address)
-  
+  const storeId = props.match.params.storeId;
   useEffect(() => {
-    axios.get(`/api/stores/stores_by_id?id=${storeId}&type=single`)
-      .then((response) => {
-        setStore(response.data[0]);
-        console.log(response.data[0])
-        setListMenu(response.data[0].menu);
-        setReview(response.data[0].review);
-        setAddress(response.data[0].address);
-        setDeliveryArea(response.data[0].deliveryArea);
+    axios.get(`http://192.168.0.8:5000/api/stores/stores_by_id?id=${props.match.params.storeId}`)
+      .then(response => {
+        if(response.data.success){
+          console.log(response.data.store);
+          setStore(response.data.store[0]);
+          setListMenu(response.data.store[0].menu);
+          setReview(response.data.store[0].review);
+          setAddress(response.data.store[0].address);
+          setDeliveryArea(response.data.store[0].deliveryArea);
+        } else {
+          console.log(response.data.err);
+        }
+        
       })
       .catch((err) => alert(err));
      
   }, []);
 
-  const storeId = props.match.params.storeId;
+  const dispatch = useDispatch();
+  const cart = useSelector(state => state.user.userData && state.user.userData.cart); 
+  const userAddress = useSelector(state => state.user.userData && state.user.userData.address)
+  
   const [Store, setStore] = useState({});
   const [ListMenu, setListMenu] = useState([]);
   const [Review, setReview] = useState([]);
   const [Address, setAddress] = useState([]);
   const [DeliveryArea, setDeliveryArea] = useState();
- 
-  const renderMenu = ListMenu.map((menu, index) => {
+
+  console.log(storeId);
+  
+
+  const renderMenu = ListMenu&&ListMenu.map((menu, index) => {
 
     const addCart = () => {
 
@@ -120,7 +127,7 @@ function UserStorePage(props) {
   });
 
   //리뷰 내역 랜더링
-   const renderReview = Review.map((review, index) => {
+   const renderReview = Review && Review.map((review, index) => {
     return (
       
       <div key={index}>

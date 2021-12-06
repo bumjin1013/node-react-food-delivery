@@ -143,7 +143,8 @@ function OwnerOrderProceedingPage(props) {
         userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
-        state: "조리중"
+        state: "조리중",
+        token: item.token
       }
       socket.emit("Join OrderId Room", body);
       socket.emit("Input Order State", body)
@@ -166,7 +167,8 @@ function OwnerOrderProceedingPage(props) {
         userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
-        state: "주문취소"
+        state: "주문취소",
+        token: item.token
       }
       message.success('주문을 취소하였습니다.');
 
@@ -192,7 +194,8 @@ function OwnerOrderProceedingPage(props) {
         userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
-        state: "배달중"
+        state: "배달중",
+        token: item.token
       }
 
       Axios.post('/api/users/history', body)
@@ -217,7 +220,8 @@ function OwnerOrderProceedingPage(props) {
         userId: item.userId,
         storeId: storeId,
         orderId: item.orderId,
-        state: "배달완료"
+        state: "배달완료",
+        token: item.token
       }
 
       Axios.post('/api/users/history', body)

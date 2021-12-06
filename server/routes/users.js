@@ -364,7 +364,6 @@ router.post('/info', auth, (req, res) => {
 //주소 추가
 router.post('/address', auth, (req, res) => {
 
-    console.log(req.body);
     User.findOneAndUpdate({ _id: req.user._id },{
         $set:{
             address: {
@@ -373,9 +372,10 @@ router.post('/address', auth, (req, res) => {
             }
         }  
         },{ new: true },
-        (err, userInfo) => {
+        (err, result) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).send({ success: true, userInfo })
+            console.log(result.address);
+            res.status(200).send({ success: true, address: result.address })
         }
     )
 })

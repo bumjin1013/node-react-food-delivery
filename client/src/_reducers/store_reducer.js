@@ -35,11 +35,11 @@ export default function(state={},action){
         case ADD_COMMENTS:
             return {...state, review: action.payload}
         case GET_DELIVERY_AREA:
-            return {...state, area: action.payload}
+            return {...state, area: action.payload.deliveryArea}
         case ADD_DELIVERY_AREA:
-            return {...state, area: action.payload}
+            return {...state, area: action.payload.deliveryArea}
         case DELETE_DELIVERY_AREA:
-            return {...state, area: action.payload}
+            return {...state, area: action.payload.deliveryArea}
         default:
             return state;
     }
