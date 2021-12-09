@@ -343,7 +343,7 @@ router.post('/area', (req, res) => {
       }}},{ new: true },
         (err, store) => {
             if (err) return res.status(400).json({ success: false, err })
-            res.status(200).json({ sucess: true, deliveryArea: doc.deliveryArea})
+            res.status(200).json({ sucess: true, deliveryArea: store.deliveryArea})
         }
   );
 })
